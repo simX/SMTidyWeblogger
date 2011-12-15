@@ -1,0 +1,1 @@
+<div style="font-size:14px; font-weight: bold;">{[YEARHEADER]}</div><div style="font-size: 14px; text-indent: 1em;">{[MONTHHEADER]}</div><div style="text-indent: 3em;"><a href="{[ENTRYURL]}">{[ENTRYTITLE]}</a></div>

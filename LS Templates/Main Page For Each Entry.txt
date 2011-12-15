@@ -1,0 +1,12 @@
+<div class="blogbody"><div class="category_image" style="float: left; margin-right: 0.5em; height: 60px; position: relative; top: -1em; left: -1em;"><img src="{[URLIZEDCATEGORY]}/categoryImage.png" width="60" height="60" alt="" /></div>
+<div style="height: 60px;"><div style="padding-top: 20px;"><h3 class="title">{[ENTRYTITLE]}
+</h3></div>
+<h2 class="date">{[ENTRYPUBLISHEDDATE]}</h2></div><br /><div class="abstract">{[ENTRYABSTRACT]}</div> <br /><div>
+{[ENTRYBODY]}
+</div>
+ <br />
+
+<a href="{[URLIZEDCATEGORY]}/index.html">{[ENTRYCATEGORY]}</a> &nbsp; <a href="{[RELATIVEENTRYURL]}">Permalink</a> &nbsp;<script language="JavaScript" type="text/javascript">var entryURLs = {    '{[ENTRYDEPRECATEDPAGEFILENAME]}' : {}};
+OMGWTFBBQITISTOOLATETOWRITEJAVASCRIPT('{[RELATIVEENTRYDEPRECATEDURL]}');</script><script language="JavaScript" type="text/javascript">initPersonWhoHasNoNameComments('{[RELATIVEENTRYDEPRECATEDURL]}','{[RELATIVEENTRYURL]}');</script>
+
+</div>

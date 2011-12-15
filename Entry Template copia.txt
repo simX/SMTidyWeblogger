@@ -1,0 +1,210 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><script language="JavaScript1.2" src="../../CommonLib.js" type="text/javascript"></script>
+<script language="javascript" type="text/javascript"><!--
+  var GUID = '%@';
+  var commentsActivated = true;
+--></script><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>%@
+</title><script language="JavaScript" type="text/javascript">writeStyleSheetLinks();</script>
+<link rel="stylesheet" type="text/css" href="http://homepage.mac.com/simx/stylesheets/red-right-nav.css" title="Red Right Nav" /></head><body onload="onPageLoad();"><div id="banner"><h3> <a class="banner" href="../../index.html">%@</a> > <a class="banner" href="../index.html">%@</a> ></h3></div>
+<script language="JavaScript" type="text/javascript">writeStyleSheetButtonLinks();</script>
+<div class="topfade"></div><!-- Navigation Content --><div id="navigation"><div id="links"><div class="sidetitle"> Google Search </div>
+
+<div class="side"> <form name="search" action="http://www.google.com/search" method="get" onsubmit="document.search.q.value = document.search.terms.value + ' site:homepage.mac.com/simx/technonova/';"><input type="hidden" name="q" value="" /><input type="text" name="terms" />
+<input type="submit" value="Go" /></form> </div>
+
+<div class="sidetitle"> Links </div>
+
+<div class="side">
+<ul>
+<li><a href="http://homepage.mac.com/simx/index.html">Ellipsis Productions</a><br />
+Mac OS X software by me</li>
+<li><a href="http://homepage.mac.com/simx/supernova/english/index.html">Emotional Supernova</a><br />
+personal weblog</li>
+</ul>
+</div>
+
+<div class="sidetitle"> <a href="http://homepage.mac.com/simx/links/index.html" target="_blank">Linkable Supernova</a> </div>
+
+<div class="side">
+
+<div id="linkableSupernovaEntries"></div>
+
+<iframe name="linkableSupernovaArchivePage" style="display: none;" src="http://homepage.mac.com/simx/links/archive.html" onload="window.document.getElementById('linkableSupernovaEntries').innerHTML = window.frames['linkableSupernovaArchivePage'].document.getElementById('recent_links').innerHTML;"></iframe>
+
+</div>
+
+<div class="sidetitle"> Contact Info </div>
+
+<div class="side">
+<center><b>E-Mail</b></center><br />
+<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#115;&#105;&#109;&#88;&#64;&#109;&#97;&#99;&#46;&#99;&#111;&#109;">&#115;&#105;&#109;&#88;&#32;&#91;&#97;&#116;&#93;&#32;&#109;&#97;&#99;&#32;&#91;&#100;&#97;&#119;&#116;&#93;&#32;&#99;&#111;&#109;</a><br />
+<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#115;&#105;&#109;&#64;&#115;&#116;&#97;&#110;&#102;&#111;&#114;&#100;&#46;&#101;&#100;&#117;">&#115;&#105;&#109;&#32;&#91;&#97;&#116;&#93;&#32;&#115;&#116;&#97;&#110;&#102;&#111;&#114;&#100;&#32;&#91;&#100;&#97;&#119;&#116;&#93;&#32;&#101;&#100;&#117;</a><br /><br />
+</div>
+
+<div class="sidetitle"> Calendar </div>
+
+<div class="side"> <div align="center" class="calendar"> <table border="0" cellspacing="4" cellpadding="0">
+<tr><td colspan="7" align="center"><span class="calendarhead"><script language="JavaScript" type="text/javascript"> getCalendarHead(); </script></span></td> </tr>
+<tr>
+<td class="calendar_day_header">Dom</td>
+<td class="calendar_day_header">Lun</td>
+<td class="calendar_day_header">Mar</td>
+<td class="calendar_day_header">Mer</td>
+<td class="calendar_day_header">Gio</td>
+<td class="calendar_day_header">Ven</td>
+<td class="calendar_day_header">Sab
+</td>
+</tr>
+<tr><td><script language="JavaScript" type="text/javascript"> getEntryCalendarRows(); </script></td></tr>
+</table> </div> </div>
+
+<div class="sidetitle"> Categories </div>
+
+<div class="side"> <script language="JavaScript" type="text/javascript"> getEntryCategories(); </script> </div>
+
+<div class="sidetitle"> Archives </div>
+
+<div class="side"> <a href="../../archive.html">Browse archives by date</a> </div>
+
+<div class="sidetitle"> Highlighted Content </div>
+
+<div class="side">
+<b>Rants on Intuitivity:</b>
+<ul>
+<li><a href="http://homepage.mac.com/simx/technonova/C486203617/E20070808004626/index.html">The Myth of the Myth of Cocoa Apps</a></li>
+<li><a href="http://homepage.mac.com/simx/technonova/C2116391994/E20050911125706/index.html">On Intuitivity</a></li>
+<li><a href="http://homepage.mac.com/simx/technonova/C1766861589/E20051128022458/index.html">Intuitivity Redux: VLC vs. MPlayer</a></li>
+<li><a href="http://homepage.mac.com/simx/technonova/C2116391994/E20060218010523/index.html">Enigmo 2 Bug Friday: New Dimension Obliterates an Otherwise Awesome Puzzle Game</a></li>
+<li><a href="http://homepage.mac.com/simx/technonova/C1766861589/E20060208033106/index.html">The Sad State of Sucky Scanning Software on Mac OS X</a></li>
+<li><a href="http://homepage.mac.com/simx/technonova/C2116391994/E20051210212921/index.html">UI Considerations in Programming</a></li>
+<li><a href="http://homepage.mac.com/simx/technonova/C1700219634/E20060919035353/index.html">My Last Two Hours Enduring Mac OS 9</a></li>
+</ul>
+
+<b>Reviews and Analysis:</b>
+<ul>
+<li><a href="http://homepage.mac.com/simx/technonova/C1700219634/E20060919011653/index.html">Rediscovering Mac Gaming</a></li>
+<li><a href="http://homepage.mac.com/simx/technonova/C1700219634/E20060919041001/index.html">The Myth of Convergence</a></li>
+<li><a href="http://homepage.mac.com/simx/technonova/C1700219634/E20060919035143/index.html">The Difference Between Piracy and Stealing</a></li>
+</ul>
+
+<b>Tips and Tutorials:</b>
+<ul>
+<li><a href="http://homepage.mac.com/simx/technonova/C488455530/E20070821192628/index.html">More Sysadmin Tips</a></li>
+<li><a href="http://homepage.mac.com/simx/technonova/C488455530/E20070507215650/index.html">Using Experimental MacPorts Portfiles</a></li>
+<li><a href="http://homepage.mac.com/simx/technonova/C1966536352/E20061120021355/index.html">Local Track, Shared Track, or iTunes Store Preview?</a></li>
+<li><a href="http://homepage.mac.com/simx/technonova/C488455530/E20070326000908/index.html">5 Tips for Mac OS X Sysadmins</a></li>
+<li><a href="http://homepage.mac.com/simx/technonova/C1766861589/E327211904/index.html">Creating Universal Binaries</a></li>
+<li><a href="http://homepage.mac.com/simx/technonova/C1700219634/E20060919012042/index.html">An Introduction to AppleScript Studio</a></li>
+<li><a href="http://homepage.mac.com/simx/technonova/C1700219634/E20060919011907/index.html">Learning to Refer to Objects in AppleScript Studio</a></li>
+</ul>
+</div>
+
+<div class="sidetitle"> iTunes Store </div>
+
+<div class="side centered-text">
+<div id="enableiTunesWidgetsButtonDiv"><a onclick="enableiTunesWidgets();">Enable My iTunes Widgets</a></div>
+<div id="disableiTunesWidgetsButtonDiv" style="display: none;"><a onclick="disableiTunesWidgets();">Disable My iTunes Widgets</a></div><br /><br />
+
+<div style="display: none;" id="myiTunesWidgets">
+
+<object
+type="application/x-shockwave-flash" data="http://ax.phobos.apple.com.edgesuite.net/flash/myitunes/myitunes.swf?feed&#61;WebObjects%2FMZStoreServices.woa%2Fws%2FRSS%2Fmyrecentpurchases%2Fartworkheight%3D53%2Fhtml%3Dfalse%2Fsf%3D143441%2Fuserid%3D10831251%2Fxml%3Fv0%3D7720&amp;feedType&#61;recent&amp;cssPath&#61;http://ax.phobos.apple.com.edgesuite.net/flash/myitunes/styles/default.css&amp;local&#61;143441" 
+width="200" height="285">
+<param name="movie" value="http://ax.phobos.apple.com.edgesuite.net/flash/myitunes/myitunes.swf?feed&#61;WebObjects%2FMZStoreServices.woa%2Fws%2FRSS%2Fmyrecentpurchases%2Fartworkheight%3D53%2Fhtml%3Dfalse%2Fsf%3D143441%2Fuserid%3D10831251%2Fxml%3Fv0%3D7720&amp;feedType&#61;recent&amp;cssPath&#61;http://ax.phobos.apple.com.edgesuite.net/flash/myitunes/styles/default.css&amp;local&#61;143441" />
+</object>
+
+
+<br /><br />
+
+<object
+type="application/x-shockwave-flash" data="http://ax.phobos.apple.com.edgesuite.net/flash/myitunes/myitunes.swf?feed&#61;WebObjects%2FMZStoreServices.woa%2Fws%2FRSS%2Fmymostpurchasedartists%2Fartworkheight%3D53%2Fhtml%3Dfalse%2Fsf%3D143441%2Fuserid%3D10831251%2Fxml%3Fv0%3D7723&amp;feedType&#61;mostpurchased&amp;cssPath&#61;http://ax.phobos.apple.com.edgesuite.net/flash/myitunes/styles/default.css&amp;local&#61;143441" 
+width="200" height="285">
+<param name="movie" value="http://ax.phobos.apple.com.edgesuite.net/flash/myitunes/myitunes.swf?feed&#61;WebObjects%2FMZStoreServices.woa%2Fws%2FRSS%2Fmymostpurchasedartists%2Fartworkheight%3D53%2Fhtml%3Dfalse%2Fsf%3D143441%2Fuserid%3D10831251%2Fxml%3Fv0%3D7723&amp;feedType&#61;mostpurchased&amp;cssPath&#61;http://ax.phobos.apple.com.edgesuite.net/flash/myitunes/styles/default.css&amp;local&#61;143441" />
+</object>
+
+
+</div>
+<script language="JavaScript1.2" type="text/javascript">
+var iTunesCookie = readCookie('myiTunesWidgets');
+if (iTunesCookie == 'enabled') {
+ enableiTunesWidgets();
+}</script>
+
+
+</div>
+
+<div class="sidetitle"> Statistics </div>
+
+<div class="side"> Total entries in this blog: <script language="JavaScript1.2" type="text/javascript"> getBlogEntriesCount(); </script><br />
+Total entries in this category: 8<br /><script language="JavaScript1.2" type="text/javascript"> getCategoryStatistics(); </script> <br />Last Updated: ago 30, 2007 11:39 m.</div>
+
+<div class="sidetitle"></div>
+
+<div class="side-badges" style="text-align: center;">
+<a href="http://www.apple.com/"><img class="badge" alt="Made on a Mac" src="http://homepage.mac.com/simx/badges/madeon_mac.png" /></a>
+<a href="http://www.apple.com/macosx/"><img class="badge" alt="Mac OS X" src="http://homepage.mac.com/simx/badges/macosx.png" /></a><br />
+<a href="http://www.mozilla.org/products/firefox/"><img class="badge" alt="Get Firefox" src="http://homepage.mac.com/simx/badges/get_firefox.png" /></a>
+<a href="http://www.nosoftwarepatents.com/"><img class="badge" alt="No Software Patents" src="http://homepage.mac.com/simx/badges/nosoftwarepatents.png" /></a><br />
+
+<a href="http://validator.w3.org/check?uri=referer"><img class="badge" alt="Valid XHTML 1.0 Transitional" src="http://homepage.mac.com/simx/badges/valid_xhtml10.png" /></a>
+<a href="http://jigsaw.w3.org/css-validator/check/referer"><img class="badge" alt="Valid CSS" src="http://homepage.mac.com/simx/badges/valid_css.png" /></a><br />
+
+<div class="red_badge"><a href="http://feedvalidator.org/check.cgi?url=http://homepage.mac.com/simx/technonova/rss.xml"><img class="badge" alt="Valid RSS 2.0" src="http://homepage.mac.com/simx/badges/valid_rss.png" /></a>
+<a href="http://homepage.mac.com/simx/technonova/rss.xml"><img alt="Subscribe to RSS Feed" class="badge" src="http://homepage.mac.com/simx/badges/rss_subscribe.png" /></a><br /></div>
+
+<div class="blue_badge"><a href="http://feedvalidator.org/check.cgi?url=http://homepage.mac.com/simx/technonova/rss.xml"><img class="badge" alt="Valid RSS 2.0" src="http://homepage.mac.com/simx/badges/valid_rss_blue.png" /></a>
+<a href="http://homepage.mac.com/simx/technonova/rss.xml"><img alt="Subscribe to RSS Feed" class="badge" src="http://homepage.mac.com/simx/badges/rss_subscribe_blue.png" /></a><br /></div>
+
+<div class="red_badge"><a href="http://www.ling.upenn.edu/~beatrice/humor/sarchasm.html"><img class="badge" alt="Warning: Sarchasm" src="http://homepage.mac.com/simx/badges/sarchasm.png" /></a></div><div class="blue_badge"><a href="http://www.ling.upenn.edu/~beatrice/humor/sarchasm.html"><img class="badge" alt="Warning: Sarchasm" src="http://homepage.mac.com/simx/badges/sarchasm_blue.png" /></a></div>
+
+<div class="red_badge"><a href="http://www.mac.com/"><img class="badge" alt=".mac Powered" src="http://homepage.mac.com/simx/badges/dot-mac-powered.png" /></a></div><div class="blue_badge"><a href="http://www.mac.com/"><img class="badge" alt=".mac Powered" src="http://homepage.mac.com/simx/badges/dot-mac-powered_blue.png" /></a></div>
+
+<div class="red_badge"><a href="http://lifli.com/Products/iBlog/main.htm"><img class="badge" alt="iBlog Powered" src="http://homepage.mac.com/simx/badges/iblog_powered.png" /></a></div><div class="blue_badge"><a href="http://lifli.com/Products/iBlog/main.htm"><img class="badge" alt="iBlog Powered" src="http://homepage.mac.com/simx/badges/iblog_powered_blue.png" /></a></div><br /><br /><br /><br />
+</div>
+
+<div class="sidetitle" style="display: none;"> Website Analytics Stuff </div>
+
+<div class="side" style="display: none;">
+<script type="text/javascript" src="http://embed.technorati.com/embed/mv3p8actca.js"></script>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript"></script>
+<script type="text/javascript">
+_uacct = "UA-463677-2";
+urchinTracker();
+</script>
+</div>
+
+</div></div>
+
+<!-- Main Content --><div id="main_content"><div id="container"><div class="blog"><div class="blogbody"><div class="category_image" style="float: left; margin-right: 0.5em; height: 60px; position: relative; top: -1em; left: -1em;"><img src="../categoryImage.png" width="60" height="60" alt="" /></div>
+<div style="height: 60px;"><div style="padding-top: 20px;"><h3 class="title">%@
+</h3></div>
+<h2 class="date">%@</h2></div><br /><div class="abstract"><div>%@</div>
+</div> <br />%@
+ <br /><a href="../../index.html">%@</a> &nbsp; <a href="../index.html">%@</a> &nbsp; %@ &nbsp; %@ <a name="comments"></a>
+
+<div>
+		<div id="comment_layer">
+			<div id="comment_title">
+				<div class="graphic_textbox_style_default" id="id2">
+					<div>
+						<div class="graphic_textbox_layout_style_default">
+							<div class="paragraph Comment_Count"><div id="count_0"></div><div id="manage_comments_0" class="light"></div></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="comment_list"></div>
+			<div id="comment_footer">
+				<div class="graphic_textbox_style_default" id="id3">
+					<div>
+						<div class="graphic_textbox_layout_style_default">
+							<div class="paragraph Comment_Add_A_Comment"><span id="post_link_0"></span></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</div>	</div></div></div><div class="footer"><br clear="all" /><hr noshade="noshade" size="1" /><center>&#169; %@</center></div>
+</body></html>

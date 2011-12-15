@@ -1,0 +1,8 @@
+<item>
+      <title><![CDATA[{[ENTRYTITLE]}]]></title>
+      <link>{[ENTRYURL]}</link>
+      <description><![CDATA[{[ENTRYBODY]}]]></description>
+      <pubDate>{[RSSFORMATENTRYPUBLISHEDDATE]}</pubDate>
+	  <guid>{[ENTRYURL]}</guid>
+	  
+ </item>

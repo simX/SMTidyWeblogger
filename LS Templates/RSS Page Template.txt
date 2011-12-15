@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- generator="{[FEEDGENERATOR]}" -->
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <atom:link href="{[BASEWEBLOGURL]}rss.xml" rel="self" type="application/rss+xml" />
+    <title><![CDATA[{[WEBLOGTITLE]}]]></title>
+    <link>{[WEBLOGURL]}</link>
+    <description><![CDATA[{[WEBLOGDESCRIPTION]}]]></description>
+	<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+	<language>en</language>
+    <webMaster>{[AUTHOREMAIL]} ({[AUTHORNAME]})</webMaster>
+    <copyright>{[AUTHORNAME]}, {[COPYRIGHTDATES]}</copyright>
+    <lastBuildDate>{[FEEDLASTBUILDDATE]}</lastBuildDate>
+    <pubDate>{[FEEDPUBLISHDATE]}</pubDate>
+    <generator>{[FEEDGENERATOR]}</generator>
+    {[FOREACHENTRY]}
+  </channel>
+</rss>

@@ -23,13 +23,22 @@
 	
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	BOOL isDirectory = NO;
-	BOOL fileExists = [fileManager fileExistsAtPath:[NSString stringWithFormat:@"%@/%@/",[targetWeblog baseWeblogPath],URLizedCategory] isDirectory:&isDirectory];
+	BOOL fileExists = [fileManager fileExistsAtPath:[NSString stringWithFormat:@"%@/%@/",[targetWeblog baseFileDirectoryPath],URLizedCategory] isDirectory:&isDirectory];
 	
 	if (isDirectory && fileExists) {
 		// this is good
 		NSLog(@"folder exists");
 	} else if (! fileExists) {
-		[fileManager createDirectoryAtPath:[NSString stringWithFormat:@"%@/%@",[targetWeblog baseWeblogPath],URLizedCategory] attributes:nil];
+        NSError *directoryCreationError = nil;
+        NSString *pathForDirectoryToCreate = [NSString stringWithFormat:@"%@/%@",[targetWeblog baseFileDirectoryPath],URLizedCategory];
+		BOOL succeeded = [fileManager createDirectoryAtPath:pathForDirectoryToCreate
+                                withIntermediateDirectories:YES
+                                                 attributes:nil
+                                                      error:&directoryCreationError];
+        
+        if (! succeeded) {
+            NSLog(@"Error creating directory at path %@: %@",pathForDirectoryToCreate,[directoryCreationError localizedDescription]);
+        }
 	} else {
 		// there's a file with that name, not a folder
 		
@@ -45,18 +54,18 @@
 	// HERE I SAY, HERE!  OMG HERE!
 	/* ]{}[}{]{}[}{]{}[}{]{}[}{]{}[}{]{}[ */
 	
-	NSString *existingHTMLFilePath = [NSString stringWithFormat:@"%@/%@/%@.html",[targetWeblog baseWeblogPath],URLizedCategory,URLizedTitle];
+	NSString *existingHTMLFilePath = [NSString stringWithFormat:@"%@/%@/%@.html",[targetWeblog baseFileDirectoryPath],URLizedCategory,URLizedTitle];
 	BOOL entryFileExists = [fileManager fileExistsAtPath:existingHTMLFilePath];
 	if (entryFileExists) {
 		// there's already a file with that name
 		
-		NSDictionary *testPlist = [NSDictionary dictionaryWithContentsOfFile:[NSString stringWithFormat:@"%@/%@/%@.plist",[targetWeblog baseWeblogPath],URLizedCategory,URLizedTitle]];
+		NSDictionary *testPlist = [NSDictionary dictionaryWithContentsOfFile:[NSString stringWithFormat:@"%@/%@/%@.plist",[targetWeblog baseFileDirectoryPath],URLizedCategory,URLizedTitle]];
 		if (testPlist == nil) {
 			// the existing file wasn't created by TidyWeblogger, so move it and then continue
 			
 			NSError *moveError = nil;
 			
-			NSString *pathToWhichToMove = [NSString stringWithFormat:@"%@/%@/%@-backup.html",[targetWeblog baseWeblogPath],URLizedCategory,URLizedTitle];
+			NSString *pathToWhichToMove = [NSString stringWithFormat:@"%@/%@/%@-backup.html",[targetWeblog baseFileDirectoryPath],URLizedCategory,URLizedTitle];
 			BOOL moveSuccessful = [fileManager moveItemAtPath:existingHTMLFilePath
 													   toPath:pathToWhichToMove
 														error:&moveError];
@@ -96,7 +105,7 @@
 		[entryDict setValue:[[theWeblogEntry entryDeprecatedURL] absoluteString] forKey:@"entryDeprecatedURL"];
 	if (entryPublishedDate) [entryDict setValue:entryPublishedDate forKey:@"Publish Date"];
 	
-	BOOL successfulWrite = [entryDict writeToFile:[NSString stringWithFormat:@"%@/%@/%@.plist",[targetWeblog baseWeblogPath],truncatedCategory,truncatedTitle] atomically:YES];
+	BOOL successfulWrite = [entryDict writeToFile:[NSString stringWithFormat:@"%@/%@/%@.plist",[targetWeblog baseFileDirectoryPath],truncatedCategory,truncatedTitle] atomically:YES];
 	if (! successfulWrite) NSLog(@"Unsuccessful write of plist file.");
 	return successfulWrite;
 }
@@ -129,9 +138,9 @@
 										  forWeblog:targetWeblog
 									currentCategory:nil
 								  usingPageTemplate:nil
-						  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/Entry Page Template.txt",[targetWeblog templateFilesLocation]]
-							   usingSidebarTemplate:[NSString stringWithFormat:@"%@/Sidebar Template.txt",[targetWeblog templateFilesLocation]]
-											 toPath:[NSString stringWithFormat:@"%@/%@/%@.html",[targetWeblog baseWeblogPath],truncatedCategory,truncatedTitle]
+						  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/Entry Page Template.txt",[[targetWeblog templateFilesLocation] path]]
+							   usingSidebarTemplate:[NSString stringWithFormat:@"%@/Sidebar Template.txt",[[targetWeblog templateFilesLocation] path]]
+											 toPath:[NSString stringWithFormat:@"%@/%@/%@.html",[targetWeblog baseFileDirectoryPath],truncatedCategory,truncatedTitle]
 									  validatingXML:YES
 									   firstPublish:firstPublish];
 		
@@ -152,17 +161,17 @@
 										  forWeblog:targetWeblog
 									currentCategory:nil
 								  usingPageTemplate:nil
-						  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/Entry Page Template.txt",[targetWeblog templateFilesLocation]]
-							   usingSidebarTemplate:[NSString stringWithFormat:@"%@/Sidebar Template.txt",[targetWeblog templateFilesLocation]]
-											 toPath:[NSString stringWithFormat:@"%@/%@/%@.html",[targetWeblog baseWeblogPath],truncatedCategory,truncatedTitle]
+						  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/Entry Page Template.txt",[[targetWeblog templateFilesLocation] path]]
+							   usingSidebarTemplate:[NSString stringWithFormat:@"%@/Sidebar Template.txt",[[targetWeblog templateFilesLocation] path]]
+											 toPath:[NSString stringWithFormat:@"%@/%@/%@.html",[targetWeblog baseFileDirectoryPath],truncatedCategory,truncatedTitle]
 									  validatingXML:YES
 									   firstPublish:NO];
 	}
 	
 	
-	[theWeblogEntry setEntryPlistFilePath:[NSString stringWithFormat:@"%@/%@/%@.plist",[targetWeblog baseWeblogPath],truncatedCategory,truncatedTitle]];
+	[theWeblogEntry setEntryPlistFilePath:[NSString stringWithFormat:@"%@/%@/%@.plist",[targetWeblog baseFileDirectoryPath],truncatedCategory,truncatedTitle]];
 	[theWeblogEntry setEntryURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@.html",truncatedCategory,truncatedTitle]
-									   relativeToURL:[NSURL URLWithString:[targetWeblog baseWeblogURL]]]];
+									   relativeToURL:[targetWeblog baseWeblogURL]]];
 	
 	
 	// if the entry has a deprecated URL, create a dummy file to redirect the old URL to
@@ -219,7 +228,7 @@
 	
 
 	
-	NSMutableString *allMainPageEntriesString = @"";
+	NSMutableString *allMainPageEntriesString = [NSMutableString stringWithString:@""];
 	if (forEachEntryPath != nil) {
 		
 		// read the template file that contains the markup for each entry
@@ -292,8 +301,8 @@
 			
 			NSString *entryURLString = [[currentWeblogEntry entryURL] absoluteString];
 			NSString *entryDeprecatedURLString = [[currentWeblogEntry entryDeprecatedURL] absoluteString];
-			NSString *entryRelativeURLString = [[entryURLString componentsSeparatedByString:[targetWeblog baseWeblogURL]] objectAtIndex:1];
-			NSString *entryRelativeDeprecatedURLString = [[entryDeprecatedURLString componentsSeparatedByString:[targetWeblog baseWeblogURL]] objectAtIndex:1];
+			NSString *entryRelativeURLString = [[entryURLString componentsSeparatedByString:[[targetWeblog baseWeblogURL] path]] objectAtIndex:1];
+			NSString *entryRelativeDeprecatedURLString = [[entryDeprecatedURLString componentsSeparatedByString:[[targetWeblog baseWeblogURL] path]] objectAtIndex:1];
 			
 			NSString *entryPageFileName = [[entryURLString componentsSeparatedByString:@"/"] lastObject];
 			NSString *entryDeprecatedPageFileName = [[entryDeprecatedURLString componentsSeparatedByString:@"/"] lastObject];
@@ -357,16 +366,22 @@
 				olderLinkString = [NSString stringWithFormat:@"<a href=\"%@\">Older</a>",olderEntryURLString];
 			} else if ( (! firstPublish) && ([publishOrderIndex intValue] == 0) ) {
 				// the current entry is the newest entry
-				NSString *olderEntryURLString = [[publishOrderArray objectAtIndex:1] valueForKey:@"key"];
-				olderLinkString = [NSString stringWithFormat:@"<a href=\"%@\">Older</a>",olderEntryURLString];
+                if ([publishOrderArray count] > 1) {
+                    NSString *olderEntryURLString = [[publishOrderArray objectAtIndex:1] valueForKey:@"key"];
+                    olderLinkString = [NSString stringWithFormat:@"<a href=\"%@\">Older</a>",olderEntryURLString];
+                }
 			} else if (firstPublish && ([publishOrderIndex intValue] == [publishOrderArray count]) ) {
 				// the current entry is the oldest entry
-				NSString *newerEntryURLString = [[publishOrderArray objectAtIndex:(publishOrderArrayCount - 1)] valueForKey:@"key"];
-				newerLinkString = [NSString stringWithFormat:@"<a href=\"%@\">Newer</a>",newerEntryURLString];
+                if (publishOrderArrayCount > 0) {
+                    NSString *newerEntryURLString = [[publishOrderArray objectAtIndex:(publishOrderArrayCount - 1)] valueForKey:@"key"];
+                    newerLinkString = [NSString stringWithFormat:@"<a href=\"%@\">Newer</a>",newerEntryURLString];
+                }
 			} else if ( (! firstPublish) && ([publishOrderIndex intValue] == ([publishOrderArray count] - 1)) ) {
 				// the current entry is the oldest entry
-				NSString *newerEntryURLString = [[publishOrderArray objectAtIndex:(publishOrderArrayCount - 2)] valueForKey:@"key"];
-				newerLinkString = [NSString stringWithFormat:@"<a href=\"%@\">Newer</a>",newerEntryURLString];
+                if (publishOrderArrayCount > 1) {
+                    NSString *newerEntryURLString = [[publishOrderArray objectAtIndex:(publishOrderArrayCount - 2)] valueForKey:@"key"];
+                    newerLinkString = [NSString stringWithFormat:@"<a href=\"%@\">Newer</a>",newerEntryURLString];
+                }
 			} else {
 				// the current entry is neither the oldest nor the newest entry
 				
@@ -415,7 +430,7 @@
 	
 	
 	// retrieve the contents of the sidebar template and create the string for the {[SIDEBAR]} entity
-	NSMutableString *sidebarTemplateString = @"";
+	NSMutableString *sidebarTemplateString = [NSMutableString stringWithString:@""];
 	if (sidebarPath != nil) {
 		NSError *sidebarTemplateError = nil;
 		sidebarTemplateString = [NSMutableString stringWithContentsOfFile:sidebarPath encoding:NSUTF8StringEncoding error:&sidebarTemplateError];
@@ -435,7 +450,7 @@
 	[mainPageTemplateString replaceOccurrencesOfString:@"{[FEEDGENERATOR]}" withString:@"TidyWeblogger beta" options:NSLiteralSearch range:NSMakeRange(0,[mainPageTemplateString length])];
 	[mainPageTemplateString replaceOccurrencesOfString:@"{[WEBLOGTITLE]}" withString:[targetWeblog weblogTitle] options:NSLiteralSearch range:NSMakeRange(0,[mainPageTemplateString length])];
 	[mainPageTemplateString replaceOccurrencesOfString:@"{[URLIZEDWEBLOGTITLE]}" withString:[[targetWeblog weblogTitle] URLizedString] options:NSLiteralSearch range:NSMakeRange(0,[mainPageTemplateString length])];
-	[mainPageTemplateString replaceOccurrencesOfString:@"{[BASEWEBLOGURL]}" withString:[targetWeblog baseWeblogURL] options:NSLiteralSearch range:NSMakeRange(0,[mainPageTemplateString length])];
+	[mainPageTemplateString replaceOccurrencesOfString:@"{[BASEWEBLOGURL]}" withString:[[targetWeblog baseWeblogURL] path] options:NSLiteralSearch range:NSMakeRange(0,[mainPageTemplateString length])];
 	[mainPageTemplateString replaceOccurrencesOfString:@"{[WEBLOGURL]}" withString:[NSString stringWithFormat:@"%@index.html",[targetWeblog baseWeblogURL]] options:NSLiteralSearch range:NSMakeRange(0,[mainPageTemplateString length])];
 	[mainPageTemplateString replaceOccurrencesOfString:@"{[WEBLOGDESCRIPTION]}" withString:@"Tech and computer-related ramblings and tidbits" options:NSLiteralSearch range:NSMakeRange(0,[mainPageTemplateString length])];
 	[mainPageTemplateString replaceOccurrencesOfString:@"{[AUTHOREMAIL]}" withString:@"simX_other@mac.com" options:NSLiteralSearch range:NSMakeRange(0,[mainPageTemplateString length])];
@@ -496,7 +511,7 @@
 											[[categoryStats objectForKey:@"Total Count"] intValue]]
 	 ];
 	
-	BOOL writeSuccess = [categoryStatsString writeToFile:[[targetWeblog baseWeblogPath] stringByAppendingPathComponent:@"categoryStats.js"]
+	BOOL writeSuccess = [categoryStatsString writeToFile:[[[targetWeblog baseFileDirectoryPath] path] stringByAppendingPathComponent:@"categoryStats.js"]
 											  atomically:YES
 												encoding:NSUTF8StringEncoding error:nil];
 	return writeSuccess;
@@ -508,30 +523,30 @@
 	[self writeFileForArrayOfWeblogEntryObjects:arrayOfEntryObjects
 									  forWeblog:targetWeblog
 								currentCategory:nil
-							  usingPageTemplate:[NSString stringWithFormat:@"%@/Main Page Template.txt",[targetWeblog templateFilesLocation]]
-					  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/Main Page For Each Entry.txt",[targetWeblog templateFilesLocation]]
-						   usingSidebarTemplate:[NSString stringWithFormat:@"%@/Sidebar Template.txt",[targetWeblog templateFilesLocation]]
-										 toPath:[[NSString stringWithFormat:@"%@/index.html",[targetWeblog baseWeblogPath]] stringByExpandingTildeInPath]
+							  usingPageTemplate:[NSString stringWithFormat:@"%@/Main Page Template.txt",[[targetWeblog templateFilesLocation] path]]
+					  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/Main Page For Each Entry.txt",[[targetWeblog templateFilesLocation] path]]
+						   usingSidebarTemplate:[NSString stringWithFormat:@"%@/Sidebar Template.txt",[[targetWeblog templateFilesLocation] path]]
+										 toPath:[[NSString stringWithFormat:@"%@/index.html",[targetWeblog baseFileDirectoryPath]] stringByExpandingTildeInPath]
 								  validatingXML:YES
 								   firstPublish:NO];
 	
 	[self writeFileForArrayOfWeblogEntryObjects:arrayOfEntryObjects
 									  forWeblog:targetWeblog
 								currentCategory:nil
-							  usingPageTemplate:[NSString stringWithFormat:@"%@/RSS Page Template.txt",[targetWeblog templateFilesLocation]]
-					  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/RSS Page For Each Entry.txt",[targetWeblog templateFilesLocation]]
-						   usingSidebarTemplate:[NSString stringWithFormat:@"%@/Sidebar Template.txt",[targetWeblog templateFilesLocation]]
-										 toPath:[[NSString stringWithFormat:@"%@/rss.xml",[targetWeblog baseWeblogPath]] stringByExpandingTildeInPath]
+							  usingPageTemplate:[NSString stringWithFormat:@"%@/RSS Page Template.txt",[[targetWeblog templateFilesLocation] path]]
+					  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/RSS Page For Each Entry.txt",[[targetWeblog templateFilesLocation] path]]
+						   usingSidebarTemplate:[NSString stringWithFormat:@"%@/Sidebar Template.txt",[[targetWeblog templateFilesLocation] path]]
+										 toPath:[[NSString stringWithFormat:@"%@/rss.xml",[targetWeblog baseFileDirectoryPath]] stringByExpandingTildeInPath]
 								  validatingXML:NO
 								   firstPublish:NO];
 	
 	[self writeFileForArrayOfWeblogEntryObjects:arrayOfEntryObjects
 									  forWeblog:targetWeblog
 								currentCategory:nil
-							  usingPageTemplate:[NSString stringWithFormat:@"%@/RecentEntries JS Template.txt",[targetWeblog templateFilesLocation]]
-					  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/RecentEntries JS For Each Entry.txt",[targetWeblog templateFilesLocation]]
+							  usingPageTemplate:[NSString stringWithFormat:@"%@/RecentEntries JS Template.txt",[[targetWeblog templateFilesLocation] path]]
+					  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/RecentEntries JS For Each Entry.txt",[[targetWeblog templateFilesLocation] path]]
 						   usingSidebarTemplate:nil
-										 toPath:[[NSString stringWithFormat:@"%@/RecentEntries.js",[targetWeblog baseWeblogPath]] stringByExpandingTildeInPath]
+										 toPath:[[NSString stringWithFormat:@"%@/RecentEntries.js",[targetWeblog baseFileDirectoryPath]] stringByExpandingTildeInPath]
 								  validatingXML:NO
 								   firstPublish:NO];
 }
@@ -543,10 +558,10 @@
 	[self writeFileForArrayOfWeblogEntryObjects:arrayOfEntryObjects
 									  forWeblog:targetWeblog
 								currentCategory:categoryID
-							  usingPageTemplate:[NSString stringWithFormat:@"%@/Category Page Template.txt",[targetWeblog templateFilesLocation]]
-					  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/Category Page For Each Entry.txt",[targetWeblog templateFilesLocation]]
-						   usingSidebarTemplate:[NSString stringWithFormat:@"%@/Sidebar Template.txt",[targetWeblog templateFilesLocation]]
-										 toPath:[[NSString stringWithFormat:@"%@/%@/index.html",[targetWeblog baseWeblogPath],categoryID] stringByExpandingTildeInPath]
+							  usingPageTemplate:[NSString stringWithFormat:@"%@/Category Page Template.txt",[[targetWeblog templateFilesLocation] path]]
+					  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/Category Page For Each Entry.txt",[[targetWeblog templateFilesLocation] path]]
+						   usingSidebarTemplate:[NSString stringWithFormat:@"%@/Sidebar Template.txt",[[targetWeblog templateFilesLocation] path]]
+										 toPath:[[NSString stringWithFormat:@"%@/%@/index.html",[targetWeblog baseFileDirectoryPath],categoryID] stringByExpandingTildeInPath]
 								  validatingXML:YES
 								   firstPublish:NO];
 }
@@ -557,10 +572,10 @@
 	[self writeFileForArrayOfWeblogEntryObjects:arrayOfEntryObjects
 									  forWeblog:targetWeblog
 								currentCategory:nil
-							  usingPageTemplate:[NSString stringWithFormat:@"%@/Archive Page Template.txt",[targetWeblog templateFilesLocation]]
-					  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/Archive Page For Each Entry.txt",[targetWeblog templateFilesLocation]]
-						   usingSidebarTemplate:[NSString stringWithFormat:@"%@/Sidebar Template.txt",[targetWeblog templateFilesLocation]]
-										 toPath:[[NSString stringWithFormat:@"%@/archive.html",[targetWeblog baseWeblogPath]] stringByExpandingTildeInPath]
+							  usingPageTemplate:[NSString stringWithFormat:@"%@/Archive Page Template.txt",[[targetWeblog templateFilesLocation] path]]
+					  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/Archive Page For Each Entry.txt",[[targetWeblog templateFilesLocation] path]]
+						   usingSidebarTemplate:[NSString stringWithFormat:@"%@/Sidebar Template.txt",[[targetWeblog templateFilesLocation] path]]
+										 toPath:[[NSString stringWithFormat:@"%@/archive.html",[targetWeblog baseFileDirectoryPath]] stringByExpandingTildeInPath]
 								  validatingXML:YES
 								   firstPublish:NO];
 }
@@ -575,8 +590,8 @@
 	BOOL keepSearchingForHTMLSourceLiterals;
 	NSScanner *scanner = [[NSScanner alloc] initWithString:rawWebViewHTML];
 	[scanner scanUpToString:@"<htmlsource>" intoString:nil];
-	unsigned startLoc = [scanner scanLocation];
-	unsigned endLoc;
+	NSUInteger startLoc = [scanner scanLocation];
+	NSUInteger endLoc = 0;
 	keepSearchingForHTMLSourceLiterals = [scanner scanString:@"<htmlsource>" intoString:nil];
 	
 	while (keepSearchingForHTMLSourceLiterals) {
@@ -595,7 +610,7 @@
 		[tempString replaceOccurrencesOfString:@">" withString:@">" options:NSLiteralSearch range:NSMakeRange(0,[tempString length])];
 		
 		
-		NSLog(@"%d for %d of %d",startLoc, endLoc-startLoc, [rawWebViewHTML length]);
+		NSLog(@"%lu for %lu of %lu",(long)startLoc, (long)(endLoc-startLoc), [rawWebViewHTML length]);
 		[rawWebViewHTML replaceCharactersInRange:NSMakeRange(startLoc,endLoc-startLoc) withString:tempString];
 		
 		[scanner release];

@@ -43,12 +43,12 @@
 	return weblogEntry;
 }
 
-- (NSMutableDictionary *)weblogEntryPrototype;
+- (NSObject *)weblogEntryPrototype;
 {
 	return weblogEntryPrototype;
 }
 
-- (void)setWeblogEntryPrototype:(NSDictionary *)newWeblogEntryPrototype;
+- (void)setWeblogEntryPrototype:(NSObject *)newWeblogEntryPrototype;
 {
 	if (weblogEntryPrototype != newWeblogEntryPrototype) {
 		[weblogEntryPrototype autorelease];
@@ -188,7 +188,7 @@
 	
 
 	//[titleTextField setStringValue:[weblogEntry entryTitle]];
-	[summaryTextView setString:[weblogEntry entryAbstract]];
+	if ([weblogEntry entryAbstract]) [summaryTextView setString:[weblogEntry entryAbstract]];
 	[markdownBodyTextView setAlignment:NSNaturalTextAlignment];
 	//[categoryPopUpButton selectItemWithTitle:[[weblog categoryDictionary] objectForKey:[weblogEntry entryCategoryID]]];
 }

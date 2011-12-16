@@ -64,6 +64,9 @@
 		NSString *newWeblogName = [weblogNameTextField stringValue];
 		NSString *newWeblogEntriesPlistFileLocation = [entriesPlistFileLocationField stringValue];
 		NSString *newWeblogTemplateFilesLocation = [templateFilesLocationField stringValue];
+        
+        NSString *baseWeblogURL = [NSURL URLWithString:[baseWeblogURLTextField stringValue]];
+        NSString *baseWebDirectoryPath = [NSURL fileURLWithPath:[baseWebDirectoryPathField stringValue]];
 		
 		NSMutableDictionary *categoryDictionary = [[NSMutableDictionary alloc] init];
 		NSDictionary *currentCategoryItem = nil;
@@ -73,9 +76,12 @@
 		}
 		
 		NSMutableDictionary *newWeblogPrototype = [[NSMutableDictionary alloc] initWithObjectsAndKeys:newWeblogName,@"weblogTitle",
-																									  newWeblogEntriesPlistFileLocation,@"masterEntriesPlistFileLocation",
+																									  [newWeblogEntriesPlistFileLocation stringByExpandingTildeInPath],@"masterEntriesPlistFileLocation",
 																									  categoryDictionary,@"categoryDictionary",
-																									  newWeblogTemplateFilesLocation,@"templateFilesLocation",nil];
+																									  [newWeblogTemplateFilesLocation stringByExpandingTildeInPath],@"templateFilesLocation",
+                                                   baseWeblogURL,@"baseWeblogURL",
+                                                   baseWebDirectoryPath,@"baseWebDirectoryPath",
+                                                   nil];
 		
 		[entriesManagerInstance importWeblog:newWeblogPrototype];
 		[entriesManagerInstance saveNewWeblogToUserDefaults:newWeblogPrototype];

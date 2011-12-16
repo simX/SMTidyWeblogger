@@ -16,7 +16,7 @@
 @interface EPEntryEditorController : NSWindowController {
 	EPWeblogEntry *weblogEntry;
 	EPWeblog *weblog;
-	NSMutableDictionary *weblogEntryPrototype;
+	NSObject *weblogEntryPrototype;
 	EPHTMLGenerator *HTMLGeneratorInstance;
 	EPEntriesManager *entriesManagerInstance;
 	
@@ -46,8 +46,8 @@
 - (NSString *)entryCategoryID;
 - (void)setEntryCategoryID:(NSString *)newEntryCategoryID;
 
-- (NSMutableDictionary *)weblogEntryPrototype;
-- (void)setWeblogEntryPrototype:(NSDictionary *)newWeblogEntryPrototype;
+- (NSObject *)weblogEntryPrototype;
+- (void)setWeblogEntryPrototype:(NSObject *)newWeblogEntryPrototype;
 
 - (EPWeblog *)weblog;
 - (void)setWeblog:(EPWeblog *)theNewWeblog;

@@ -283,7 +283,15 @@
 				return;
 			}
 		} else {
-			[defaultManager createDirectoryAtPath:currentString attributes:nil];
+            NSError *createError = nil;
+            BOOL succeeded = [defaultManager createDirectoryAtPath:currentString
+                                       withIntermediateDirectories:YES
+                                                        attributes:nil
+                                                             error:nil];
+            
+            if (! succeeded) {
+                NSLog(@"Error creating directory at path %@: %@",currentString,[createError localizedDescription]);
+            }
 		}
 	}
 	

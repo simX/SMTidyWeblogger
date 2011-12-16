@@ -51,10 +51,13 @@
 
 - (void)importWeblog:(NSDictionary *)weblogPrototype;
 {
-	NSString *masterEntriesPlistFileLocation = [weblogPrototype objectForKey:@"masterEntriesPlistFileLocation"];
-	NSString *templateFilesLocation = [weblogPrototype objectForKey:@"templateFilesLocation"];
+	NSString *masterEntriesPlistFileLocation = [[weblogPrototype objectForKey:@"masterEntriesPlistFileLocation"] stringByExpandingTildeInPath];
+	NSString *templateFilesLocation = [[weblogPrototype objectForKey:@"templateFilesLocation"] stringByExpandingTildeInPath];
 	NSDictionary *categoryDictionaryOfWeblogToImport = [weblogPrototype objectForKey:@"categoryDictionary"];
 	NSString *titleOfWeblogToImport = [weblogPrototype objectForKey:@"weblogTitle"];
+    
+    NSURL *baseWeblogURL = [weblogPrototype objectForKey:@"baseWeblogURL"];
+    NSURL *baseWebDirectoryPath = [weblogPrototype objectForKey:@"baseWebDirectoryPath"];
 
 	// load the entries dictionary
 
@@ -135,9 +138,35 @@
 						   @"Unfiled",@"unfiled",nil];*/
 	
 	EPWeblog *importedWeblog = [[EPWeblog alloc] init];
-	[importedWeblog setPathToEntriesDictionary:masterEntriesPlistFileLocation];
-	[importedWeblog setTemplateFilesLocation:templateFilesLocation];
+    NSURL *pathEntriesDictURL = [NSURL fileURLWithPath:[masterEntriesPlistFileLocation stringByExpandingTildeInPath]];
+	[importedWeblog setPathToEntriesDictionary:pathEntriesDictURL];
+	[importedWeblog setTemplateFilesLocation:[NSURL fileURLWithPath:[templateFilesLocation stringByExpandingTildeInPath]]];
 	[importedWeblog setWeblogTitle:titleOfWeblogToImport];
+    
+    if (baseWebDirectoryPath) {
+        [importedWeblog setBaseFileDirectoryPath:baseWebDirectoryPath];
+    } else {
+        NSURL *assumedBaseWeblogURL = [pathEntriesDictURL URLByDeletingLastPathComponent];
+        [importedWeblog setBaseFileDirectoryPath:assumedBaseWeblogURL];
+    }
+    
+    if (baseWeblogURL) {
+        [importedWeblog setBaseWeblogURL:baseWeblogURL];
+    } else {
+        // check if it's an iDisk weblog
+        NSArray *iDiskPathArray = [[[importedWeblog baseFileDirectoryPath] path] componentsSeparatedByString:@"/Volumes/simx/Sites/"];
+        
+        if ([iDiskPathArray count] > 1) {
+            NSString *URLString = [NSString stringWithFormat:@"http://homepage.mac.com/simx/%@/",[iDiskPathArray objectAtIndex:1]];
+            NSURL *theURL = [NSURL URLWithString:URLString];
+            [importedWeblog setBaseWeblogURL:theURL];
+        } else {
+            [importedWeblog setBaseWeblogURL:[NSURL URLWithString:@"http://127.0.0.1/"]];
+        }
+    }
+    
+
+    
 	
 	// this whole block is so that we can add a pointer back to the weblog that owns
 	// each entry; unfortunately, it doesn't seem like there's any other way to do this
@@ -219,7 +248,14 @@
 		// not cool, not cool;
 		// a file with the same name exists where our folder should be
 	} else if (! exists) {
-		[defaultManager createDirectoryAtPath:applicationSupportFolderPath attributes:nil];
+        NSError *createError = nil;
+		BOOL succeeded = [defaultManager createDirectoryAtPath:applicationSupportFolderPath
+                                   withIntermediateDirectories:YES
+                                                    attributes:nil
+                                                         error:&createError];
+        if (! succeeded) {
+            NSLog(@"Error creating directory at path %@: %@",applicationSupportFolderPath,[createError localizedDescription]);
+        }
 	} else {
 		// this case shouldn't ever happen
 		NSBeep();
@@ -231,24 +267,17 @@
 	NSOpenPanel *importEntriesOpenPanel = [NSOpenPanel openPanel];
 	[importEntriesOpenPanel setAllowsMultipleSelection:YES];
 	[importEntriesOpenPanel setCanChooseDirectories:YES];
-	[importEntriesOpenPanel beginSheetForDirectory:nil
-											   file:nil
-											  types:[NSArray arrayWithObjects:@"plist",@"html",nil]
-									 modalForWindow:listOfEntriesWindow
-									  modalDelegate:self
-									 didEndSelector:@selector(importOpenPanelDidEnd:returnCode:contextInfo:)
-										contextInfo:nil];
-}
-
-- (void)importOpenPanelDidEnd:(NSOpenPanel *)importPanel returnCode:(int)returnCode contextInfo:(void  *)contextInfo;
-{	
-	if (returnCode == NSOKButton) {
-		NSArray *pathToFilesToImport = [importPanel filenames];
-		[self scanFilesAndCreateWeblogEntryObjects:pathToFilesToImport
-										 forWeblog:[[weblogsController selectedObjects] objectAtIndex:0]
-									 rootDirectory:@"/"
-							   traverseDirectories:YES];
-	}
+    [importEntriesOpenPanel setAllowedFileTypes:[NSArray arrayWithObjects:@"plist",@"html",nil]];
+	[importEntriesOpenPanel beginSheetModalForWindow:listOfEntriesWindow
+                                   completionHandler:^(NSInteger returnCode){
+                                       if (returnCode == NSOKButton) {
+                                           NSArray *pathToFilesToImport = [importEntriesOpenPanel URLs];
+                                           [self scanFilesAndCreateWeblogEntryObjects:pathToFilesToImport
+                                                                            forWeblog:[[weblogsController selectedObjects] objectAtIndex:0]
+                                                                        rootDirectory:@"/"
+                                                                  traverseDirectories:YES];
+                                       }
+                                   }];
 }
 
 - (void)scanFilesAndCreateWeblogEntryObjects:(NSArray *)pathToFilesToImport
@@ -260,10 +289,10 @@
 	[self updateStatusWithString:@"Commencing import..."];
 	
 	NSEnumerator *fileSystemItemsEnumerator = [pathToFilesToImport objectEnumerator];
-	NSString *nextFileSystemObject;
+	NSURL *nextFileSystemObject;
 	
 	while (nextFileSystemObject = [fileSystemItemsEnumerator nextObject]) {
-		NSString *nextFileSystemItem = [rootDirectory stringByAppendingPathComponent:nextFileSystemObject];
+		NSString *nextFileSystemItem = [nextFileSystemObject path];
 		NSString *statusString = [NSString stringWithFormat:@"Attempting to import %@",nextFileSystemItem];
 		[self updateStatusWithString:statusString];
 		
@@ -319,7 +348,7 @@
 																			 forWeblog:targetWeblog
 																		 shouldPublish:NO];
 					
-					id newObject = [realEntriesController newObject];
+					NSObject *newObject = [realEntriesController newObject];
 					
 					NSMutableDictionary *importedEntryPrototype = [[NSMutableDictionary alloc] init];
 					[importedEntryPrototype setObject:[importedEntry entryTitle] forKey:@"entryTitle"];
@@ -427,7 +456,8 @@
 												   shortMonthNameArray,@"NSShortMonthNameArray",
 												   shortWeekDayNameArray,@"NSShortWeekDayNameArray",
 												   weekDayNameArray,@"NSWeekDayNameArray",
-												   AMPMDesignationArray,@"NSAMPMDesignation"];
+												   AMPMDesignationArray,@"NSAMPMDesignation",
+         nil];
 	
 	NSCalendarDate *theDate = (NSCalendarDate *)[NSDate dateWithNaturalLanguageString:[calendarDateString substringFromIndex:6]
 													     locale:italianDictionaryRepresentation];
@@ -520,7 +550,7 @@
 	}
 	
 	NSString *entryCategoryID = nil;
-	NSString *pathRelativeToBaseWeblogPath = [[pathToFileToImport componentsSeparatedByString:[targetWeblog baseWeblogPath]] objectAtIndex:1];
+	NSString *pathRelativeToBaseWeblogPath = [[pathToFileToImport componentsSeparatedByString:[[targetWeblog baseFileDirectoryPath] path]] objectAtIndex:1];
 	entryCategoryID = [[pathRelativeToBaseWeblogPath pathComponents] objectAtIndex:1];
 	
 	if ([pathToFileToImport hasPrefix:@"/Volumes/simx/Sites/technonova/"] ||
@@ -594,7 +624,7 @@
 	NSString *truncatedCategory = [entryCategoryID URLizedStringWithLengthLimit:20];
 	
 	NSString *relativeURLString = [NSString stringWithFormat:@"%@/%@.html",truncatedCategory,truncatedTitle];
-	NSURL *baseWeblogURL = [NSURL URLWithString:[targetWeblog baseWeblogURL]];
+	NSURL *baseWeblogURL = [NSURL URLWithString:[[targetWeblog baseWeblogURL] path]];
 	NSURL *importedEntryURL = [NSURL URLWithString:relativeURLString relativeToURL:baseWeblogURL];
 	[importedEntry setEntryURL:importedEntryURL];
 	
@@ -603,7 +633,7 @@
 	return importedEntry;
 }
 
-- (EPWeblogEntry *)partialWeblogEntryFromPrototype:(id)entryControllerKeyValuePair;
+- (EPWeblogEntry *)partialWeblogEntryFromPrototype:(NSObject *)entryControllerKeyValuePair;
 {
 	NSString *theKey = [entryControllerKeyValuePair key];
 	NSDictionary *theValue = [entryControllerKeyValuePair value];
@@ -675,11 +705,11 @@
 			NSString *truncatedTitle = [entryTitle URLizedStringWithLengthLimit:40];
 			NSString *truncatedCategory = [categoryID URLizedStringWithLengthLimit:20];
 			relativeURLString = [NSString stringWithFormat:@"%@/%@.html",truncatedCategory,truncatedTitle];
-			baseURLString = [targetWeblog baseWeblogURL];
+			baseURLString = [[targetWeblog baseWeblogURL] path];
 		} else {
 			// problems can happen here if the URL is not as expected; this should be robust-ized
-			relativeURLString = [[URLString componentsSeparatedByString:[targetWeblog baseWeblogURL]] objectAtIndex:1];
-			baseURLString = [targetWeblog baseWeblogURL];
+			relativeURLString = [[URLString componentsSeparatedByString:[[targetWeblog baseWeblogURL] path]] objectAtIndex:1];
+			baseURLString = [[targetWeblog baseWeblogURL] path];
 		}
 		[existingEntry setEntryURL:[NSURL URLWithString:relativeURLString relativeToURL:[NSURL URLWithString:baseURLString]]];
 		
@@ -806,9 +836,8 @@
 	
 	EPWeblog *selectedWeblog = [[weblogsController selectedObjects] objectAtIndex:0];
 	NSArray *entryPrototypesArray = [realEntriesController arrangedObjects];
-	id currentEntryPrototype = nil;
 	
-	for (currentEntryPrototype in entryPrototypesArray) {
+	for (NSObject *currentEntryPrototype in entryPrototypesArray) {
 		NSString *currentEntryPath = [[currentEntryPrototype value] objectForKey:@"entryPlistFilePath"];
 		
 		[self updateStatusWithString:[NSString stringWithFormat:@"Publishing entry page for path: %@",currentEntryPath]];
@@ -882,7 +911,7 @@
 	[self updateStatusWithString:@"Sorting through your rambling entries..."];
 	
 	NSEnumerator *enumerator = [sortedEntriesArray objectEnumerator];
-	id currentWeblogEntryPrototypeKeyValuePair = nil;
+	NSObject *currentWeblogEntryPrototypeKeyValuePair = nil;
 	while (currentWeblogEntryPrototypeKeyValuePair = [enumerator nextObject]) {
 		
         NSDictionary *currentWeblogEntryPrototype = (NSDictionary *)[currentWeblogEntryPrototypeKeyValuePair value];
@@ -1057,7 +1086,7 @@
 	// if the user decides to save the entry; otherwise, we'd have to call back
 	// to the entriesManager from the editor window to get the controller and 
 	// create a new object
-	id newObject = [realEntriesController newObject];
+	NSObject *newObject = [realEntriesController newObject];
 	//NSLog(@"%@",[newObject blahQuestion]);
 	
 	NSMutableDictionary *newEntryPrototype = [[NSMutableDictionary alloc] init];
@@ -1076,7 +1105,7 @@
 	
 	
 	EPEntryEditorController *entryEditorControllerInstance = [[EPEntryEditorController alloc] init];
-	[entryEditorControllerInstance setWeblogEntryPrototype:newObject];
+	[entryEditorControllerInstance setWeblogEntryPrototype:(NSDictionary *)newObject];
 	[entryEditorControllerInstance setWeblog:targetWeblog];
 	[entryEditorControllerInstance setWeblogEntryObject:newEntry usingMarkdown:shouldUseMarkdown];
 	[entryEditorControllerInstance setHTMLGeneratorObject:HTMLGeneratorInstance];
@@ -1089,7 +1118,7 @@
 
 /*- (void)addWeblogEntryObject:(EPWeblogEntry *)theWeblogEntry deferFileWrite:(BOOL)shouldDeferWrite;
 {	
-	/*[entries setObject:[NSDictionary dictionaryWithObjectsAndKeys:[theWeblogEntry entryTitle],@"entryTitle",
+	[entries setObject:[NSDictionary dictionaryWithObjectsAndKeys:[theWeblogEntry entryTitle],@"entryTitle",
 		[theWeblogEntry entryCategoryID],@"entryCategoryID",
 		[theWeblogEntry entryPlistFilePath],@"entryPlistFilePath",
 		[theWeblogEntry entryPublishedDateStringShort],@"entryPublishedDateString",nil] forKey:[[theWeblogEntry entryURL] absoluteString]];
@@ -1097,9 +1126,9 @@
 	if (! shouldDeferWrite)	[self writeListOfEntriesToDisk];
 }*/
 
-int dateCompare(id object1, id object2, void *context)
+NSInteger dateCompare(NSObject *object1, NSObject *object2, void *context)
 {
-	int returnValue = NSOrderedSame;
+	NSInteger returnValue = NSOrderedSame;
 	
 	NSString *firstEntryDateString = [[object1 value] objectForKey:@"entryPublishedDateString"];
 	NSString *secondEntryDateString = [[object2 value] objectForKey:@"entryPublishedDateString"];
@@ -1121,9 +1150,9 @@ int dateCompare(id object1, id object2, void *context)
     return returnValue;
 }
 
-int dateCompareDescending(id object1, id object2, void *context)
+NSInteger dateCompareDescending(id object1, id object2, void *context)
 {
-	int result = dateCompare(object1, object2, NULL);
+	NSInteger result = dateCompare(object1, object2, NULL);
 	
 	if (result == NSOrderedSame) {
 		/*if (context == @"secondary_done") {

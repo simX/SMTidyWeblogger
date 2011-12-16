@@ -80,7 +80,6 @@
 //- (void)refreshListOfEntries;
 - (IBAction)openWeblogEntry:(id)sender;
 - (IBAction)importWeblogEntry:(id)sender;
-- (void)importOpenPanelDidEnd:(NSOpenPanel *)importPanel returnCode:(int)returnCode contextInfo:(void  *)contextInfo;
 - (void)scanFilesAndCreateWeblogEntryObjects:(NSArray *)pathToFilesToImport
 								   forWeblog:(EPWeblog *)targetWeblog
 							   rootDirectory:(NSString *)rootDirectory
@@ -93,9 +92,9 @@
 //- (void)addWeblogEntryObject:(EPWeblogEntry *)theWeblogEntry deferFileWrite:(BOOL)shouldDeferWrite;
 //- (void)writeListOfEntriesToDisk;
 
-int dateCompare(id object1, id object2, void *context);
-int dateCompareDescending(id object1, id object2, void *context);
-int dateCompareAscending(id object1, id object2, void *context);
+NSInteger dateCompare(id object1, id object2, void *context);
+NSInteger dateCompareDescending(id object1, id object2, void *context);
+//NSInteger dateCompareAscending(id object1, id object2, void *context);
 /*int entryTitleCompareDescending(id object1, id object2, void *context);
 int entryTitleCompareAscending(id object1, id object2, void *context);
 int entryCategoryCompareDescending(id object1, id object2, void *context);

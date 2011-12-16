@@ -15,6 +15,9 @@
 	IBOutlet NSTextField *entriesPlistFileLocationField;
 	IBOutlet NSTextField *templateFilesLocationField;
 	IBOutlet NSTableView *categoriesTableView;
+    
+    IBOutlet NSTextField *baseWeblogURLTextField;
+    IBOutlet NSTextField *baseWebDirectoryPathField;
 	
 	NSMutableArray *weblogCategories;
 	EPEntriesManager *entriesManagerInstance;

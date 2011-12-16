@@ -17,8 +17,8 @@
 }
 
 //@property(retain) EPMutableDictionary *value;
-@property(retain) NSString *key;
-@property(retain) NSString *localizedKey;
+@property(strong) NSString *key;
+@property(strong) NSString *localizedKey;
 
 - (EPMutableDictionary *)value;
 - (void)setValue:(NSDictionary *)newValue;

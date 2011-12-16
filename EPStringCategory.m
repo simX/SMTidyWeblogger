@@ -72,7 +72,6 @@
 	} else {
 		truncatedString = ASCIIString;
 	}
-	[ASCIIString autorelease];
 	
 	return truncatedString;
 }

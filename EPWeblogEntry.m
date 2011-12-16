@@ -34,18 +34,6 @@
 	return self;
 }
 
-- (void)dealloc;
-{
-	[entryTitle release];
-	[entryBodyHTML release];
-	[entryAbstract release];
-	[entryURL release];
-	[entryPlistFilePath release];
-	[entryCategoryID release];
-	[entryPublishedDate release];
-	
-	[super dealloc];
-}
 
 - (NSString *)description
 {
@@ -59,8 +47,6 @@
 
 - (void)setEntryTitle:(NSString *)newTitle;
 {
-	[newTitle retain];
-	[entryTitle release];
 	entryTitle = newTitle;
 }
 
@@ -72,8 +58,6 @@
 
 - (void)setEntryBodyHTML:(NSString *)newEntryBodyHTML;
 {
-	[newEntryBodyHTML retain];
-	[entryBodyHTML release];
 	entryBodyHTML = newEntryBodyHTML;
 }
 
@@ -85,8 +69,6 @@
 
 - (void)setEntryUneditedWebViewHTML:(NSString *)newEntryUneditedWebViewHTML;
 {
-	[newEntryUneditedWebViewHTML retain];
-	[entryUneditedWebViewHTML release];
 	entryUneditedWebViewHTML = newEntryUneditedWebViewHTML;
 }
 
@@ -97,8 +79,6 @@
 
 - (void)setEntryMarkdownText:(NSString *)newMarkdownText;
 {
-	[newMarkdownText retain];
-	[entryMarkdownText release];
 	entryMarkdownText = newMarkdownText;
 }
 
@@ -110,8 +90,6 @@
 
 - (void)setEntryAbstract:(NSString *)newEntryAbstract;
 {
-	[newEntryAbstract retain];
-	[entryAbstract release];
 	entryAbstract = newEntryAbstract;
 }
 
@@ -123,8 +101,6 @@
 
 - (void)setEntryURL:(NSURL *)newEntryURL;
 {
-	[newEntryURL retain];
-	[entryURL release];
 	entryURL = newEntryURL;
 }
 
@@ -136,8 +112,6 @@
 
 - (void)setEntryDeprecatedURL:(NSURL *)newEntryDeprecatedURL;
 {
-	[newEntryDeprecatedURL retain];
-	[entryDeprecatedURL release];
 	entryDeprecatedURL = newEntryDeprecatedURL;
 }
 
@@ -149,8 +123,6 @@
 
 - (void)setEntryPlistFilePath:(NSString *)newEntryPlistFilePath;
 {
-	[newEntryPlistFilePath retain];
-	[entryPlistFilePath release];
 	entryPlistFilePath = newEntryPlistFilePath;
 }
 
@@ -164,8 +136,6 @@
 - (void)setEntryCategoryID:(NSString *)newEntryCategoryID;
 {
 	//NSLog(@"EPWeblogEntry is setting an entryCategoryID: %@",newEntryCategoryID);
-	[newEntryCategoryID retain];
-	[entryCategoryID release];
 	entryCategoryID = newEntryCategoryID;
 }
 
@@ -193,8 +163,6 @@
 - (void)setEntryPublishedDateString:(NSString *)newEntryPublishedDateString;
 {
 	// set the string object first
-	[newEntryPublishedDateString retain];
-	[entryPublishedDateString release];
 	entryPublishedDateString = newEntryPublishedDateString;
 	
 	// now set the date object
@@ -202,8 +170,6 @@
 	if (entryPublishedDateString != nil) {
 		newEntryPublishedDate = [NSCalendarDate dateWithString:entryPublishedDateString calendarFormat:@"%Y-%m-%d; %H:%M:%S" locale:[[NSUserDefaults standardUserDefaults] dictionaryRepresentation]];
 	}
-	[newEntryPublishedDate retain];
-	[entryPublishedDate release];
 	entryPublishedDate = newEntryPublishedDate;
 }
 
@@ -217,8 +183,6 @@
 {
 	// set the NSCalendarDate object first
 	NSCalendarDate *newEntryPublishedCalendarDate = (NSCalendarDate *)newEntryPublishedDate;
-	[newEntryPublishedCalendarDate retain];
-	[entryPublishedDate release];
 	entryPublishedDate = newEntryPublishedCalendarDate;
 	
 	// now set the entryPublishedDate object, too
@@ -228,8 +192,6 @@
 	} else {
 		newEntryPublishedDateString = [entryPublishedDate descriptionWithCalendarFormat:@"%Y-%m-%d; %H:%M:%S" locale:[[NSUserDefaults standardUserDefaults] dictionaryRepresentation]];
 	}
-	[newEntryPublishedDateString retain];
-	[entryPublishedDateString release];
 	entryPublishedDateString = newEntryPublishedDateString;
 }
 

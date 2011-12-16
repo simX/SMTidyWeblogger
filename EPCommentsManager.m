@@ -3,7 +3,7 @@
 //  .mac Comments Manager
 //  Created by Simone Manganelli on 2006-09-03.
 //
-//  Copyright Â© 2006 Simone Manganelli.
+//  Copyright © 2006 Simone Manganelli.
 //
 //  Permission is hereby granted, free of charge, to any person
 //  obtaining a copy of this software and associated documentation
@@ -101,17 +101,17 @@
 		NSDictionary *result;
 		
 		// create the xml-rpc call
-		theRPCCall = WSMethodInvocationCreate((CFURLRef) theRPCAppURL, (CFStringRef) methodName, kWSXMLRPCProtocol);
+		theRPCCall = WSMethodInvocationCreate((__bridge CFURLRef) theRPCAppURL, (__bridge CFStringRef) methodName, kWSXMLRPCProtocol);
 		
 		// set the parameters for the xml-prc call
-		WSMethodInvocationSetParameters(theRPCCall, (CFDictionaryRef) parameters, (CFArrayRef) [NSArray arrayWithObjects:@"username",@"password",nil]);
+		WSMethodInvocationSetParameters(theRPCCall, (__bridge CFDictionaryRef) parameters, (__bridge CFArrayRef) [NSArray arrayWithObjects:@"username",@"password",nil]);
 		
 		// invoke the xml-rpc call
-		result = (NSDictionary *)(WSMethodInvocationInvoke(theRPCCall));
+		result = (__bridge_transfer NSDictionary *)(WSMethodInvocationInvoke(theRPCCall));
 		
 		// check whether the xml-rpc call succeeeded or not
-		if (WSMethodResultIsFault ((CFDictionaryRef) result)) {
-			NSLog(@"%@",[result objectForKey:(NSString *)kWSFaultString]);
+		if (WSMethodResultIsFault ((__bridge CFDictionaryRef) result)) {
+			NSLog(@"%@",[result objectForKey:(__bridge NSString *)kWSFaultString]);
 			successfulActivation = NO;
 		} else {
 			//NSLog(@"%@",[result objectForKey: (NSString *) kWSMethodInvocationResult]);
@@ -119,10 +119,10 @@
 		
 		
 		// get the headers from the xml-rpc response from the .mac server
-		CFHTTPMessageRef headers = (CFHTTPMessageRef)CFDictionaryGetValue((CFDictionaryRef) result, kWSHTTPResponseMessage);
+		CFHTTPMessageRef headers = (CFHTTPMessageRef)CFDictionaryGetValue((__bridge CFDictionaryRef) result, kWSHTTPResponseMessage);
 		
 		// get the headers into a usable form
-		NSDictionary *headerDict = (NSDictionary *)CFHTTPMessageCopyAllHeaderFields(headers);
+		NSDictionary *headerDict = (__bridge_transfer NSDictionary *)CFHTTPMessageCopyAllHeaderFields(headers);
 		
 		// here we get the cookie from the xml-rpc response from the .mac server;
 		// if we don't get this cookie, subsequent calls will fail
@@ -136,7 +136,6 @@
 		[cookieScanner scanString:@"woinst=" intoString:nil];
 		NSString *sessionInstanceString;
 		[cookieScanner scanUpToString:@";" intoString:&sessionInstanceString];
-		[cookieScanner release];
 		
 		NSDictionary *cookieHeaderDict = [NSDictionary dictionaryWithObjectsAndKeys:
 										  [NSString stringWithFormat:@"wosid=%@; woinst=%@",sessionIDString,sessionInstanceString],@"Cookie",nil];
@@ -151,15 +150,15 @@
 					  [NSDictionary dictionaryWithObjectsAndKeys:@"US/Pacific",@"timezone",@"true",@"visible",@"false",@"allowSubcomments",@"true",@"mutable",
 					   @"false",@"allowMedia",@"%A, %B %e, %Y - %I:%M %p",@"dateFormat",@"false",@"moderated",@"English",@"lang",@"iweb",@"appid",nil],@"optionsStruct",
 					  [NSArray arrayWithObjects:iDiskFileURL,nil],@"URL",nil];
-		theRPCCall = WSMethodInvocationCreate((CFURLRef)theRPCAppURL, (CFStringRef)methodName, kWSXMLRPCProtocol);
-		WSMethodInvocationSetParameters(theRPCCall, (CFDictionaryRef) parameters, (CFArrayRef) [NSArray arrayWithObjects:@"optionsStruct",@"URL",nil]);
+		theRPCCall = WSMethodInvocationCreate((__bridge CFURLRef)theRPCAppURL, (__bridge CFStringRef)methodName, kWSXMLRPCProtocol);
+		WSMethodInvocationSetParameters(theRPCCall, (__bridge CFDictionaryRef) parameters, (__bridge CFArrayRef) [NSArray arrayWithObjects:@"optionsStruct",@"URL",nil]);
 		// note that in contrast to the previous call, we now include extra HTTP headers
 		// along with the xml-rpc call on the following line; this is the cookie
-		WSMethodInvocationSetProperty(theRPCCall, (CFStringRef) kWSHTTPExtraHeaders, (CFTypeRef) cookieHeaderDict);
+		WSMethodInvocationSetProperty(theRPCCall, (CFStringRef) kWSHTTPExtraHeaders, (__bridge CFTypeRef) cookieHeaderDict);
 		
-		result = (NSDictionary *)(WSMethodInvocationInvoke(theRPCCall));
-		if (WSMethodResultIsFault ((CFDictionaryRef) result)) {
-			NSLog(@"%@",[result objectForKey:(NSString *)kWSFaultString]);
+		result = (__bridge_transfer NSDictionary *)(WSMethodInvocationInvoke(theRPCCall));
+		if (WSMethodResultIsFault ((__bridge CFDictionaryRef) result)) {
+			NSLog(@"%@",[result objectForKey:(__bridge NSString *)kWSFaultString]);
 			successfulActivation = NO;
 		} else {
 			//NSLog(@"%@",[result objectForKey:(NSString *)kWSMethodInvocationResult]);
@@ -170,14 +169,14 @@
 		// this xml-prc call tells .mac to index the comments
 		methodName = @"comment.indexComments";
 		parameters = [NSDictionary dictionaryWithObjectsAndKeys:[NSArray arrayWithObject:iDiskFileURL],@"URL",nil];
-		theRPCCall = WSMethodInvocationCreate((CFURLRef)theRPCAppURL, (CFStringRef)methodName, kWSXMLRPCProtocol);
-		WSMethodInvocationSetParameters(theRPCCall, (CFDictionaryRef)parameters, (CFArrayRef)[NSArray arrayWithObject:@"URL"]);
-		WSMethodInvocationSetProperty(theRPCCall, (CFStringRef) kWSHTTPExtraHeaders, (CFTypeRef) cookieHeaderDict);
+		theRPCCall = WSMethodInvocationCreate((__bridge CFURLRef)theRPCAppURL, (__bridge CFStringRef)methodName, kWSXMLRPCProtocol);
+		WSMethodInvocationSetParameters(theRPCCall, (__bridge CFDictionaryRef)parameters, (__bridge CFArrayRef)[NSArray arrayWithObject:@"URL"]);
+		WSMethodInvocationSetProperty(theRPCCall, (CFStringRef) kWSHTTPExtraHeaders, (__bridge CFTypeRef) cookieHeaderDict);
 		
-		result = (NSDictionary *)(WSMethodInvocationInvoke(theRPCCall));
+		result = (__bridge_transfer NSDictionary *)(WSMethodInvocationInvoke(theRPCCall));
 		
-		if (WSMethodResultIsFault ((CFDictionaryRef) result)) {
-			NSLog(@"%@",[result objectForKey:(NSString *)kWSFaultString]);
+		if (WSMethodResultIsFault ((__bridge CFDictionaryRef) result)) {
+			NSLog(@"%@",[result objectForKey:(__bridge NSString *)kWSFaultString]);
 			successfulActivation = NO;
 		} else {
 			//NSLog(@"%@",[result objectForKey:(NSString *)kWSMethodInvocationResult]);
@@ -187,15 +186,15 @@
 		// this xml-prc call tells .mac to do something else (I'm not exactly sure what this does)
 		methodName = @"comment.changeTagForComments";
 		parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"iweb",@"appID",dotMacUsername,@"username",nil];
-		theRPCCall = WSMethodInvocationCreate((CFURLRef)theRPCAppURL, (CFStringRef)methodName, kWSXMLRPCProtocol);
-		WSMethodInvocationSetParameters(theRPCCall, (CFDictionaryRef)parameters, (CFArrayRef)[NSArray arrayWithObjects:@"appID",@"username",nil]);
-		WSMethodInvocationSetProperty(theRPCCall, (CFStringRef) kWSHTTPExtraHeaders, (CFTypeRef) cookieHeaderDict);
+		theRPCCall = WSMethodInvocationCreate((__bridge CFURLRef)theRPCAppURL, (__bridge CFStringRef)methodName, kWSXMLRPCProtocol);
+		WSMethodInvocationSetParameters(theRPCCall, (__bridge CFDictionaryRef)parameters, (__bridge CFArrayRef)[NSArray arrayWithObjects:@"appID",@"username",nil]);
+		WSMethodInvocationSetProperty(theRPCCall, (CFStringRef) kWSHTTPExtraHeaders, (__bridge CFTypeRef) cookieHeaderDict);
 		
-		result = (NSDictionary *)(WSMethodInvocationInvoke(theRPCCall));
-		NSString *someRandomNumber = [result objectForKey:(NSString *)kWSMethodInvocationResult];
+		result = (__bridge NSDictionary *)(WSMethodInvocationInvoke(theRPCCall));
+		NSString *someRandomNumber = [result objectForKey:(__bridge NSString *)kWSMethodInvocationResult];
 		
-		if (WSMethodResultIsFault ((CFDictionaryRef) result)) {
-			NSLog(@"%@",[result objectForKey:(NSString *)kWSFaultString]);
+		if (WSMethodResultIsFault ((__bridge CFDictionaryRef) result)) {
+			NSLog(@"%@",[result objectForKey:(__bridge NSString *)kWSFaultString]);
 			successfulActivation = NO;
 		} else {
 			//NSLog(@"%@",[result objectForKey:(NSString *)kWSMethodInvocationResult]);
@@ -206,14 +205,14 @@
 		// this xml-prc call tells .mac to do something even elser! (I'm also not exactly sure what this does)
 		methodName = @"comment.commentIdentifiersSinceChangeTag";
 		parameters = [NSDictionary dictionaryWithObjectsAndKeys:someRandomNumber,@"someRandomNumber",[NSArray arrayWithObject:iDiskFileURL],@"URL",nil];
-		theRPCCall = WSMethodInvocationCreate((CFURLRef)theRPCAppURL, (CFStringRef)methodName, kWSXMLRPCProtocol);
-		WSMethodInvocationSetParameters(theRPCCall, (CFDictionaryRef)parameters, (CFArrayRef)[NSArray arrayWithObjects:@"someRandomNumber",@"URL",nil]);
-		WSMethodInvocationSetProperty(theRPCCall, (CFStringRef) kWSHTTPExtraHeaders, (CFTypeRef) cookieHeaderDict);
+		theRPCCall = WSMethodInvocationCreate((__bridge CFURLRef)theRPCAppURL, (__bridge CFStringRef)methodName, kWSXMLRPCProtocol);
+		WSMethodInvocationSetParameters(theRPCCall, (__bridge CFDictionaryRef)parameters, (__bridge CFArrayRef)[NSArray arrayWithObjects:@"someRandomNumber",@"URL",nil]);
+		WSMethodInvocationSetProperty(theRPCCall, (CFStringRef) kWSHTTPExtraHeaders, (__bridge CFTypeRef) cookieHeaderDict);
 		
-		result = (NSDictionary *)(WSMethodInvocationInvoke(theRPCCall));
+		result = (__bridge NSDictionary *)(WSMethodInvocationInvoke(theRPCCall));
 		
-		if (WSMethodResultIsFault ((CFDictionaryRef) result)) {
-			NSLog(@"%@",[result objectForKey:(NSString *)kWSFaultString]);
+		if (WSMethodResultIsFault ((__bridge CFDictionaryRef) result)) {
+			NSLog(@"%@",[result objectForKey:(__bridge NSString *)kWSFaultString]);
 			successfulActivation = NO;
 		} else {
 			//NSLog(@"%@",[result objectForKey:(NSString *)kWSMethodInvocationResult]);
@@ -223,14 +222,14 @@
 		
 		// this xml-prc call tells .mac to terminate the session
 		methodName = @"comment.terminateSession";
-		theRPCCall = WSMethodInvocationCreate((CFURLRef)theRPCAppURL, (CFStringRef)methodName, kWSXMLRPCProtocol);
+		theRPCCall = WSMethodInvocationCreate((__bridge CFURLRef)theRPCAppURL, (__bridge CFStringRef)methodName, kWSXMLRPCProtocol);
 		WSMethodInvocationSetParameters(theRPCCall, nil, nil);
-		WSMethodInvocationSetProperty(theRPCCall, (CFStringRef) kWSHTTPExtraHeaders, (CFTypeRef) cookieHeaderDict);
+		WSMethodInvocationSetProperty(theRPCCall, (CFStringRef) kWSHTTPExtraHeaders, (__bridge CFTypeRef) cookieHeaderDict);
 		
-		result = (NSDictionary *)(WSMethodInvocationInvoke(theRPCCall));
+		result = (__bridge NSDictionary *)(WSMethodInvocationInvoke(theRPCCall));
 		
-		if (WSMethodResultIsFault ((CFDictionaryRef) result)) {
-			NSLog(@"%@",[result objectForKey:(NSString *)kWSFaultString]);
+		if (WSMethodResultIsFault ((__bridge CFDictionaryRef) result)) {
+			NSLog(@"%@",[result objectForKey:(__bridge NSString *)kWSFaultString]);
 			successfulActivation = NO;
 		} else {
 			//NSLog(@"%@",[result objectForKey:(NSString *)kWSMethodInvocationResult]);
@@ -407,7 +406,6 @@
 			iDiskFileURL = [NSString stringWithFormat:@"/%@/%@/%@",dotMacUsername,rootFolder,terminalURL];
 		}
 	}
-	[URLScanner release];
 	
 	return iDiskFileURL;
 }
@@ -421,7 +419,6 @@
 	NSScanner *URLScanner = [[NSScanner alloc] initWithString:theURL];
 	[URLScanner scanUpToString:@"homepage.mac.com" intoString:nil];
 	BOOL homepageURL = [URLScanner scanString:@"homepage.mac.com" intoString:nil];
-	[URLScanner release];
 	return homepageURL;
 }
 
@@ -443,7 +440,6 @@
 	[scanner scanString:@"/" intoString:nil];
 	[scanner scanString:@"Web/Sites/" intoString:nil];
 	[scanner scanUpToString:@"" intoString:&scannedStringTwo];
-	[scanner release];
 	NSString *modifiediDiskFileURL = [NSString stringWithFormat:@"/%@/%@",scannedStringOne,scannedStringTwo];
 	
 	// encode the slashes in the argument for the "Add A Comment" page

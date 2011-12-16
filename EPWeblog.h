@@ -26,15 +26,15 @@
 }
 
 @property(copy) NSArray *filteredOrderedEntryPrototypes;
-@property (retain) NSURL *pathToEntriesDictionary;
-@property (retain) NSString *weblogTitle;
-@property (retain) NSURL *templateFilesLocation;
-@property (retain) NSDictionary *categoryDictionary;
-@property (retain) NSDictionary *categoryStats;
-@property (retain) NSDictionary *entriesDict;
+@property (strong) NSURL *pathToEntriesDictionary;
+@property (strong) NSString *weblogTitle;
+@property (strong) NSURL *templateFilesLocation;
+@property (strong) NSDictionary *categoryDictionary;
+@property (strong) NSDictionary *categoryStats;
+@property (strong) NSDictionary *entriesDict;
 
-@property (retain) NSURL *baseFileDirectoryPath;
-@property (retain) NSURL *baseWeblogURL;
+@property (strong) NSURL *baseFileDirectoryPath;
+@property (strong) NSURL *baseWeblogURL;
 
 
 - (void)deleteEntryWithURLStringFromWeblog:(NSString *)URLString deferFileWrite:(BOOL)shouldDeferFileWrite;

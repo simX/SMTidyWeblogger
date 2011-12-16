@@ -33,7 +33,6 @@
 - (void)setWeblogCategories:(NSArray *)newWeblogCategories;
 {
 	if (weblogCategories != newWeblogCategories) {
-		[weblogCategories autorelease];
 		weblogCategories = [[NSMutableArray alloc] initWithArray:newWeblogCategories];
 	}
 }
@@ -86,11 +85,7 @@
 		[entriesManagerInstance importWeblog:newWeblogPrototype];
 		[entriesManagerInstance saveNewWeblogToUserDefaults:newWeblogPrototype];
 		
-		[categoryDictionary release];
-		[newWeblogPrototype release];
     }
-	
-	[self autorelease];
 }
 
 

@@ -22,10 +22,10 @@
 	NSCalendarDate *entryPublishedDate;
 	NSString *entryPublishedDateString;
 	
-	NSNumber *publishOrderIndex;
+	NSNumber *__weak publishOrderIndex;
 }
 
-@property(assign) NSNumber *publishOrderIndex;
+@property(weak) NSNumber *publishOrderIndex;
 
 - (NSString *)entryTitle;
 - (void)setEntryTitle:(NSString *)newTitle;

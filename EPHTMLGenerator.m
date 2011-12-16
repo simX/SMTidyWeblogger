@@ -414,7 +414,6 @@
 			}
 			
 			[allMainPageEntriesString appendString:currentEntryString];
-			[allMainPageEntriesString autorelease];
 		}
 	}
 	
@@ -475,11 +474,9 @@
 		if ([[fileWritePath pathExtension] isEqualToString:@"xml"]) {
 			NSXMLDocument *tempXHTMLDoc = [[NSXMLDocument alloc] initWithXMLString:mainPageTemplateString options:NSXMLDocumentTidyXML error:nil];
 			outputXMLString = [tempXHTMLDoc XMLString];
-			[tempXHTMLDoc release];
 		} else if ([[fileWritePath pathExtension] isEqualToString:@"html"]) {
 			NSXMLDocument *tempXHTMLDoc = [[NSXMLDocument alloc] initWithXMLString:mainPageTemplateString options:NSXMLDocumentTidyHTML error:nil];
 			outputXMLString = [tempXHTMLDoc XMLString];
-			[tempXHTMLDoc release];
 		} else {
 			outputXMLString = mainPageTemplateString;
 		}
@@ -585,7 +582,7 @@
 {
 	// previously this method was searching for &lt;HTMLSource>; I suspect this might be due to importation changes
 	
-	NSMutableString *rawWebViewHTML = [[NSMutableString stringWithString:immutableRawWebViewHTML] retain];
+	NSMutableString *rawWebViewHTML = [NSMutableString stringWithString:immutableRawWebViewHTML];
 	
 	BOOL keepSearchingForHTMLSourceLiterals;
 	NSScanner *scanner = [[NSScanner alloc] initWithString:rawWebViewHTML];
@@ -613,7 +610,6 @@
 		NSLog(@"%lu for %lu of %lu",(long)startLoc, (long)(endLoc-startLoc), [rawWebViewHTML length]);
 		[rawWebViewHTML replaceCharactersInRange:NSMakeRange(startLoc,endLoc-startLoc) withString:tempString];
 		
-		[scanner release];
 		scanner = [[NSScanner alloc] initWithString:rawWebViewHTML];
 		
 		[scanner scanUpToString:@"<htmlsource>" intoString:nil];
@@ -623,7 +619,7 @@
 	
 	[rawWebViewHTML replaceOccurrencesOfString:[NSString stringWithFormat:@"%C",0x00A0] withString:@" " options:NSLiteralSearch range:NSMakeRange(0,[rawWebViewHTML length])];
 	
-	return [rawWebViewHTML autorelease];
+	return rawWebViewHTML;
 }
 
 - (NSString *)getHTMLForMarkdownText:(NSString *)markdownText;
@@ -650,7 +646,6 @@
 		[markdownTask launch];
 		markdownOutputString = [[NSString alloc] initWithData:[theHandle readDataToEndOfFile] encoding:NSUTF8StringEncoding];
 		//NSLog(@"%@",tempOutput);
-		[markdownTask release];
 		
 		NSError *smartyPantsFileWriteError = nil;
 		NSString *tempMarkdownOutputFileLocation = [@"~/Library/Application Support/TidyWeblogger/temp-markdown-output.txt" stringByExpandingTildeInPath];
@@ -659,7 +654,6 @@
 						 encoding:NSUTF8StringEncoding
 							error:&smartyPantsFileWriteError];
 		
-		[markdownOutputString release];
 
 		if (smartyPantsFileWriteError == nil) {
 			NSTask *smartyPantsTask = [[NSTask alloc] init];
@@ -673,10 +667,8 @@
 			[smartyPantsTask launch];
 			
 			smartyPantsOutputString = [[NSString alloc] initWithData:[smartyHandle readDataToEndOfFile] encoding:NSUTF8StringEncoding];
-			[smartyPantsTask release];
 			
 			HTMLReturnString = smartyPantsOutputString;
-			[smartyPantsOutputString autorelease];
 		} else {
 			// handle the file write error here
 		}

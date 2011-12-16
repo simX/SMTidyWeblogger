@@ -113,7 +113,7 @@
 		
 		entriesOfWeblogToImport = [[NSMutableDictionary alloc] init];
 	} else {
-		entriesOfWeblogToImport = [[NSMutableDictionary dictionaryWithDictionary:[listOfEntriesFile objectForKey:@"entriesDict"]] retain];
+		entriesOfWeblogToImport = [NSMutableDictionary dictionaryWithDictionary:[listOfEntriesFile objectForKey:@"entriesDict"]];
 		//NSLog(@"%@",listOfEntriesFile);
 	}
 	
@@ -200,7 +200,6 @@
 	// this needs to be done *after* adding it to the bindingsCompliantWeblogs proxy array
 	// because it relies on bindings to get the list of entries in the array
 	[self recalculatePublishOrderingForWeblog:importedWeblog];
-	[importedWeblog autorelease];
 }
 
 - (NSMutableArray *)weblogs;
@@ -211,7 +210,6 @@
 - (void)setWeblogs:(NSArray *)newWeblogs;
 {
 	if (weblogs != newWeblogs) {
-		[weblogs autorelease];
 		weblogs = [[NSMutableArray alloc] initWithArray:newWeblogs];
 	}
 }
@@ -647,7 +645,7 @@
 	
 	[prototypeEntryObject setEntryURL:[NSURL URLWithString:theKey]];
 	
-	return [prototypeEntryObject autorelease];
+	return prototypeEntryObject;
 }
 
 - (EPWeblogEntry *)weblogEntryForPlistFilePath:(NSString *)plistFilePath
@@ -732,7 +730,7 @@
 		}
 	}
 	
-	return [existingEntry autorelease];
+	return existingEntry;
 }
 
 /*- (NSString *)categoryDisplayNameForCategoryID:(NSString *)categoryID;
@@ -784,7 +782,6 @@
 	//NSLog(@"Recalculating Publish Ordering...");
 	NSDictionaryController *dictionaryController = [[NSDictionaryController alloc] initWithContent:[targetWeblog entriesDict]];
 	NSArray *allEntryPrototypes = [dictionaryController arrangedObjects];
-	[dictionaryController release];
 
 	//NSLog(@"%@",allEntryPrototypes);
 	NSPredicate *publishedPredicate = [NSPredicate predicateWithFormat:@"%K != NULL",@"value.entryPublishedDateString"];
@@ -1006,7 +1003,6 @@
 																	forWeblog:targetWeblog];
 	}
 	
-	[dictionaryController release];
 }
 
 - (IBAction)openWeblogEntry:(id)sender;
@@ -1030,7 +1026,6 @@
 	
 	//NSLog(@"window is now about to load");
 	[entryEditorControllerInstance showWindow:self];
-	[entryEditorControllerInstance autorelease];
 }
 
 - (IBAction)deleteSelectedWeblogEntry:(id)sender;
@@ -1111,9 +1106,6 @@
 	[entryEditorControllerInstance setHTMLGeneratorObject:HTMLGeneratorInstance];
 	[entryEditorControllerInstance setEntriesManagerObject:self];
 	[entryEditorControllerInstance showWindow:self];
-	
-	[newEntry autorelease];
-	[entryEditorControllerInstance autorelease];
 }
 
 /*- (void)addWeblogEntryObject:(EPWeblogEntry *)theWeblogEntry deferFileWrite:(BOOL)shouldDeferWrite;

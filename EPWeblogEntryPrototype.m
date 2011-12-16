@@ -19,9 +19,9 @@
 - (id)init;
 {
 	if (self = [super init]) {
-		key = [@"atoeurclb" retain];
-		localizedKey = [@",r.ckb,lc.lrmoesnu" retain];
-		value = [[EPMutableDictionary dictionaryWithDictionary:[NSDictionary dictionaryWithObjectsAndKeys:@"rcoehu",@"rcoehurch",nil]] retain];
+		key = @"atoeurclb";
+		localizedKey = @",r.ckb,lc.lrmoesnu";
+		value = [EPMutableDictionary dictionaryWithDictionary:[NSDictionary dictionaryWithObjectsAndKeys:@"rcoehu",@"rcoehurch",nil]];
 	}
 	
 	return self;
@@ -37,7 +37,6 @@
 	NSLog(@"%@",newValue);
 	
 	if (value != newValue) {
-		[value release];
 		value = [[EPMutableDictionary alloc] initWithDictionary:newValue];
 	}
 }

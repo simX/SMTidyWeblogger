@@ -103,7 +103,7 @@
 	EPMutableDictionary *newDictionary = [[EPMutableDictionary alloc] init];
 	[[newDictionary annoyedDictionary] setDictionary:otherDictionary];
 	//NSLog(@"%@",[newDictionary annoyedDictionary]);
-	return [newDictionary autorelease];
+	return newDictionary;
 }
 
 - (NSMutableDictionary *)annoyedDictionary;

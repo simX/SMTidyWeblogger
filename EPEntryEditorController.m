@@ -32,11 +32,6 @@
 	[entriesManagerInstance testAction:sender];
 }
 
-- (void)dealloc;
-{
-	[weblogEntry release];
-	[super dealloc];
-}
 
 - (EPWeblogEntry *)weblogEntry;
 {
@@ -51,8 +46,7 @@
 - (void)setWeblogEntryPrototype:(NSObject *)newWeblogEntryPrototype;
 {
 	if (weblogEntryPrototype != newWeblogEntryPrototype) {
-		[weblogEntryPrototype autorelease];
-		weblogEntryPrototype = [newWeblogEntryPrototype retain];
+		weblogEntryPrototype = newWeblogEntryPrototype;
 	}
 }
 
@@ -112,15 +106,13 @@
 - (void)setWeblog:(EPWeblog *)theNewWeblog;
 {
 	if (theNewWeblog != weblog) {
-		[weblog autorelease];
-		weblog = [theNewWeblog retain];
+		weblog = theNewWeblog;
 	}
 }
 
 - (void)setWeblogEntryObject:(EPWeblogEntry *)theWeblogEntry usingMarkdown:(BOOL)shouldUseMarkdown;
 {
-	[weblogEntry release];
-	weblogEntry = [theWeblogEntry retain];
+	weblogEntry = theWeblogEntry;
 	
 	[titleTextField setStringValue:[weblogEntry entryTitle]];
 	[summaryTextView setString:[weblogEntry entryAbstract]];
@@ -289,7 +281,6 @@
 		NSMutableString *uneditedWebViewString = [[NSMutableString alloc] initWithString:[(DOMHTMLElement *)[[[[editableWebView mainFrame] DOMDocument] documentElement] lastChild] innerHTML]];
 		NSLog(@"uneditedWebViewString: %@",uneditedWebViewString);
 		[weblogEntry setEntryUneditedWebViewHTML:uneditedWebViewString];
-		[uneditedWebViewString release];	
 	}
 }
 

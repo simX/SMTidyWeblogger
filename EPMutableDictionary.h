@@ -13,7 +13,7 @@
 	NSMutableDictionary *annoyedDictionary;
 }
 
-@property(retain) NSMutableDictionary *annoyedDictionary;
+@property(strong) NSMutableDictionary *annoyedDictionary;
 
 
 - (NSString *)blahQuestion;

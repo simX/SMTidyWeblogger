@@ -212,7 +212,8 @@
 	NSMutableDictionary *dictionaryValue = [NSMutableDictionary dictionary];
 	[dictionaryValue setObject:[weblogEntry entryTitle] forKey:@"entryTitle"];
 	[dictionaryValue setObject:[weblogEntry entryCategoryID] forKey:@"entryCategoryID"];
-	[dictionaryValue setObject:[weblogEntry entryPlistFilePath] forKey:@"entryPlistFilePath"];
+    NSURL *entryPlistFilePathURL = [weblogEntry entryPlistFilePath];
+	[dictionaryValue setObject:[entryPlistFilePathURL path] forKey:@"entryPlistFilePath"];
 	
 	NSString *entryPublishedDateStringShort = [weblogEntry entryPublishedDateStringShort];
 	if (entryPublishedDateStringShort)

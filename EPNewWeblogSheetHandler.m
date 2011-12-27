@@ -64,8 +64,8 @@
 		NSString *newWeblogEntriesPlistFileLocation = [entriesPlistFileLocationField stringValue];
 		NSString *newWeblogTemplateFilesLocation = [templateFilesLocationField stringValue];
         
-        NSString *baseWeblogURL = [NSURL URLWithString:[baseWeblogURLTextField stringValue]];
-        NSString *baseWebDirectoryPath = [NSURL fileURLWithPath:[baseWebDirectoryPathField stringValue]];
+        NSURL *baseWeblogURL = [NSURL URLWithString:[baseWeblogURLTextField stringValue]];
+        NSURL *baseWebDirectoryPathURL = [NSURL fileURLWithPath:[baseWebDirectoryPathField stringValue]];
 		
 		NSMutableDictionary *categoryDictionary = [[NSMutableDictionary alloc] init];
 		NSDictionary *currentCategoryItem = nil;
@@ -78,12 +78,17 @@
 																									  [newWeblogEntriesPlistFileLocation stringByExpandingTildeInPath],@"masterEntriesPlistFileLocation",
 																									  categoryDictionary,@"categoryDictionary",
 																									  [newWeblogTemplateFilesLocation stringByExpandingTildeInPath],@"templateFilesLocation",
-                                                   baseWeblogURL,@"baseWeblogURL",
-                                                   baseWebDirectoryPath,@"baseWebDirectoryPath",
+                                                   [baseWeblogURL absoluteString],@"baseWeblogURL",
+                                                   [baseWebDirectoryPathURL path],@"baseWebDirectoryPath",
                                                    nil];
 		
 		[entriesManagerInstance importWeblog:newWeblogPrototype];
-		[entriesManagerInstance saveNewWeblogToUserDefaults:newWeblogPrototype];
+        
+        NSDictionary *sparseWeblogPrototype = [NSDictionary dictionaryWithObjectsAndKeys:
+                                               newWeblogName,@"weblogTitle",
+                                               [newWeblogEntriesPlistFileLocation stringByExpandingTildeInPath],@"masterEntriesPlistFileLocation",
+                                               nil];
+		[entriesManagerInstance saveNewWeblogToUserDefaults:sparseWeblogPrototype];
 		
     }
 }

@@ -17,15 +17,15 @@
 	NSString *entryAbstract;
 	NSURL *entryURL;
 	NSURL *entryDeprecatedURL;
-	NSString *entryPlistFilePath;
+	NSURL *entryPlistFilePath;
 	NSString *entryCategoryID;
 	NSCalendarDate *entryPublishedDate;
 	NSString *entryPublishedDateString;
 	
-	NSNumber *__weak publishOrderIndex;
+	NSNumber *publishOrderIndex;
 }
 
-@property(weak) NSNumber *publishOrderIndex;
+@property(retain) NSNumber *publishOrderIndex;
 
 - (NSString *)entryTitle;
 - (void)setEntryTitle:(NSString *)newTitle;
@@ -48,8 +48,8 @@
 - (NSURL *)entryDeprecatedURL;
 - (void)setEntryDeprecatedURL:(NSURL *)newEntryDeprecatedURL;
 
-- (NSString *)entryPlistFilePath;
-- (void)setEntryPlistFilePath:(NSString *)newEntryPlistFilePath;
+- (NSURL *)entryPlistFilePath;
+- (void)setEntryPlistFilePath:(NSURL *)newEntryPlistFilePath;
 
 - (NSString *)entryCategoryID;
 - (void)setEntryCategoryID:(NSString *)newEntryCategoryID;

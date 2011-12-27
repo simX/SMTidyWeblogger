@@ -25,7 +25,7 @@
 		entryAbstract = [[NSString alloc] initWithString:@""];
 		entryURL = [[NSURL alloc] init];
 		entryDeprecatedURL = nil;
-		entryPlistFilePath = [[NSString alloc] init];
+		entryPlistFilePath = [[NSURL fileURLWithPath:@"/"] retain];
 		entryCategoryID = [[NSString alloc] initWithString:@"unfiled"];
 		entryPublishedDate = nil;
 		entryPublishedDateString = [[NSString alloc] init];
@@ -116,12 +116,12 @@
 }
 
 
-- (NSString *)entryPlistFilePath;
+- (NSURL *)entryPlistFilePath;
 {
 	return entryPlistFilePath;
 }
 
-- (void)setEntryPlistFilePath:(NSString *)newEntryPlistFilePath;
+- (void)setEntryPlistFilePath:(NSURL *)newEntryPlistFilePath;
 {
 	entryPlistFilePath = newEntryPlistFilePath;
 }

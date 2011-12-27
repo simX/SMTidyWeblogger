@@ -51,18 +51,29 @@
 
 - (void)importWeblog:(NSDictionary *)weblogPrototype;
 {
-	NSString *masterEntriesPlistFileLocation = [[weblogPrototype objectForKey:@"masterEntriesPlistFileLocation"] stringByExpandingTildeInPath];
-	NSString *templateFilesLocation = [[weblogPrototype objectForKey:@"templateFilesLocation"] stringByExpandingTildeInPath];
-	NSDictionary *categoryDictionaryOfWeblogToImport = [weblogPrototype objectForKey:@"categoryDictionary"];
+    NSString *masterEntriesPlistFileLocation = [[weblogPrototype objectForKey:@"masterEntriesPlistFileLocation"] stringByExpandingTildeInPath];
+    NSDictionary *listOfEntriesFile = [NSDictionary dictionaryWithContentsOfFile:masterEntriesPlistFileLocation];
+    
+	
+    NSString *templateFilesLocation = [[listOfEntriesFile objectForKey:@"templateFilesLocation"] stringByExpandingTildeInPath];
+    if (! templateFilesLocation) {
+        templateFilesLocation = [[weblogPrototype objectForKey:@"templateFilesLocation"] stringByExpandingTildeInPath];
+    }
+    
 	NSString *titleOfWeblogToImport = [weblogPrototype objectForKey:@"weblogTitle"];
     
-    NSURL *baseWeblogURL = [weblogPrototype objectForKey:@"baseWeblogURL"];
-    NSURL *baseWebDirectoryPath = [weblogPrototype objectForKey:@"baseWebDirectoryPath"];
+    NSString *baseWeblogURLString = [listOfEntriesFile objectForKey:@"baseWeblogURL"];
+    if (! baseWeblogURLString) baseWeblogURLString = [weblogPrototype objectForKey:@"baseWeblogURL"];
+    NSURL *baseWeblogURL = [NSURL URLWithString:baseWeblogURLString];
+    
+    NSString *baseWebDirPathString = [listOfEntriesFile objectForKey:@"baseWebDirectoryPath"];
+    if (! baseWebDirPathString) baseWebDirPathString = [weblogPrototype objectForKey:@"baseWebDirectoryPath"];
+    NSURL *baseWebDirectoryPath = [NSURL fileURLWithPath:baseWebDirPathString];
 
 	// load the entries dictionary
 
 	// (mounted iDisk method)
-	NSDictionary *listOfEntriesFile = [NSDictionary dictionaryWithContentsOfFile:masterEntriesPlistFileLocation];
+	
 	
 	
 	//CKConnection *mobileMeConnection =
@@ -187,7 +198,7 @@
 	// the entries dict object represents the master list of entries, and 
 	// is for eventual writing to disk
 	[importedWeblog setEntriesDict:entriesOfWeblogToImport];
-	[importedWeblog setCategoryDictionary:categoryDictionaryOfWeblogToImport];
+	[importedWeblog setCategoryDictionary:[listOfEntriesFile objectForKey:@"categoryDictionary"]];
 		
 	//listOfEntriesActiveSet = [[entries allValues] sortedArrayUsingFunction:dateCompareDescending context:NULL];
 	//[listOfEntriesActiveSet retain];
@@ -538,7 +549,7 @@
 	
 	NSString *uneditedEntryHTML = entryBody; //[NSString stringWithFormat:@"<html><head>\n</head><body style=\"word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; \">%@</body></html>",entryBody];
 	
-	NSString *entryPlistFilePath = [[pathToFileToImport stringByDeletingPathExtension] stringByAppendingPathExtension:@"plist"];
+	NSURL *entryPlistFilePath = [NSURL fileURLWithPath:[[pathToFileToImport stringByDeletingPathExtension] stringByAppendingPathExtension:@"plist"]];
 	//NSLog(@"entryPlistFilePath: %@",entryPlistFilePath);
 	
 	NSString *entryDeprecatedURL;
@@ -663,7 +674,7 @@
 		[existingEntry setEntryUneditedWebViewHTML:[theExistingEntryProtoObject objectForKey:@"Unedited WebView HTML"]];
 		[existingEntry setEntryMarkdownText:[theExistingEntryProtoObject objectForKey:@"Unedited Markdown Text"]];
 		[existingEntry setEntryAbstract:[theExistingEntryProtoObject objectForKey:@"Summary"]];
-		[existingEntry setEntryPlistFilePath:plistFilePath];
+		[existingEntry setEntryPlistFilePath:[NSURL fileURLWithPath:plistFilePath]];
 		
 		id categoryObject = [theExistingEntryProtoObject objectForKey:@"Category"];
 		NSString *categoryID = nil;
@@ -706,10 +717,17 @@
 			baseURLString = [[targetWeblog baseWeblogURL] path];
 		} else {
 			// problems can happen here if the URL is not as expected; this should be robust-ized
-			relativeURLString = [[URLString componentsSeparatedByString:[[targetWeblog baseWeblogURL] path]] objectAtIndex:1];
-			baseURLString = [[targetWeblog baseWeblogURL] path];
+            NSURL *baseWeblogURL = [targetWeblog baseWeblogURL];
+            NSString *baseWeblogPath = [baseWeblogURL path];
+			NSString *potentialRelativeURLString = [[URLString componentsSeparatedByString:baseWeblogPath] objectAtIndex:1];
+            if ([potentialRelativeURLString hasPrefix:@"/"]) {
+                relativeURLString = [potentialRelativeURLString substringFromIndex:1];
+            } else {
+                relativeURLString = potentialRelativeURLString;
+            }
+			baseURLString = baseWeblogPath;
 		}
-		[existingEntry setEntryURL:[NSURL URLWithString:relativeURLString relativeToURL:[NSURL URLWithString:baseURLString]]];
+		[existingEntry setEntryURL:[[NSURL URLWithString:baseURLString] URLByAppendingPathComponent:relativeURLString]];
 		
 		NSMutableDictionary *weblogEntryPrototype = [[targetWeblog entriesDict] objectForKey:[[existingEntry entryURL] absoluteString]];
 		NSNumber *publishOrderIndex = [weblogEntryPrototype objectForKey:@"publishOrderIndex"];

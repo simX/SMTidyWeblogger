@@ -90,8 +90,7 @@
 								 forWeblog:(EPWeblog *)targetWeblog
 							   publishDate:(NSCalendarDate *)entryPublishedDate;
 {
-	NSString *truncatedTitle = [[theWeblogEntry entryTitle] URLizedStringWithLengthLimit:40];
-	NSString *truncatedCategory = [[theWeblogEntry entryCategoryID] URLizedStringWithLengthLimit:20];
+    NSURL *entryPlistFilePathURL = [theWeblogEntry entryPlistFilePath];
 	
 	NSDictionary *entryDict = [NSMutableDictionary dictionary];
 	if ([theWeblogEntry entryTitle]) [entryDict setValue:[theWeblogEntry entryTitle] forKey:@"Title"];
@@ -99,13 +98,31 @@
 	if ([theWeblogEntry entryUneditedWebViewHTML]) [entryDict setValue:[theWeblogEntry entryUneditedWebViewHTML] forKey:@"Unedited WebView HTML"];
 	if ([theWeblogEntry entryMarkdownText]) [entryDict setValue:[theWeblogEntry entryMarkdownText] forKey:@"Unedited Markdown Text"];
 	if ([theWeblogEntry entryCategoryID]) [entryDict setValue:[theWeblogEntry entryCategoryID] forKey:@"CategoryID"];
-	if ([theWeblogEntry entryPlistFilePath]) [entryDict setValue:[theWeblogEntry entryPlistFilePath] forKey:@"entryPlistFilePath"];
+	if (entryPlistFilePathURL) [entryDict setValue:[entryPlistFilePathURL path] forKey:@"entryPlistFilePath"];
 	if ([[theWeblogEntry entryURL] absoluteString]) [entryDict setValue:[[theWeblogEntry entryURL] absoluteString] forKey:@"entryURL"];
 	if ([[theWeblogEntry entryDeprecatedURL] absoluteString])
 		[entryDict setValue:[[theWeblogEntry entryDeprecatedURL] absoluteString] forKey:@"entryDeprecatedURL"];
 	if (entryPublishedDate) [entryDict setValue:entryPublishedDate forKey:@"Publish Date"];
 	
-	BOOL successfulWrite = [entryDict writeToFile:[NSString stringWithFormat:@"%@/%@/%@.plist",[targetWeblog baseFileDirectoryPath],truncatedCategory,truncatedTitle] atomically:YES];
+    BOOL isDirectory = NO;
+    BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:[[entryPlistFilePathURL URLByDeletingLastPathComponent] path]
+                                         isDirectory:&isDirectory];
+    
+    if (! exists) {
+        NSError *createError = nil;
+        BOOL succeeded = [[NSFileManager defaultManager] createDirectoryAtURL:[entryPlistFilePathURL URLByDeletingLastPathComponent]
+                                 withIntermediateDirectories:YES
+                                                  attributes:nil
+                                                       error:&createError];
+        
+        if (! succeeded) {
+            NSLog(@"creating intermediate directory did not succeed: %@",createError);
+        }
+    } else if (exists && (! isDirectory)) {
+        NSLog(@"File exists where folder should be.  Oops.");
+    }
+    
+	BOOL successfulWrite = [entryDict writeToURL:[theWeblogEntry entryPlistFilePath] atomically:YES];
 	if (! successfulWrite) NSLog(@"Unsuccessful write of plist file.");
 	return successfulWrite;
 }
@@ -169,9 +186,12 @@
 	}
 	
 	
-	[theWeblogEntry setEntryPlistFilePath:[NSString stringWithFormat:@"%@/%@/%@.plist",[targetWeblog baseFileDirectoryPath],truncatedCategory,truncatedTitle]];
-	[theWeblogEntry setEntryURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@.html",truncatedCategory,truncatedTitle]
-									   relativeToURL:[targetWeblog baseWeblogURL]]];
+    NSURL *entryPlistFileURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@.plist",truncatedCategory,truncatedTitle]
+                                      relativeToURL:[targetWeblog baseFileDirectoryPath]];
+	[theWeblogEntry setEntryPlistFilePath:entryPlistFileURL];
+    NSURL *entryURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@.html",truncatedCategory,truncatedTitle]
+                             relativeToURL:[targetWeblog baseWeblogURL]];
+	[theWeblogEntry setEntryURL:entryURL];
 	
 	
 	// if the entry has a deprecated URL, create a dummy file to redirect the old URL to

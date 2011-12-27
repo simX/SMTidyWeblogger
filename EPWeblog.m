@@ -67,12 +67,36 @@
 	if (! shouldDeferFileWrite) [self writeListOfEntriesToDisk];
 }
 
+- (void)migrateEntriesDict;
+{
+    NSMutableDictionary *mutableEntriesDict = [NSMutableDictionary dictionaryWithDictionary:[self entriesDict]];
+    NSArray *keysArray = [mutableEntriesDict allKeys];
+    
+    for (NSString *currentKey in keysArray) {
+        if ([currentKey hasPrefix:@"http://"]) {
+            NSArray *components = [currentKey componentsSeparatedByString:[[self baseWeblogURL] absoluteString]];
+            if ([components count] > 1) {
+                id currentObject = [mutableEntriesDict objectForKey:currentKey];
+                [mutableEntriesDict removeObjectForKey:currentKey];
+                [mutableEntriesDict setObject:currentObject forKey:[components objectAtIndex:1]];
+            }
+        }
+    }
+    
+    NSLog(@"mutableEntriesDict: %@",mutableEntriesDict);
+    //[self setEntriesDict:[NSDictionary dictionaryWithDictionary:mutableEntriesDict]];
+}
+
 - (void)writeListOfEntriesToDisk;
 {
+    [self migrateEntriesDict];
+    
     NSDictionary *listOfEntriesFile = [NSDictionary dictionaryWithObjectsAndKeys:[self categoryDictionary],@"categoryDictionary",
                                        [self weblogTitle],@"weblogTitle",
                                        [[self templateFilesLocation] path],@"templateFilesLocation",
                                        [self entriesDict],@"entriesDict",
+                                       [[self baseWeblogURL] absoluteString],@"baseWeblogURL",
+                                       [[self baseFileDirectoryPath] absoluteString],@"baseWebDirectoryPath",
                                        nil];
     
 	BOOL successfulWrite = [listOfEntriesFile writeToURL:[self pathToEntriesDictionary]

@@ -83,13 +83,15 @@
         }
     }
     
-    NSLog(@"mutableEntriesDict: %@",mutableEntriesDict);
-    //[self setEntriesDict:[NSDictionary dictionaryWithDictionary:mutableEntriesDict]];
+    //NSLog(@"mutableEntriesDict: %@",mutableEntriesDict);
+    [self setEntriesDict:[NSDictionary dictionaryWithDictionary:mutableEntriesDict]];
 }
 
 - (void)writeListOfEntriesToDisk;
 {
-    [self migrateEntriesDict];
+    if ([[[[self entriesDict] allKeys] objectAtIndex:0] hasPrefix:@"http://"]) {
+        [self migrateEntriesDict];
+    }
     
     NSDictionary *listOfEntriesFile = [NSDictionary dictionaryWithObjectsAndKeys:[self categoryDictionary],@"categoryDictionary",
                                        [self weblogTitle],@"weblogTitle",

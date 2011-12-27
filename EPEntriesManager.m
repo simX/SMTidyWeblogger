@@ -68,7 +68,7 @@
     
     NSString *baseWebDirPathString = [listOfEntriesFile objectForKey:@"baseWebDirectoryPath"];
     if (! baseWebDirPathString) baseWebDirPathString = [weblogPrototype objectForKey:@"baseWebDirectoryPath"];
-    NSURL *baseWebDirectoryPath = [NSURL fileURLWithPath:baseWebDirPathString];
+    NSURL *baseWebDirectoryPath = [NSURL URLWithString:baseWebDirPathString];
 
 	// load the entries dictionary
 

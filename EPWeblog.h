@@ -23,6 +23,7 @@
     
     NSURL *baseFileDirectoryPath;
     NSURL *baseWeblogURL;
+    NSURL *basePublishPathURL;
 }
 
 @property(copy) NSArray *filteredOrderedEntryPrototypes;
@@ -33,8 +34,9 @@
 @property (strong) NSDictionary *categoryStats;
 @property (strong) NSDictionary *entriesDict;
 
-@property (strong) NSURL *baseFileDirectoryPath;
+@property (readonly) NSURL *baseFileDirectoryPath;
 @property (strong) NSURL *baseWeblogURL;
+@property (strong) NSURL *basePublishPathURL;
 
 
 - (void)deleteEntryWithURLStringFromWeblog:(NSString *)URLString deferFileWrite:(BOOL)shouldDeferFileWrite;

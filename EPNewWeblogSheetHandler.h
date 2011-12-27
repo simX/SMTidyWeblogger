@@ -17,7 +17,7 @@
 	IBOutlet NSTableView *categoriesTableView;
     
     IBOutlet NSTextField *baseWeblogURLTextField;
-    IBOutlet NSTextField *baseWebDirectoryPathField;
+    IBOutlet NSTextField *basePublishPathField;
 	
 	NSMutableArray *weblogCategories;
 	EPEntriesManager *entriesManagerInstance;

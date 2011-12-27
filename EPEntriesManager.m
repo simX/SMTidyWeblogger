@@ -66,9 +66,9 @@
     if (! baseWeblogURLString) baseWeblogURLString = [weblogPrototype objectForKey:@"baseWeblogURL"];
     NSURL *baseWeblogURL = [NSURL URLWithString:baseWeblogURLString];
     
-    NSString *baseWebDirPathString = [listOfEntriesFile objectForKey:@"baseWebDirectoryPath"];
-    if (! baseWebDirPathString) baseWebDirPathString = [weblogPrototype objectForKey:@"baseWebDirectoryPath"];
-    NSURL *baseWebDirectoryPath = [NSURL URLWithString:baseWebDirPathString];
+    NSString *basePublishPathURLString = [listOfEntriesFile objectForKey:@"basePublishPathURL"];
+    if (! basePublishPathURLString) basePublishPathURLString = [weblogPrototype objectForKey:@"basePublishPathURL"];
+    NSURL *basePublishPathURL = [NSURL URLWithString:basePublishPathURLString];
 
 	// load the entries dictionary
 
@@ -153,13 +153,7 @@
 	[importedWeblog setPathToEntriesDictionary:pathEntriesDictURL];
 	[importedWeblog setTemplateFilesLocation:[NSURL fileURLWithPath:[templateFilesLocation stringByExpandingTildeInPath]]];
 	[importedWeblog setWeblogTitle:titleOfWeblogToImport];
-    
-    if (baseWebDirectoryPath) {
-        [importedWeblog setBaseFileDirectoryPath:baseWebDirectoryPath];
-    } else {
-        NSURL *assumedBaseWeblogURL = [pathEntriesDictURL URLByDeletingLastPathComponent];
-        [importedWeblog setBaseFileDirectoryPath:assumedBaseWeblogURL];
-    }
+    [importedWeblog setBasePublishPathURL:basePublishPathURL];
     
     if (baseWeblogURL) {
         [importedWeblog setBaseWeblogURL:baseWeblogURL];

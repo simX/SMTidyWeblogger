@@ -65,7 +65,7 @@
 		NSString *newWeblogTemplateFilesLocation = [templateFilesLocationField stringValue];
         
         NSURL *baseWeblogURL = [NSURL URLWithString:[baseWeblogURLTextField stringValue]];
-        NSURL *baseWebDirectoryPathURL = [NSURL fileURLWithPath:[baseWebDirectoryPathField stringValue]];
+        NSURL *basePublishPathURL = [NSURL fileURLWithPath:[basePublishPathField stringValue]];
 		
 		NSMutableDictionary *categoryDictionary = [[NSMutableDictionary alloc] init];
 		NSDictionary *currentCategoryItem = nil;
@@ -79,7 +79,7 @@
 																									  categoryDictionary,@"categoryDictionary",
 																									  [newWeblogTemplateFilesLocation stringByExpandingTildeInPath],@"templateFilesLocation",
                                                    [baseWeblogURL absoluteString],@"baseWeblogURL",
-                                                   [baseWebDirectoryPathURL path],@"baseWebDirectoryPath",
+                                                   [basePublishPathURL absoluteString],@"basePublishPathURL",
                                                    nil];
 		
 		[entriesManagerInstance importWeblog:newWeblogPrototype];

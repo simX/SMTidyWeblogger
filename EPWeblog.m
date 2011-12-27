@@ -20,8 +20,8 @@
 @synthesize categoryStats;
 @synthesize entriesDict;
 
-@synthesize baseFileDirectoryPath;
 @synthesize baseWeblogURL;
+@synthesize basePublishPathURL;
 
 - (id)init {
 	if (self = [super init]) {
@@ -30,6 +30,11 @@
 	}
 	
 	return self;
+}
+
+- (NSURL *)baseFileDirectoryPath;
+{
+    return [[self pathToEntriesDictionary] URLByDeletingLastPathComponent]; 
 }
 
 - (void)deleteEntryWithURLStringFromWeblog:(NSString *)URLString deferFileWrite:(BOOL)shouldDeferFileWrite;
@@ -98,7 +103,7 @@
                                        [[self templateFilesLocation] path],@"templateFilesLocation",
                                        [self entriesDict],@"entriesDict",
                                        [[self baseWeblogURL] absoluteString],@"baseWeblogURL",
-                                       [[self baseFileDirectoryPath] absoluteString],@"baseWebDirectoryPath",
+                                       [[self basePublishPathURL] absoluteString],@"basePublishPathURL",
                                        nil];
     
 	BOOL successfulWrite = [listOfEntriesFile writeToURL:[self pathToEntriesDictionary]

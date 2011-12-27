@@ -68,6 +68,7 @@
     
     NSString *basePublishPathURLString = [listOfEntriesFile objectForKey:@"basePublishPathURL"];
     if (! basePublishPathURLString) basePublishPathURLString = [weblogPrototype objectForKey:@"basePublishPathURL"];
+    if (! basePublishPathURLString) basePublishPathURLString = baseWeblogURLString;
     NSURL *basePublishPathURL = [NSURL URLWithString:basePublishPathURLString];
 
 	// load the entries dictionary

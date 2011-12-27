@@ -140,6 +140,10 @@
 	if (! noPathErrors) return;
 		
 	NSCalendarDate *entryPublishedDate = (NSCalendarDate *)[theWeblogEntry entryPublishedDate];
+    
+    NSURL *categoryFolderURL = [[targetWeblog basePublishPathURL] URLByAppendingPathComponent:truncatedCategory];
+    NSURL *noExtensionURL = [categoryFolderURL URLByAppendingPathComponent:truncatedTitle];
+    NSURL *publishURL = [noExtensionURL URLByAppendingPathExtension:@"html"];
 	if (shouldPublish) {
 		BOOL firstPublish = YES;
 		if (entryPublishedDate != nil) {
@@ -151,13 +155,14 @@
 		
 		// set the date here, otherwise getting the date string will fail
 		[theWeblogEntry setEntryPublishedDate:entryPublishedDate];
+        
 		[self writeFileForArrayOfWeblogEntryObjects:[NSArray arrayWithObject:theWeblogEntry]
 										  forWeblog:targetWeblog
 									currentCategory:nil
 								  usingPageTemplate:nil
 						  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/Entry Page Template.txt",[[targetWeblog templateFilesLocation] path]]
 							   usingSidebarTemplate:[NSString stringWithFormat:@"%@/Sidebar Template.txt",[[targetWeblog templateFilesLocation] path]]
-											 toPath:[NSString stringWithFormat:@"%@/%@/%@.html",[targetWeblog baseFileDirectoryPath],truncatedCategory,truncatedTitle]
+											 toPath:[publishURL path]
 									  validatingXML:YES
 									   firstPublish:firstPublish];
 		
@@ -180,7 +185,7 @@
 								  usingPageTemplate:nil
 						  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/Entry Page Template.txt",[[targetWeblog templateFilesLocation] path]]
 							   usingSidebarTemplate:[NSString stringWithFormat:@"%@/Sidebar Template.txt",[[targetWeblog templateFilesLocation] path]]
-											 toPath:[NSString stringWithFormat:@"%@/%@/%@.html",[targetWeblog baseFileDirectoryPath],truncatedCategory,truncatedTitle]
+											 toPath:[publishURL path]
 									  validatingXML:YES
 									   firstPublish:NO];
 	}

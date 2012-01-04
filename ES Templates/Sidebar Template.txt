@@ -4,19 +4,31 @@
 
 <div class="sidetitle"> Google Search </div>
 
-<div class="side"> <form name="search" action="http://www.google.com/search" method="get" onsubmit="document.search.q.value = document.search.terms.value + ' site:homepage.mac.com/simx/supernova/english/';"><input type="hidden" name="q" value="" /><input type="text" name="terms" />
+<div class="side"> <form name="search" action="http://www.google.com/search" method="get" onsubmit="document.search.q.value = document.search.terms.value + ' site:{[BASEWEBLOGURL]}';"><input type="hidden" name="q" value="" /><input type="text" name="terms" />
 <input type="submit" value="Go" /></form> </div>
-
-<div class="sidetitle"> Other Languages </div>
-
-<div class="side"><br /><center><a href="http://homepage.mac.com/simx/supernova/italiano/index.html"><img src="http://homepage.mac.com/simx/images/Italy-flag.png" class="badge" alt="Italiano" /></a></center></div>
 
 <div class="sidetitle"> Links </div>
 
 <div class="side">
-<ul><li><a href="http://homepage.mac.com/simx/index.html">Ellipsis Productions</a> (Mac OS X software)</li>
-<li><a href="http://homepage.mac.com/simx/technonova/index.html">Technology weblog</a></li>
-<li><a href="http://twitter.com/simX">My Twitters</a><br />small, random thoughts</li>
+<li><a href="http://twitter.com/simX">Twitter</a><br />small, random thoughts</li>
+</ul>
+</div>
+
+<div class="sidetitle"> Highlighted Content </div>
+
+<div class="side">
+<ul>
+<li><a href="http://simx.me/supernova/personal/smoking_bans.html">Smoking Bans</a></li>
+<li><a href="http://simx.me/supernova/personal/on_civil_rights_vs_gay_rights.html">On Civil Rights vs. Gay Rights</a></li>
+<li><a href="http://simx.me/supernova/personal/dear_california.html">Dear California</a></li>
+<li><a href="http://simx.me/supernova/school/india_ink_drawings.html">India Ink Drawings</a></li>
+<li><a href="http://simx.me/supernova/school/house_of_stairs.html">House of Stairs</a></li>
+<li><a href="http://simx.me/supernova/personal/inside_and_out.html">Inside and Out</a></li>
+<li><a href="http://simx.me/supernova/personal/some_things_never_change.html">Some Things Never Change</a></li>
+<li><a href="http://simx.me/supernova/personal/ramblings_on_mono_lake.html">Ramblings on Mono Lake</a></li>
+<li><a href="http://simx.me/supernova/personal/of_doodles_and_deformation.html">Of Doodles and Deformation</a></li>
+<li><a href="http://simx.me/supernova/personal/changes_in_personality.html">Changes in Personality</a></li>
+<li><a href="http://simx.me/supernova/personal/untitled.html">Untitled</a></li>
 </ul>
 </div>
 
@@ -34,137 +46,40 @@ writeCategoryStats();
 
 <div class="sidetitle"> Contact Info </div>
 
-<div class="side"> <center><b>Snail Mail</b></center><br />
-P.O. Box 17081<br /><br />
-<center><b>Phone</b></center><br />
-7-3354<br /><br />
+<div class="side"><br />
 <center><b>E-Mail</b></center><br />
-<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#115;&#105;&#109;&#88;&#64;&#109;&#97;&#99;&#46;&#99;&#111;&#109;">&#115;&#105;&#109;&#88;&#32;&#91;&#97;&#116;&#93;&#32;&#109;&#97;&#99;&#32;&#91;&#100;&#97;&#119;&#116;&#93;&#32;&#99;&#111;&#109;</a><br />
-<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#115;&#105;&#109;&#64;&#115;&#116;&#97;&#110;&#102;&#111;&#114;&#100;&#46;&#101;&#100;&#117;">&#115;&#105;&#109;&#32;&#91;&#97;&#116;&#93;&#32;&#115;&#116;&#97;&#110;&#102;&#111;&#114;&#100;&#32;&#91;&#100;&#97;&#119;&#116;&#93;&#32;&#101;&#100;&#117;</a><br /><br />
-<center><b>Location</b></center><br />
-Columbae<br />
-<a href="http://www-facilities.stanford.edu/maps/download/TransportationMap.pdf" target="_blank">Campus Map</a><br /> </div>
-
-<div class="sidetitle"> Class Schedule </div>
-
-<div class="side"> <a href="http://ical.mac.com/simx/Classes" target="_blank">Class Schedule</a> </div>
-
-<div class="sidetitle"> Notable Albums/Songs </div>
-
-<div class="side">
-<ul>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=2729559&amp;selectedItemId=2729497">See the Light</a> by Sofa Surfers (free song)</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=14063003&amp;selectedItemId=14063001">Letter Read</a> by Rachael Yamagata (free song)</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=13338219&amp;selectedItemId=13556730">Wake Up Older (Sessions@AOL) [Bonus Track]</a> by Julie Roberts (free song)</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=3650498&amp;selectedItemId=3650469">Maria Moita</a> by Rosalia de Souza (free song)</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=5869862&amp;selectedItemId=5869798">Run</a> by Snow Patrol (free song)</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=6557644&amp;selectedItemId=6557628">James</a> by Josh Rouse (free song)</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=7254603&amp;selectedItemId=7254583">French Connection</a> by Simon Stinger (free song)</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=2903870&amp;selectedItemId=2903821">Don't Leave Home</a> by Dido</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=1354719">Birds of Pray</a> by Live</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=4796616&amp;selectedItemId=4796582">La Wally, Drama Lirica in Quattro Atti: Ebben? Ne Andrò Lontana</a> by the London Philharmonic Orchestra, Renée Fleming &amp; Sir Charles Mackerras (free song)</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=6907596&amp;selectedItemId=6907594">Accidentally In Love</a> by Counting Crows (free song)</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=2398531&amp;selectedItemId=2398511">Price I Pay</a> by Jane's Addiction (free song)</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=1698511&amp;selectedItemId=1698505">Pavement Cracks (Gabriel &amp; Dresden Mixshow Edit)</a> by Annie Lennox (free song)</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=111034">C'Mon C'Mon</a> by Sheryl Crow</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=5365836&amp;selectedItemId=5365816">Hold On to Me</a> by Courtney Love (free song)</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=7025725&amp;selectedItemId=7025719">Take Me Away</a> by Avril Lavigne (free song)</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=6906522&amp;selectedItemId=6906455">My Hero</a> by Foo Fighters (free song)</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=4531817">Waking Hour</a> by Vienna Teng</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=2903870&amp;selectedItemId=2903796">White Flag</a> by Dido</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=3449925&amp;selectedItemId=3449899">The First Cut Is the Deepest</a> by Sheryl Crow</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=2657477&amp;selectedItemId=2657421">Maybe Tomorrow</a> by Stereophonics</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=3991448">The Lord of the Rings &amp;#150; The Return of the King</a> by Howard Shore</span></li>
-
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=3857198&amp;selectedItemId=3887390">Bigger Than My Body</a> by John Mayer</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=3857198&amp;selectedItemId=3887378">Something's Missing</a> by John Mayer</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=3857198&amp;selectedItemId=3887393">New Deep</a> by John Mayer</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=130011&amp;selectedItemId=129981">Don't Be Stupid (You Know I Love You)</a> by Shania Twain</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=130011&amp;selectedItemId=130001">That Don't Impress Me Much</a> by Shania Twain</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=3857198&amp;selectedItemId=3887387">Daughters</a> by John Mayer</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=466462">The Madding Crowd</a> by Nine Days</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=2002275">18</a> by Moby</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=2838904&amp;selectedItemId=2838904">Fresh Air, David Sedaris</a> by Terry Gross</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=1706230">Camino Palmero</a> by The Calling</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=3248432&amp;selectedItemId=3248393">Fallen</a> by Sarah McLachlan</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=3130172&amp;selectedItemId=3129664">Angel</a> by Sarah McLachlan</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?playlistId=811346&amp;selectedItemId=811292">The Other Side</a> by David Gray</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://ax.phobos.apple.com.edgesuite.net/WebObjects/MZStore.woa/212/wa/viewAlbum?playListId=2407083">Go</a> by Vertical Horizon</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://ax.phobos.apple.com.edgesuite.net/WebObjects/MZStore.woa/212/wa/viewAlbum?playListId=215038">Everything You Want</a> by Vertical Horizon</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://ax.phobos.apple.com.edgesuite.net/WebObjects/MZStore.woa/212/wa/viewAlbum?playListId=1798612">Songs About Jane</a> by Maroon 5</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://ax.phobos.apple.com.edgesuite.net/WebObjects/MZStore.woa/212/wa/viewAlbum?playListId=2333789">The Best of 1990-2000</a> by U2</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://ax.phobos.apple.com.edgesuite.net/WebObjects/MZStore.woa/212/wa/viewAlbum?playListId=475754">Behind the Sun</a> by Chicane</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://ax.phobos.apple.com.edgesuite.net/WebObjects/MZStore.woa/212/wa/viewAlbum?playListId=368713">Achtung Baby</a> by U2</span></li>
-
-<li><span style="font-size: 9px;"><a href="http://ax.phobos.apple.com.edgesuite.net/WebObjects/MZStore.woa/212/wa/viewAlbum?playListId=346604">The Joshua Tree</a> by U2</span></li>
-</ul>
-</div>
+<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#115;&#105;&#109;&#88;&#64;&#109;&#97;&#99;&#46;&#99;&#111;&#109;">&#115;&#105;&#109;&#88;&#32;&#91;&#97;&#116;&#93;&#32;&#109;&#97;&#99;&#32;&#91;&#100;&#97;&#119;&#116;&#93;&#32;&#99;&#111;&#109;</a><br /></div>
 
 
 <div class="sidetitle"></div>
 
 <div class="side-badges" style="text-align: center;">
-<a href="http://www.apple.com/"><img class="badge" alt="Made on a Mac" src="http://homepage.mac.com/simx/badges/madeon_mac.png" /></a>
-<a href="http://www.apple.com/macosx/"><img class="badge" alt="Mac OS X" src="http://homepage.mac.com/simx/badges/macosx.png" /></a><br />
-<a href="http://www.mozilla.org/products/firefox/"><img class="badge" alt="Get Firefox" src="http://homepage.mac.com/simx/badges/get_firefox.png" /></a>
+<a href="http://www.apple.com/macosx/"><img class="badge" alt="Mac OS X" src="http://homepage.mac.com/simx/badges/macosx.png" /></a>
 <a href="http://www.nosoftwarepatents.com/"><img class="badge" alt="No Software Patents" src="http://homepage.mac.com/simx/badges/nosoftwarepatents.png" /></a><br />
 <a href="http://validator.w3.org/check?uri=referer"><img class="badge" alt="Valid XHTML 1.0 Transitional" src="http://homepage.mac.com/simx/badges/valid_xhtml10.png" /></a>
 <a href="http://jigsaw.w3.org/css-validator/check/referer"><img class="badge" alt="Valid CSS" src="http://homepage.mac.com/simx/badges/valid_css.png" /></a><br />
 <a href="http://feedvalidator.org/check.cgi?url=http://homepage.mac.com/simx/supernova/english/rss.xml"><img class="badge" alt="Valid RSS 2.0" src="http://homepage.mac.com/simx/badges/valid_rss_blue.png" /></a>
 <a href="http://homepage.mac.com/simx/supernova/english/rss.xml"><img alt="Subscribe to RSS Feed" class="badge" src="http://homepage.mac.com/simx/badges/rss_subscribe_blue.png" /></a><br />
 <a href="http://www.ling.upenn.edu/~beatrice/humor/sarchasm.html"><img class="badge" alt="Warning: Sarchasm" src="http://homepage.mac.com/simx/badges/sarchasm_blue.png" /></a><br />
-<a href="http://www.mac.com/"><img class="badge" alt=".mac Powered" src="http://homepage.mac.com/simx/badges/dot-mac-powered_blue.png" /></a><br /><br /><br /><br />
+
+<br /><br /><br />
 </div>
 
 <div class="sidetitle" style="display: none;"> Website Analytics Stuff </div>
 
 <div class="side" style="display: none;">
-<script type="text/javascript" src="http://embed.technorati.com/embed/ityqmjpx4p.js"></script>
-<script src="http://www.google-analytics.com/urchin.js" type="text/javascript"></script>
 <script type="text/javascript">
-_uacct = "UA-463677-3";
-urchinTracker();
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-463677-7']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
 </script>
 </div>
 

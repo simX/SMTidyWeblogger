@@ -953,14 +953,16 @@
 		// using the summary information from the plist for the global list of entries
         
         NSString *publishedDateString = [currentWeblogEntryPrototype objectForKey:@"entryPublishedDateString"];
+        NSNumber *publishOrderIndex = [currentWeblogEntryPrototype objectForKey:@"publishOrderIndex"];
         
-		if (publishedDateString) {
+        // we don't want drafts being counted or included in the category pages
+		if (publishedDateString && publishOrderIndex) {
             //NSLog(@"%@: %@",[currentWeblogEntryPrototype objectForKey:@"entryTitle"],[currentWeblogEntryPrototype objectForKey:@"entryPublishedDateString"]);
             EPWeblogEntry *currentEntry = [self partialWeblogEntryFromPrototype:currentWeblogEntryPrototypeKeyValuePair
                                                                       forWeblog:targetWeblog];
 			[arrayOfPartialWeblogEntries addObject:currentEntry];
             
-            // we don't want drafts being counted or included in the category pages
+            
             NSString *currentEntryCategoryID = [currentWeblogEntryPrototype objectForKey:@"entryCategoryID"];
             if (! [categoryEntriesDictionary objectForKey:currentEntryCategoryID]) {
                 
@@ -996,15 +998,22 @@
 	
 	NSMutableArray *recentWeblogEntries = [NSMutableArray array];
 	int i = 0;
-	for (i = 0; i < 10; i++) {
-		NSDictionary *entryPrototypeKeyValuePair = [sortedEntriesArray objectAtIndex:i];
+    NSEnumerator *sortedEntriesEnumerator = [sortedEntriesArray objectEnumerator];
+	while ([recentWeblogEntries count] < 10) {
+		NSDictionary *entryPrototypeKeyValuePair = [sortedEntriesEnumerator nextObject];
         NSDictionary *entryPrototype = [entryPrototypeKeyValuePair value];
-        NSString *relativePath = [entryPrototype objectForKey:@"entryPlistFilePath"];
-        NSString *relativeToPath = [[targetWeblog baseFileDirectoryPath] path];
-        NSString *absolutePlistFilePath = [relativeToPath stringByAppendingPathComponent:relativePath];
-        EPWeblogEntry *currentWeblogEntry = [self weblogEntryForPlistFilePath:absolutePlistFilePath
-                                                                    forWeblog:targetWeblog];
-		[recentWeblogEntries addObject:currentWeblogEntry];
+        
+        NSString *publishedDateString = [entryPrototype objectForKey:@"entryPublishedDateString"];
+        NSNumber *publishOrderIndex = [entryPrototype objectForKey:@"publishOrderIndex"];
+        
+        if (publishedDateString && publishOrderIndex) {
+            NSString *relativePath = [entryPrototype objectForKey:@"entryPlistFilePath"];
+            NSString *relativeToPath = [[targetWeblog baseFileDirectoryPath] path];
+            NSString *absolutePlistFilePath = [relativeToPath stringByAppendingPathComponent:relativePath];
+            EPWeblogEntry *currentWeblogEntry = [self weblogEntryForPlistFilePath:absolutePlistFilePath
+                                                                        forWeblog:targetWeblog];
+            [recentWeblogEntries addObject:currentWeblogEntry];
+        }
 	}
 	
 	
@@ -1173,19 +1182,19 @@ NSInteger dateCompare(NSObject *object1, NSObject *object2, void *context)
 	NSString *firstEntryDateString = [[object1 value] objectForKey:@"entryPublishedDateString"];
 	NSString *secondEntryDateString = [[object2 value] objectForKey:@"entryPublishedDateString"];
 	
-	/*if ([firstEntryDateString isEqualToString:@""] || [secondEntryDateString isEqualToString:@""]) {
-		if ([firstEntryDateString isEqualToString:@""] && [secondEntryDateString isEqualToString:@""]) {
+	if ( (! firstEntryDateString) || (! secondEntryDateString) ) {
+		if ((! firstEntryDateString) && (! secondEntryDateString)) {
 			returnValue = NSOrderedSame;
-		} else if ([firstEntryDateString isEqualToString:@""]) {
+		} else if (! firstEntryDateString) {
 			returnValue = NSOrderedDescending;
 		} else {
 			returnValue = NSOrderedAscending;
 		}
-	} else {*/
+	} else {
 		NSCalendarDate *firstEntryDate = [NSCalendarDate dateWithString:firstEntryDateString calendarFormat:@"%Y-%m-%d; %H:%M:%S" locale:[[NSUserDefaults standardUserDefaults] dictionaryRepresentation]];
 		NSCalendarDate *secondEntryDate = [NSCalendarDate dateWithString:secondEntryDateString calendarFormat:@"%Y-%m-%d; %H:%M:%S" locale:[[NSUserDefaults standardUserDefaults] dictionaryRepresentation]];
 		returnValue = [firstEntryDate compare:secondEntryDate];
-	//}
+	}
 		
     return returnValue;
 }

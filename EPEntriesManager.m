@@ -656,6 +656,7 @@
 	[prototypeEntryObject setEntryCategoryID:[theValue objectForKey:@"entryCategoryID"]];
 	[prototypeEntryObject setEntryPlistFilePath:[theValue objectForKey:@"entryPlistFilePath"]];
 	[prototypeEntryObject setEntryPublishedDateString:[theValue objectForKey:@"entryPublishedDateString"]];
+    [prototypeEntryObject setPublishOrderIndex:[theValue objectForKey:@"publishOrderIndex"]];
 	
 	//[prototypeEntryObject setEntryURL:[NSURL URLWithString:theKey]];
     
@@ -854,6 +855,8 @@
 		
 		EPWeblogEntry *existingEntry = [self weblogEntryForPlistFilePath:absolutePlistFilePath
 															   forWeblog:selectedWeblog];
+        NSNumber *publishOrderIndexNum = [[currentEntryPrototype value] objectForKey:@"publishOrderIndex"];
+        [existingEntry setPublishOrderIndex:publishOrderIndexNum];
 		
 		// we don't want to publish here because if there are entries being held as drafts,
 		// (done by saving but not publishing from the entry window), then publishing them
@@ -965,6 +968,7 @@
             NSString *absolutePlistFilePath = [relativeToPath stringByAppendingPathComponent:relativePath];
             EPWeblogEntry *currentWeblogEntry = [self weblogEntryForPlistFilePath:absolutePlistFilePath
                                                                         forWeblog:targetWeblog];
+            [currentWeblogEntry setPublishOrderIndex:[currentEntry publishOrderIndex]];
             //NSLog(@"ugh. %@",[[currentWeblogEntry entryURL] absoluteString]);
             NSMutableArray *currentCategoryArray = [categoryEntriesDictionary objectForKey:currentEntryCategoryID];
             [currentCategoryArray addObject:currentWeblogEntry];

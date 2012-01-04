@@ -266,6 +266,7 @@
 	
 
     NSURL *basePublishURL = [targetWeblog basePublishPathURL];
+    NSString *relativePath = [basePublishURL relativePathFromURL:[NSURL fileURLWithPath:fileWritePath]];
 	NSURL *currentFileURL = [[NSURL fileURLWithPath:fileWritePath] relativeURLStartingFromBaseURL:basePublishURL];
 	NSMutableString *allMainPageEntriesString = [NSMutableString stringWithString:@""];
 	if (forEachEntryPath != nil) {
@@ -409,24 +410,24 @@
 			if (firstPublish && (publishOrderIndex == nil) ) {
 				// the current entry is the newest entry
 				NSString *olderEntryURLString = [[publishOrderArray objectAtIndex:0] valueForKey:@"key"];
-				olderLinkString = [NSString stringWithFormat:@"<a href=\"%@\">Older</a>",olderEntryURLString];
+				olderLinkString = [NSString stringWithFormat:@"<a href=\"%@/%@\">Older</a>",relativePath,olderEntryURLString];
 			} else if ( (! firstPublish) && ([publishOrderIndex intValue] == 0) ) {
 				// the current entry is the newest entry
                 if ([publishOrderArray count] > 1) {
                     NSString *olderEntryURLString = [[publishOrderArray objectAtIndex:1] valueForKey:@"key"];
-                    olderLinkString = [NSString stringWithFormat:@"<a href=\"%@\">Older</a>",olderEntryURLString];
+                    olderLinkString = [NSString stringWithFormat:@"<a href=\"%@/%@\">Older</a>",relativePath,olderEntryURLString];
                 }
 			} else if (firstPublish && ([publishOrderIndex intValue] == [publishOrderArray count]) ) {
 				// the current entry is the oldest entry
                 if (publishOrderArrayCount > 0) {
                     NSString *newerEntryURLString = [[publishOrderArray objectAtIndex:(publishOrderArrayCount - 1)] valueForKey:@"key"];
-                    newerLinkString = [NSString stringWithFormat:@"<a href=\"%@\">Newer</a>",newerEntryURLString];
+                    newerLinkString = [NSString stringWithFormat:@"<a href=\"%@/%@\">Newer</a>",relativePath,newerEntryURLString];
                 }
 			} else if ( (! firstPublish) && ([publishOrderIndex intValue] == ([publishOrderArray count] - 1)) ) {
 				// the current entry is the oldest entry
                 if (publishOrderArrayCount > 1) {
                     NSString *newerEntryURLString = [[publishOrderArray objectAtIndex:(publishOrderArrayCount - 2)] valueForKey:@"key"];
-                    newerLinkString = [NSString stringWithFormat:@"<a href=\"%@\">Newer</a>",newerEntryURLString];
+                    newerLinkString = [NSString stringWithFormat:@"<a href=\"%@/%@\">Newer</a>",relativePath,newerEntryURLString];
                 }
 			} else {
 				// the current entry is neither the oldest nor the newest entry
@@ -435,8 +436,8 @@
 				NSString *newerEntryURLString = nil;
 				olderEntryURLString = [[publishOrderArray objectAtIndex:([publishOrderIndex intValue] + 1)] valueForKey:@"key"];
 				newerEntryURLString = [[publishOrderArray objectAtIndex:([publishOrderIndex intValue] - 1)] valueForKey:@"key"];
-				olderLinkString = [NSString stringWithFormat:@"<a href=\"%@\">Older</a>",olderEntryURLString];
-				newerLinkString = [NSString stringWithFormat:@"<a href=\"%@\">Newer</a>",newerEntryURLString];
+				olderLinkString = [NSString stringWithFormat:@"<a href=\"%@/%@\">Older</a>",relativePath,olderEntryURLString];
+				newerLinkString = [NSString stringWithFormat:@"<a href=\"%@/%@\">Newer</a>",relativePath,newerEntryURLString];
 			}
 			
 			if (olderLinkString) [currentEntryString replaceOccurrencesOfString:@"{[OLDERLINK]}" withString:olderLinkString options:NSLiteralSearch range:NSMakeRange(0,[currentEntryString length])];
@@ -471,7 +472,7 @@
 	
 	// create the string for the {[ARCHIVEPAGEURL]} entity
     //NSURL *fileWriteURL = [NSURL fileURLWithPath:fileWritePath];
-    NSString *relativePath = [basePublishURL relativePathFromURL:[NSURL fileURLWithPath:fileWritePath]];
+    
     
 	NSString *archivePageURLString = [relativePath stringByAppendingPathComponent:@"archive.html"];
 	

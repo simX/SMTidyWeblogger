@@ -37,7 +37,7 @@
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"entryTitle: %@\nentryURL:%@\nentryCategoryID:%@\nentryPlistFilePath:%@\n",entryTitle,entryURL,entryCategoryID,entryPlistFilePath];
+	return [NSString stringWithFormat:@"entryTitle: %@\nentryURL:%@\nentryCategoryID:%@\nentryPlistFilePath:%@\npublishOrderIndex: %@\n",entryTitle,entryURL,entryCategoryID,entryPlistFilePath,[self publishOrderIndex]];
 }
 
 - (NSString *)entryTitle;

@@ -847,7 +847,8 @@
 	NSArray *entryPrototypesArray = [realEntriesController arrangedObjects];
 	
 	for (NSObject *currentEntryPrototype in entryPrototypesArray) {
-        NSString *relativePath = [[currentEntryPrototype value] objectForKey:@"entryPlistFilePath"];
+        NSDictionary *entryPrototypeValue = (NSDictionary *)[currentEntryPrototype value];
+        NSString *relativePath = [entryPrototypeValue objectForKey:@"entryPlistFilePath"];
         NSString *relativeToPath = [[selectedWeblog baseFileDirectoryPath] path];
         NSString *absolutePlistFilePath = [relativeToPath stringByAppendingPathComponent:relativePath];
 		
@@ -855,16 +856,20 @@
 		
 		EPWeblogEntry *existingEntry = [self weblogEntryForPlistFilePath:absolutePlistFilePath
 															   forWeblog:selectedWeblog];
-        NSNumber *publishOrderIndexNum = [[currentEntryPrototype value] objectForKey:@"publishOrderIndex"];
+        NSString *entryPublishedDateString = [entryPrototypeValue objectForKey:@"entryPublishedDateString"];
+        NSNumber *publishOrderIndexNum = [entryPrototypeValue objectForKey:@"publishOrderIndex"];
         [existingEntry setPublishOrderIndex:publishOrderIndexNum];
 		
 		// we don't want to publish here because if there are entries being held as drafts,
 		// (done by saving but not publishing from the entry window), then publishing them
 		// would make them non-drafts; (really, it's because something chokes when trying
 		// to publish an entry that hasn't been published from the entry window)
-		[HTMLGeneratorInstance createAndSaveHTMLFileUsingWeblogEntryObject:existingEntry
-																 forWeblog:selectedWeblog
-															 shouldPublish:NO];
+        
+        if (entryPublishedDateString && publishOrderIndexNum) {
+            [HTMLGeneratorInstance createAndSaveHTMLFileUsingWeblogEntryObject:existingEntry
+                                                                     forWeblog:selectedWeblog
+                                                                 shouldPublish:YES];
+        }
 	}
 	
 	[self stopStatusUpdateSessionOnMainThreadWithString:@"Reset and publish all completed."];

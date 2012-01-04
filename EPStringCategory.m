@@ -57,6 +57,7 @@
 		[tempString replaceOccurrencesOfString:@"?" withString:@"" options:NSLiteralSearch range:NSMakeRange(0,[tempString length])];
 		[tempString replaceOccurrencesOfString:@"|" withString:@"" options:NSLiteralSearch range:NSMakeRange(0,[tempString length])];
 		[tempString replaceOccurrencesOfString:@"%" withString:@"" options:NSLiteralSearch range:NSMakeRange(0,[tempString length])];
+        [tempString replaceOccurrencesOfString:@"*" withString:@"" options:NSLiteralSearch range:NSMakeRange(0,[tempString length])];
 	}
 	
 	NSData *ASCIIStringData = [tempString dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];

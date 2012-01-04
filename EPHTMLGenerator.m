@@ -146,6 +146,10 @@
     NSURL *noExtensionURL = [categoryFolderURL URLByAppendingPathComponent:truncatedTitle];
     NSURL *publishURL = [noExtensionURL URLByAppendingPathExtension:@"html"];
     
+    NSURL *draftCategoryFolderURL = [[targetWeblog baseFileDirectoryPath] URLByAppendingPathComponent:truncatedCategory];
+    NSURL *draftNoExtensionURL = [draftCategoryFolderURL URLByAppendingPathComponent:truncatedTitle];
+    NSURL *draftSaveURL = [draftNoExtensionURL URLByAppendingPathExtension:@"html"];
+    
     NSError *dirCreateError = nil;
     NSFileManager *defaultManager = [NSFileManager defaultManager];
     BOOL succeeded = [defaultManager createDirectoryAtURL:categoryFolderURL
@@ -197,7 +201,7 @@
 								  usingPageTemplate:nil
 						  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/Entry Page Template.txt",[[targetWeblog templateFilesLocation] path]]
 							   usingSidebarTemplate:[NSString stringWithFormat:@"%@/Sidebar Template.txt",[[targetWeblog templateFilesLocation] path]]
-											 toPath:[publishURL path]
+											 toPath:[draftSaveURL path]
 									  validatingXML:YES
 									   firstPublish:NO];
 	}
@@ -507,7 +511,7 @@
 	[mainPageTemplateString replaceOccurrencesOfString:@"{[AUTHORNAME]}" withString:@"Simone Manganelli" options:NSLiteralSearch range:NSMakeRange(0,[mainPageTemplateString length])];
 	[mainPageTemplateString replaceOccurrencesOfString:@"{[FEEDLASTBUILDDATE]}" withString:currentDateString options:NSLiteralSearch range:NSMakeRange(0,[mainPageTemplateString length])];
 	[mainPageTemplateString replaceOccurrencesOfString:@"{[FEEDPUBLISHDATE]}" withString:currentDateString options:NSLiteralSearch range:NSMakeRange(0,[mainPageTemplateString length])];
-	[mainPageTemplateString replaceOccurrencesOfString:@"{[COPYRIGHTDATES]}" withString:@"2003-2008" options:NSLiteralSearch range:NSMakeRange(0,[mainPageTemplateString length])];
+	[mainPageTemplateString replaceOccurrencesOfString:@"{[COPYRIGHTDATES]}" withString:@"2001-2012" options:NSLiteralSearch range:NSMakeRange(0,[mainPageTemplateString length])];
 
 	//[mainPageTemplateString replaceOccurrencesOfString:@"{[CATEGORYSTATS]}" withString:categoryStatsString options:NSLiteralSearch range:NSMakeRange(0,[mainPageTemplateString length])];
 	[mainPageTemplateString replaceOccurrencesOfString:@"{[ARCHIVEPAGEURL]}" withString:archivePageURLString options:NSLiteralSearch range:NSMakeRange(0,[mainPageTemplateString length])];

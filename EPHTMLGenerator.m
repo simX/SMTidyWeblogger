@@ -160,6 +160,7 @@
         NSLog(@"Error creating category folder: %@",dirCreateError);
     }
     
+    NSString *templateLocationPath = [[targetWeblog templateFilesLocation] path];
 	if (shouldPublish) {
 		BOOL firstPublish = YES;
 		if (entryPublishedDate != nil) {
@@ -176,9 +177,10 @@
 										  forWeblog:targetWeblog
 									currentCategory:nil
 								  usingPageTemplate:nil
-						  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/Entry Page Template.txt",[[targetWeblog templateFilesLocation] path]]
-							   usingSidebarTemplate:[NSString stringWithFormat:@"%@/Sidebar Template.txt",[[targetWeblog templateFilesLocation] path]]
+						  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/Entry Page Template.txt",templateLocationPath]
+							   usingSidebarTemplate:[NSString stringWithFormat:@"%@/Sidebar Template.txt",templateLocationPath]
 											 toPath:[publishURL path]
+                                    basePublishPath:[[targetWeblog basePublishPathURL] path]
 									  validatingXML:YES
 									   firstPublish:firstPublish];
 		
@@ -199,9 +201,10 @@
 										  forWeblog:targetWeblog
 									currentCategory:nil
 								  usingPageTemplate:nil
-						  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/Entry Page Template.txt",[[targetWeblog templateFilesLocation] path]]
-							   usingSidebarTemplate:[NSString stringWithFormat:@"%@/Sidebar Template.txt",[[targetWeblog templateFilesLocation] path]]
+						  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/Entry Page Template.txt",templateLocationPath]
+							   usingSidebarTemplate:[NSString stringWithFormat:@"%@/Sidebar Template.txt",templateLocationPath]
 											 toPath:[draftSaveURL path]
+                                    basePublishPath:[[targetWeblog baseFileDirectoryPath] path]
 									  validatingXML:YES
 									   firstPublish:NO];
 	}
@@ -253,6 +256,7 @@
 					usingForEachEntryTemplate:(NSString *)forEachEntryPath
 						 usingSidebarTemplate:(NSString *)sidebarPath
 									   toPath:(NSString *)fileWritePath
+                              basePublishPath:(NSString *)basePublishPath
 								validatingXML:(BOOL)shouldValidateXML
 								 firstPublish:(BOOL)firstPublish;
 {
@@ -269,7 +273,7 @@
 	}
 	
 
-    NSURL *basePublishURL = [targetWeblog basePublishPathURL];
+    NSURL *basePublishURL = [NSURL fileURLWithPath:basePublishPath];
     NSString *relativePath = [basePublishURL relativePathFromURL:[NSURL fileURLWithPath:fileWritePath]];
 	NSURL *currentFileURL = [[NSURL fileURLWithPath:fileWritePath] relativeURLStartingFromBaseURL:basePublishURL];
 	NSMutableString *allMainPageEntriesString = [NSMutableString stringWithString:@""];
@@ -593,35 +597,47 @@
 														   forWeblog:(EPWeblog *)targetWeblog;
 {
     NSURL *indexPublishURL = [[targetWeblog basePublishPathURL] URLByAppendingPathComponent:@"index.html"];
+    NSString *templateLocationPath = [[targetWeblog templateFilesLocation] path];
+    NSString *mainPageTemplatePath = [NSString stringWithFormat:@"%@/Main Page Template.txt",templateLocationPath];
+    NSString *forEachEntryTemplatePath = [NSString stringWithFormat:@"%@/Main Page For Each Entry.txt",templateLocationPath];
+    NSString *sidebarTemplatePath = [NSString stringWithFormat:@"%@/Sidebar Template.txt",templateLocationPath];
+    NSString *basePublishPath = [[targetWeblog basePublishPathURL] path];
 	[self writeFileForArrayOfWeblogEntryObjects:arrayOfEntryObjects
 									  forWeblog:targetWeblog
 								currentCategory:nil
-							  usingPageTemplate:[NSString stringWithFormat:@"%@/Main Page Template.txt",[[targetWeblog templateFilesLocation] path]]
-					  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/Main Page For Each Entry.txt",[[targetWeblog templateFilesLocation] path]]
-						   usingSidebarTemplate:[NSString stringWithFormat:@"%@/Sidebar Template.txt",[[targetWeblog templateFilesLocation] path]]
+							  usingPageTemplate:mainPageTemplatePath
+					  usingForEachEntryTemplate:forEachEntryTemplatePath
+						   usingSidebarTemplate:sidebarTemplatePath
 										 toPath:[indexPublishURL path]
+                                basePublishPath:basePublishPath
 								  validatingXML:YES
 								   firstPublish:NO];
 	
     NSURL *RSSPublishURL = [[targetWeblog basePublishPathURL] URLByAppendingPathComponent:@"rss.xml"];
+    NSString *RSSPageTemplatePath = [NSString stringWithFormat:@"%@/RSS Page Template.txt",templateLocationPath];
+    NSString *RSSForEachEntryTemplatePath = [NSString stringWithFormat:@"%@/RSS Page For Each Entry.txt",templateLocationPath];
 	[self writeFileForArrayOfWeblogEntryObjects:arrayOfEntryObjects
 									  forWeblog:targetWeblog
 								currentCategory:nil
-							  usingPageTemplate:[NSString stringWithFormat:@"%@/RSS Page Template.txt",[[targetWeblog templateFilesLocation] path]]
-					  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/RSS Page For Each Entry.txt",[[targetWeblog templateFilesLocation] path]]
-						   usingSidebarTemplate:[NSString stringWithFormat:@"%@/Sidebar Template.txt",[[targetWeblog templateFilesLocation] path]]
+							  usingPageTemplate:RSSPageTemplatePath
+					  usingForEachEntryTemplate:RSSForEachEntryTemplatePath
+						   usingSidebarTemplate:sidebarTemplatePath
 										 toPath:[RSSPublishURL path]
+                                basePublishPath:basePublishPath
 								  validatingXML:NO
 								   firstPublish:NO];
 	
     NSURL *recentEntriesPublishURL = [[targetWeblog basePublishPathURL] URLByAppendingPathComponent:@"RecentEntries.js"];
+    NSString *JSPageTemplatePath = [NSString stringWithFormat:@"%@/RecentEntries JS Template.txt",templateLocationPath];
+    NSString *JSForEachEntryTemplatePath = [NSString stringWithFormat:@"%@/RecentEntries JS For Each Entry.txt",templateLocationPath];
 	[self writeFileForArrayOfWeblogEntryObjects:arrayOfEntryObjects
 									  forWeblog:targetWeblog
 								currentCategory:nil
-							  usingPageTemplate:[NSString stringWithFormat:@"%@/RecentEntries JS Template.txt",[[targetWeblog templateFilesLocation] path]]
-					  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/RecentEntries JS For Each Entry.txt",[[targetWeblog templateFilesLocation] path]]
+							  usingPageTemplate:JSPageTemplatePath
+					  usingForEachEntryTemplate:JSForEachEntryTemplatePath
 						   usingSidebarTemplate:nil
 										 toPath:[recentEntriesPublishURL path]
+                                basePublishPath:basePublishPath
 								  validatingXML:NO
 								   firstPublish:NO];
 }
@@ -634,13 +650,18 @@
     NSURL *publishURL = [categoryFolderURL URLByAppendingPathComponent:@"index.html"];
     NSString *templateFilesPath = [[targetWeblog templateFilesLocation] path];
     NSString *publishURLPath = [publishURL path];
+    
+    NSString *categoryTemplatePath = [NSString stringWithFormat:@"%@/Category Page Template.txt",templateFilesPath];
+    NSString *categoryForEachEntryTemplatePath = [NSString stringWithFormat:@"%@/Category Page For Each Entry.txt",templateFilesPath];
+    NSString *sidebarTemplatePath = [NSString stringWithFormat:@"%@/Sidebar Template.txt",templateFilesPath];
 	[self writeFileForArrayOfWeblogEntryObjects:arrayOfEntryObjects
 									  forWeblog:targetWeblog
 								currentCategory:categoryID
-							  usingPageTemplate:[NSString stringWithFormat:@"%@/Category Page Template.txt",templateFilesPath]
-					  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/Category Page For Each Entry.txt",templateFilesPath]
-						   usingSidebarTemplate:[NSString stringWithFormat:@"%@/Sidebar Template.txt",templateFilesPath]
+							  usingPageTemplate:categoryTemplatePath
+					  usingForEachEntryTemplate:categoryForEachEntryTemplatePath
+						   usingSidebarTemplate:sidebarTemplatePath
 										 toPath:publishURLPath
+                                basePublishPath:[[targetWeblog basePublishPathURL] path]
 								  validatingXML:YES
 								   firstPublish:NO];
 }
@@ -651,13 +672,18 @@
     NSURL *publishURL = [[targetWeblog basePublishPathURL] URLByAppendingPathComponent:@"archive.html"];
     NSString *templateFilesPath = [[targetWeblog templateFilesLocation] path];
     NSString *publishURLPath = [publishURL path];
+    
+    NSString *archiveTemplatePath = [NSString stringWithFormat:@"%@/Archive Page Template.txt",templateFilesPath];
+    NSString *archiveForEachEntryTemplatePath = [NSString stringWithFormat:@"%@/Archive Page For Each Entry.txt",templateFilesPath];
+    NSString *sidebarTemplatePath = [NSString stringWithFormat:@"%@/Sidebar Template.txt",templateFilesPath];
 	[self writeFileForArrayOfWeblogEntryObjects:arrayOfEntryObjects
 									  forWeblog:targetWeblog
 								currentCategory:nil
-							  usingPageTemplate:[NSString stringWithFormat:@"%@/Archive Page Template.txt",templateFilesPath]
-					  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/Archive Page For Each Entry.txt",templateFilesPath]
-						   usingSidebarTemplate:[NSString stringWithFormat:@"%@/Sidebar Template.txt",templateFilesPath]
+							  usingPageTemplate:archiveTemplatePath
+					  usingForEachEntryTemplate:archiveForEachEntryTemplatePath
+						   usingSidebarTemplate:sidebarTemplatePath
 										 toPath:publishURLPath
+                                basePublishPath:[[targetWeblog basePublishPathURL] path]
 								  validatingXML:YES
 								   firstPublish:NO];
 }

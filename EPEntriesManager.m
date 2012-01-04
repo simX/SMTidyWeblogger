@@ -997,7 +997,7 @@
 	// post, abstract, etc.
 	
 	NSMutableArray *recentWeblogEntries = [NSMutableArray array];
-	int i = 0;
+	//int i = 0;
     NSEnumerator *sortedEntriesEnumerator = [sortedEntriesArray objectEnumerator];
 	while ([recentWeblogEntries count] < 10) {
 		NSDictionary *entryPrototypeKeyValuePair = [sortedEntriesEnumerator nextObject];

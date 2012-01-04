@@ -38,6 +38,7 @@
 					usingForEachEntryTemplate:(NSString *)forEachEntryPath
 						 usingSidebarTemplate:(NSString *)sidebarPath
 									   toPath:(NSString *)fileWritePath
+                              basePublishPath:(NSString *)basePublishPath
 								validatingXML:(BOOL)shouldValidateXML
 								 firstPublish:(BOOL)firstPublish;
 - (BOOL)createCategoryStatsJavaScriptFileFromStatsDict:(NSDictionary *)categoryStats

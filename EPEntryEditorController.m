@@ -213,14 +213,14 @@
 	[dictionaryValue setObject:[weblogEntry entryTitle] forKey:@"entryTitle"];
 	[dictionaryValue setObject:[weblogEntry entryCategoryID] forKey:@"entryCategoryID"];
     NSURL *entryPlistFilePathURL = [weblogEntry entryPlistFilePath];
-	[dictionaryValue setObject:[entryPlistFilePathURL path] forKey:@"entryPlistFilePath"];
+	[dictionaryValue setObject:[entryPlistFilePathURL relativeString] forKey:@"entryPlistFilePath"];
 	
 	NSString *entryPublishedDateStringShort = [weblogEntry entryPublishedDateStringShort];
 	if (entryPublishedDateStringShort)
 		[dictionaryValue setObject:entryPublishedDateStringShort forKey:@"entryPublishedDateString"];
 	
 	NSMutableDictionary *testMutDict = [NSMutableDictionary dictionaryWithDictionary:[weblog entriesDict]];
-	[testMutDict setObject:dictionaryValue forKey:[[weblogEntry entryURL] absoluteString]];
+	[testMutDict setObject:dictionaryValue forKey:[[weblogEntry entryURL] relativeString]];
 	[weblog setEntriesDict:testMutDict];
 }
 

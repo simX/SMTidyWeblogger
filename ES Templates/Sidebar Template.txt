@@ -7,32 +7,31 @@
 <div class="side"> <form name="search" action="http://www.google.com/search" method="get" onsubmit="document.search.q.value = document.search.terms.value + ' site:{[BASEWEBLOGURL]}';"><input type="hidden" name="q" value="" /><input type="text" name="terms" />
 <input type="submit" value="Go" /></form> </div>
 
-<div class="sidetitle"> Links </div>
+<div class="sidetitle"> Links </div><br />
 
 <div class="side">
-<li><a href="http://twitter.com/simX">Twitter</a><br />small, random thoughts</li>
-</ul>
+Twitter: <a href="http://twitter.com/simX">small, random thoughts</a>
 </div>
 
-<div class="sidetitle"> Highlighted Content </div>
+<div class="sidetitle"> Highlighted Content </div><br />
 
 <div class="side">
-<ul>
-<li><a href="http://simx.me/supernova/personal/smoking_bans.html">Smoking Bans</a></li>
-<li><a href="http://simx.me/supernova/personal/on_civil_rights_vs_gay_rights.html">On Civil Rights vs. Gay Rights</a></li>
-<li><a href="http://simx.me/supernova/personal/dear_california.html">Dear California</a></li>
-<li><a href="http://simx.me/supernova/school/india_ink_drawings.html">India Ink Drawings</a></li>
-<li><a href="http://simx.me/supernova/school/house_of_stairs.html">House of Stairs</a></li>
-<li><a href="http://simx.me/supernova/personal/inside_and_out.html">Inside and Out</a></li>
-<li><a href="http://simx.me/supernova/personal/some_things_never_change.html">Some Things Never Change</a></li>
-<li><a href="http://simx.me/supernova/personal/ramblings_on_mono_lake.html">Ramblings on Mono Lake</a></li>
-<li><a href="http://simx.me/supernova/personal/of_doodles_and_deformation.html">Of Doodles and Deformation</a></li>
-<li><a href="http://simx.me/supernova/personal/changes_in_personality.html">Changes in Personality</a></li>
-<li><a href="http://simx.me/supernova/personal/untitled.html">Untitled</a></li>
-</ul>
+
+<a href="http://simx.me/supernova/personal/smoking_bans.html">Smoking Bans</a><br />
+<a href="http://simx.me/supernova/personal/on_civil_rights_vs_gay_rights.html">On Civil Rights vs. Gay Rights</a><br />
+<a href="http://simx.me/supernova/personal/dear_california.html">Dear California</a><br />
+<a href="http://simx.me/supernova/school/india_ink_drawings.html">India Ink Drawings</a><br />
+<a href="http://simx.me/supernova/school/house_of_stairs.html">House of Stairs</a><br />
+<a href="http://simx.me/supernova/personal/inside_and_out.html">Inside and Out</a><br />
+<a href="http://simx.me/supernova/personal/some_things_never_change.html">Some Things Never Change</a><br />
+<a href="http://simx.me/supernova/personal/ramblings_on_mono_lake.html">Ramblings on Mono Lake</a><br />
+<a href="http://simx.me/supernova/personal/of_doodles_and_deformation.html">Of Doodles and Deformation</a><br />
+<a href="http://simx.me/supernova/personal/changes_in_personality.html">Changes in Personality</a><br />
+<a href="http://simx.me/supernova/personal/untitled.html">Untitled</a><br />
+
 </div>
 
-<div class="sidetitle"> Archives </div>
+<div class="sidetitle"> Archives </div><br />
 
 <div class="side"><a href="{[ARCHIVEPAGEURL]}">Browse by date</a><br /><br />
 Browse by category
@@ -44,10 +43,9 @@ writeCategoryStats();
 </div>
 </div>
 
-<div class="sidetitle"> Contact Info </div>
+<div class="sidetitle"> Contact Info </div> <br />
 
-<div class="side"><br />
-<center><b>E-Mail</b></center><br />
+<div class="side">
 <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#115;&#105;&#109;&#88;&#64;&#109;&#97;&#99;&#46;&#99;&#111;&#109;">&#115;&#105;&#109;&#88;&#32;&#91;&#97;&#116;&#93;&#32;&#109;&#97;&#99;&#32;&#91;&#100;&#97;&#119;&#116;&#93;&#32;&#99;&#111;&#109;</a><br /></div>
 
 

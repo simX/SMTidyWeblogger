@@ -185,7 +185,7 @@
 									   firstPublish:firstPublish];
 		
 		if (firstPublish) {
-			BOOL successfulActivation = [commentsManagerInstance activateCommentsWithUsernameTextField:dotMacUsernameTextField
+			/*BOOL successfulActivation = [commentsManagerInstance activateCommentsWithUsernameTextField:dotMacUsernameTextField
 																			   passwordSecureTextField:dotMacPasswordTextField
 																							webPageURL:[NSString stringWithFormat:@"%@%@/%@.html",[targetWeblog baseWeblogURL],truncatedCategory,truncatedTitle]
 										 ];
@@ -194,7 +194,7 @@
 				[theWeblogEntry setEntryPublishedDate:nil];
 				entryPublishedDate = nil;
 				NSBeep();
-			}
+			}*/
 		}
 	} else {
 		[self writeFileForArrayOfWeblogEntryObjects:[NSArray arrayWithObject:theWeblogEntry]

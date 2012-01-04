@@ -253,7 +253,9 @@
 	}*/
 	
 	NSString *previousEntryPlistFilePath = [[[weblog valueForKey:@"filteredOrderedEntryPrototypes"] objectAtIndex:1] valueForKeyPath:@"value.entryPlistFilePath"];
-	EPWeblogEntry *previousEntry = [entriesManagerInstance weblogEntryForPlistFilePath:previousEntryPlistFilePath forWeblog:weblog];
+    NSString *relativeToPath = [[weblog baseFileDirectoryPath] path];
+    NSString *absolutePlistFilePath = [relativeToPath stringByAppendingPathComponent:previousEntryPlistFilePath];
+	EPWeblogEntry *previousEntry = [entriesManagerInstance weblogEntryForPlistFilePath:absolutePlistFilePath forWeblog:weblog];
 	[HTMLGeneratorInstance createAndSaveHTMLFileUsingWeblogEntryObject:previousEntry
 															 forWeblog:weblog
 														 shouldPublish:YES];

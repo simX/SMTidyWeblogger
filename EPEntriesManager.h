@@ -84,7 +84,8 @@
 								   forWeblog:(EPWeblog *)targetWeblog
 							   rootDirectory:(NSString *)rootDirectory
 						 traverseDirectories:(BOOL)shouldTraverseDirectories;
-- (EPWeblogEntry *)partialWeblogEntryFromPrototype:(id)entryControllerKeyValuePair;
+- (EPWeblogEntry *)partialWeblogEntryFromPrototype:(NSObject *)entryControllerKeyValuePair
+                                         forWeblog:(EPWeblog *)targetWeblog;
 - (EPWeblogEntry *)weblogEntryForPlistFilePath:(NSString *)plistFilePath
 									 forWeblog:(EPWeblog *)targetWeblog;
 - (EPWeblogEntry *)scanHTMLFileAndReturnWeblogEntryObject:(NSString *)pathToFileToImport

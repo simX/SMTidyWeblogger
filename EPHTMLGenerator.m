@@ -10,6 +10,7 @@
 #import "EPWeblogEntry.h"
 #import "EPStringCategory.h"
 #import "EPWeblog.h"
+#import "NSURL+SMURLAdditions.h"
 
 
 @implementation EPHTMLGenerator
@@ -264,7 +265,8 @@
 	}
 	
 
-	
+    NSURL *basePublishURL = [targetWeblog basePublishPathURL];
+	NSURL *currentFileURL = [[NSURL fileURLWithPath:fileWritePath] relativeURLStartingFromBaseURL:basePublishURL];
 	NSMutableString *allMainPageEntriesString = [NSMutableString stringWithString:@""];
 	if (forEachEntryPath != nil) {
 		
@@ -336,9 +338,16 @@
 				previousYear = currentYear;
 			}
 			
-			NSString *entryRelativeURLString = [[currentWeblogEntry entryURL] absoluteString];
+            
+            //NSString *currentFileRelativePathString = [[currentWeblogEntry entryURL] relativeString];
+            NSURL *currentEntryURL = [currentWeblogEntry entryURL];
+            NSURL *currentEntryFileURL = [NSURL URLWithString:[currentEntryURL relativePath] relativeToURL:basePublishURL];
+            
+            NSString *entryRelativeURLString = [currentEntryFileURL relativePathFromURL:currentFileURL];
+            
+			NSString *entryURLString = [currentEntryURL absoluteString];
 			NSString *entryDeprecatedURLString = [[currentWeblogEntry entryDeprecatedURL] absoluteString];
-			NSString *entryURLString = [[[targetWeblog baseWeblogURL] URLByAppendingPathComponent:entryRelativeURLString] absoluteString];
+			//NSString *entryURLString = [[[targetWeblog baseWeblogURL] URLByAppendingPathComponent:entryRelativeURLString] absoluteString];
 			NSString *entryRelativeDeprecatedURLString = [[entryDeprecatedURLString componentsSeparatedByString:[[targetWeblog baseWeblogURL] path]] objectAtIndex:1];
 			
 			NSString *entryPageFileName = [[entryURLString componentsSeparatedByString:@"/"] lastObject];
@@ -461,7 +470,10 @@
 	
 	
 	// create the string for the {[ARCHIVEPAGEURL]} entity
-	NSString *archivePageURLString = [NSString stringWithFormat:@"%@archive.html",[targetWeblog baseWeblogURL]];
+    //NSURL *fileWriteURL = [NSURL fileURLWithPath:fileWritePath];
+    NSString *relativePath = [basePublishURL relativePathFromURL:[NSURL fileURLWithPath:fileWritePath]];
+    
+	NSString *archivePageURLString = [relativePath stringByAppendingPathComponent:@"archive.html"];
 	
 	
 	
@@ -486,8 +498,9 @@
 	[mainPageTemplateString replaceOccurrencesOfString:@"{[FEEDGENERATOR]}" withString:@"TidyWeblogger beta" options:NSLiteralSearch range:NSMakeRange(0,[mainPageTemplateString length])];
 	[mainPageTemplateString replaceOccurrencesOfString:@"{[WEBLOGTITLE]}" withString:[targetWeblog weblogTitle] options:NSLiteralSearch range:NSMakeRange(0,[mainPageTemplateString length])];
 	[mainPageTemplateString replaceOccurrencesOfString:@"{[URLIZEDWEBLOGTITLE]}" withString:[[targetWeblog weblogTitle] URLizedString] options:NSLiteralSearch range:NSMakeRange(0,[mainPageTemplateString length])];
-	[mainPageTemplateString replaceOccurrencesOfString:@"{[BASEWEBLOGURL]}" withString:[[targetWeblog baseWeblogURL] path] options:NSLiteralSearch range:NSMakeRange(0,[mainPageTemplateString length])];
-	[mainPageTemplateString replaceOccurrencesOfString:@"{[WEBLOGURL]}" withString:[NSString stringWithFormat:@"%@index.html",[targetWeblog baseWeblogURL]] options:NSLiteralSearch range:NSMakeRange(0,[mainPageTemplateString length])];
+	[mainPageTemplateString replaceOccurrencesOfString:@"{[BASEWEBLOGURL]}" withString:[[targetWeblog baseWeblogURL] absoluteString] options:NSLiteralSearch range:NSMakeRange(0,[mainPageTemplateString length])];
+    [mainPageTemplateString replaceOccurrencesOfString:@"{[RELATIVEBASEWEBLOGURL]}" withString:relativePath options:NSLiteralSearch range:NSMakeRange(0,[mainPageTemplateString length])];
+	[mainPageTemplateString replaceOccurrencesOfString:@"{[WEBLOGURL]}" withString:[NSString stringWithFormat:@"%@index.html",[[targetWeblog baseWeblogURL] absoluteString]] options:NSLiteralSearch range:NSMakeRange(0,[mainPageTemplateString length])];
 	[mainPageTemplateString replaceOccurrencesOfString:@"{[WEBLOGDESCRIPTION]}" withString:@"Tech and computer-related ramblings and tidbits" options:NSLiteralSearch range:NSMakeRange(0,[mainPageTemplateString length])];
 	[mainPageTemplateString replaceOccurrencesOfString:@"{[AUTHOREMAIL]}" withString:@"simX_other@mac.com" options:NSLiteralSearch range:NSMakeRange(0,[mainPageTemplateString length])];
 	[mainPageTemplateString replaceOccurrencesOfString:@"{[AUTHORNAME]}" withString:@"Simone Manganelli" options:NSLiteralSearch range:NSMakeRange(0,[mainPageTemplateString length])];
@@ -521,6 +534,19 @@
 		outputXMLString = mainPageTemplateString;
 	}
 	
+    
+    NSError *dirCreateError = nil;
+    NSURL *categoryFolderURL = [[NSURL fileURLWithPath:fileWritePath] URLByDeletingLastPathComponent];
+    NSFileManager *defaultManager = [NSFileManager defaultManager];
+    BOOL succeeded = [defaultManager createDirectoryAtURL:categoryFolderURL
+                              withIntermediateDirectories:YES
+                                               attributes:nil
+                                                    error:&dirCreateError];
+    if (! succeeded) {
+        NSLog(@"Error creating category folder: %@",dirCreateError);
+    }
+    
+    
     NSError *writeError = nil;
 	BOOL writeSuccess = [outputXMLString writeToFile:fileWritePath atomically:YES encoding:NSUTF8StringEncoding error:&writeError];
     
@@ -601,13 +627,15 @@
 {
     NSURL *categoryFolderURL = [[targetWeblog basePublishPathURL] URLByAppendingPathComponent:categoryID isDirectory:YES];
     NSURL *publishURL = [categoryFolderURL URLByAppendingPathComponent:@"index.html"];
+    NSString *templateFilesPath = [[targetWeblog templateFilesLocation] path];
+    NSString *publishURLPath = [publishURL path];
 	[self writeFileForArrayOfWeblogEntryObjects:arrayOfEntryObjects
 									  forWeblog:targetWeblog
 								currentCategory:categoryID
-							  usingPageTemplate:[NSString stringWithFormat:@"%@/Category Page Template.txt",[[targetWeblog templateFilesLocation] path]]
-					  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/Category Page For Each Entry.txt",[[targetWeblog templateFilesLocation] path]]
-						   usingSidebarTemplate:[NSString stringWithFormat:@"%@/Sidebar Template.txt",[[targetWeblog templateFilesLocation] path]]
-										 toPath:[publishURL path]
+							  usingPageTemplate:[NSString stringWithFormat:@"%@/Category Page Template.txt",templateFilesPath]
+					  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/Category Page For Each Entry.txt",templateFilesPath]
+						   usingSidebarTemplate:[NSString stringWithFormat:@"%@/Sidebar Template.txt",templateFilesPath]
+										 toPath:publishURLPath
 								  validatingXML:YES
 								   firstPublish:NO];
 }
@@ -616,13 +644,15 @@
 											forWeblog:(EPWeblog *)targetWeblog;
 {
     NSURL *publishURL = [[targetWeblog basePublishPathURL] URLByAppendingPathComponent:@"archive.html"];
+    NSString *templateFilesPath = [[targetWeblog templateFilesLocation] path];
+    NSString *publishURLPath = [publishURL path];
 	[self writeFileForArrayOfWeblogEntryObjects:arrayOfEntryObjects
 									  forWeblog:targetWeblog
 								currentCategory:nil
-							  usingPageTemplate:[NSString stringWithFormat:@"%@/Archive Page Template.txt",[[targetWeblog templateFilesLocation] path]]
-					  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/Archive Page For Each Entry.txt",[[targetWeblog templateFilesLocation] path]]
-						   usingSidebarTemplate:[NSString stringWithFormat:@"%@/Sidebar Template.txt",[[targetWeblog templateFilesLocation] path]]
-										 toPath:[publishURL path]
+							  usingPageTemplate:[NSString stringWithFormat:@"%@/Archive Page Template.txt",templateFilesPath]
+					  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/Archive Page For Each Entry.txt",templateFilesPath]
+						   usingSidebarTemplate:[NSString stringWithFormat:@"%@/Sidebar Template.txt",templateFilesPath]
+										 toPath:publishURLPath
 								  validatingXML:YES
 								   firstPublish:NO];
 }

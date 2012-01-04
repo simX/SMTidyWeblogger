@@ -14,7 +14,7 @@
 <body>	
 <script language="JavaScript" type="text/javascript"> activateStylesheetFromCookie();</script>
 <div id="banner">
-<div class="banner_category_image"><img src="categoryImage.png" width="60" height="60" alt="" /></div><h3><a class="banner" href="../index.html"><script language="JavaScript1.2" type="text/javascript"> getBlogName(); </script></a> > {[OVERALLCATEGORY]}</h3>
+<div class="banner_category_image"><img src="categoryImage.png" width="60" height="60" alt="" /></div><h3> <a class="banner" href="../index.html">{[WEBLOGTITLE]}</a> &gt; {[ENTRYCATEGORY]}</h3>
 </div>
 <script language="JavaScript" type="text/javascript">writeStyleSheetButtonLinks();</script>
 <div class="topfade"></div>

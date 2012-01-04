@@ -28,6 +28,7 @@
 		A4277D9D0EF135E600DADB08 /* style.tiff in Resources */ = {isa = PBXBuildFile; fileRef = A4277D9C0EF135E600DADB08 /* style.tiff */; };
 		A4277D9F0EF135F300DADB08 /* TB_PublishDomain.tiff in Resources */ = {isa = PBXBuildFile; fileRef = A4277D9E0EF135F300DADB08 /* TB_PublishDomain.tiff */; };
 		A4277DA10EF1360200DADB08 /* TB_Publish_Locally.tiff in Resources */ = {isa = PBXBuildFile; fileRef = A4277DA00EF1360200DADB08 /* TB_Publish_Locally.tiff */; };
+		A42A713114B41E7B00D155A4 /* NSURL+SMURLAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A42A713014B41E7B00D155A4 /* NSURL+SMURLAdditions.m */; };
 		A42D95AC0D8C5DA200EFECEF /* EPEntriesManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A42D95AB0D8C5DA200EFECEF /* EPEntriesManager.m */; };
 		A42D968A0D8C7B4C00EFECEF /* EPEntryEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = A42D96890D8C7B4C00EFECEF /* EPEntryEditorController.m */; };
 		A4755F5C0EC66EE800F2AC2A /* EPWeblog.m in Sources */ = {isa = PBXBuildFile; fileRef = A4755F5B0EC66EE800F2AC2A /* EPWeblog.m */; };
@@ -72,6 +73,8 @@
 		A4277D9C0EF135E600DADB08 /* style.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = style.tiff; sourceTree = "<group>"; };
 		A4277D9E0EF135F300DADB08 /* TB_PublishDomain.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = TB_PublishDomain.tiff; sourceTree = "<group>"; };
 		A4277DA00EF1360200DADB08 /* TB_Publish_Locally.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = TB_Publish_Locally.tiff; sourceTree = "<group>"; };
+		A42A712F14B41E7B00D155A4 /* NSURL+SMURLAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+SMURLAdditions.h"; sourceTree = "<group>"; };
+		A42A713014B41E7B00D155A4 /* NSURL+SMURLAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+SMURLAdditions.m"; sourceTree = "<group>"; };
 		A42D95AA0D8C5DA200EFECEF /* EPEntriesManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPEntriesManager.h; sourceTree = "<group>"; };
 		A42D95AB0D8C5DA200EFECEF /* EPEntriesManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EPEntriesManager.m; sourceTree = "<group>"; };
 		A42D96880D8C7B4C00EFECEF /* EPEntryEditorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPEntryEditorController.h; sourceTree = "<group>"; };
@@ -176,6 +179,8 @@
 			children = (
 				32CA4F630368D1EE00C91783 /* TidyWeblogger_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
+				A42A712F14B41E7B00D155A4 /* NSURL+SMURLAdditions.h */,
+				A42A713014B41E7B00D155A4 /* NSURL+SMURLAdditions.m */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -330,6 +335,7 @@
 				A409AE680F076AE100CE1CAE /* EPWeblogEntryPrototype.m in Sources */,
 				A409AEAC0F0781DA00CE1CAE /* EPDictionaryController.m in Sources */,
 				A409AEDD0F078AE600CE1CAE /* EPMutableDictionary.m in Sources */,
+				A42A713114B41E7B00D155A4 /* NSURL+SMURLAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

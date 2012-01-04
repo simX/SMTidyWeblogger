@@ -644,7 +644,8 @@
 	return importedEntry;
 }
 
-- (EPWeblogEntry *)partialWeblogEntryFromPrototype:(NSObject *)entryControllerKeyValuePair;
+- (EPWeblogEntry *)partialWeblogEntryFromPrototype:(NSObject *)entryControllerKeyValuePair
+                                         forWeblog:(EPWeblog *)targetWeblog;
 {
 	NSString *theKey = [entryControllerKeyValuePair key];
 	NSDictionary *theValue = [entryControllerKeyValuePair value];
@@ -656,7 +657,11 @@
 	[prototypeEntryObject setEntryPlistFilePath:[theValue objectForKey:@"entryPlistFilePath"]];
 	[prototypeEntryObject setEntryPublishedDateString:[theValue objectForKey:@"entryPublishedDateString"]];
 	
-	[prototypeEntryObject setEntryURL:[NSURL URLWithString:theKey]];
+	//[prototypeEntryObject setEntryURL:[NSURL URLWithString:theKey]];
+    
+	NSURL *baseWeblogURL = [targetWeblog baseWeblogURL];
+	NSURL *importedEntryURL = [NSURL URLWithString:theKey relativeToURL:baseWeblogURL];
+	[prototypeEntryObject setEntryURL:importedEntryURL];
 	
 	return prototypeEntryObject;
 }
@@ -711,25 +716,11 @@
 		[existingEntry setEntryCategoryID:categoryID];
 		
 		NSString *URLString = [theExistingEntryProtoObject objectForKey:@"entryURL"];
-		NSString *relativeURLString, *baseURLString;
-		if (URLString == nil) {
-			NSString *truncatedTitle = [entryTitle URLizedStringWithLengthLimit:40];
-			NSString *truncatedCategory = [categoryID URLizedStringWithLengthLimit:20];
-			relativeURLString = [NSString stringWithFormat:@"%@/%@.html",truncatedCategory,truncatedTitle];
-			baseURLString = [[targetWeblog baseWeblogURL] path];
-		} else {
-			// problems can happen here if the URL is not as expected; this should be robust-ized
-            NSURL *baseWeblogURL = [targetWeblog baseWeblogURL];
-            NSString *baseWeblogPath = [baseWeblogURL path];
-			NSString *potentialRelativeURLString = [[URLString componentsSeparatedByString:baseWeblogPath] objectAtIndex:1];
-            if ([potentialRelativeURLString hasPrefix:@"/"]) {
-                relativeURLString = [potentialRelativeURLString substringFromIndex:1];
-            } else {
-                relativeURLString = potentialRelativeURLString;
-            }
-			baseURLString = baseWeblogPath;
-		}
-		[existingEntry setEntryURL:[[NSURL URLWithString:baseURLString] URLByAppendingPathComponent:relativeURLString]];
+        NSString *baseURLString = [[targetWeblog baseWeblogURL] absoluteString];
+        NSString *relativeURLString = [[URLString componentsSeparatedByString:baseURLString] objectAtIndex:1];
+        
+        NSURL *entryURL = [NSURL URLWithString:relativeURLString relativeToURL:[targetWeblog baseWeblogURL]];
+		[existingEntry setEntryURL:entryURL];
 		
 		NSMutableDictionary *weblogEntryPrototype = [[targetWeblog entriesDict] objectForKey:[[existingEntry entryURL] absoluteString]];
 		NSNumber *publishOrderIndex = [weblogEntryPrototype objectForKey:@"publishOrderIndex"];
@@ -957,7 +948,9 @@
         
 		if (publishedDateString) {
             //NSLog(@"%@: %@",[currentWeblogEntryPrototype objectForKey:@"entryTitle"],[currentWeblogEntryPrototype objectForKey:@"entryPublishedDateString"]);
-			[arrayOfPartialWeblogEntries addObject:[self partialWeblogEntryFromPrototype:currentWeblogEntryPrototypeKeyValuePair]];
+            EPWeblogEntry *currentEntry = [self partialWeblogEntryFromPrototype:currentWeblogEntryPrototypeKeyValuePair
+                                                                      forWeblog:targetWeblog];
+			[arrayOfPartialWeblogEntries addObject:currentEntry];
             
             // we don't want drafts being counted or included in the category pages
             NSString *currentEntryCategoryID = [currentWeblogEntryPrototype objectForKey:@"entryCategoryID"];
@@ -972,6 +965,7 @@
             NSString *absolutePlistFilePath = [relativeToPath stringByAppendingPathComponent:relativePath];
             EPWeblogEntry *currentWeblogEntry = [self weblogEntryForPlistFilePath:absolutePlistFilePath
                                                                         forWeblog:targetWeblog];
+            //NSLog(@"ugh. %@",[[currentWeblogEntry entryURL] absoluteString]);
             NSMutableArray *currentCategoryArray = [categoryEntriesDictionary objectForKey:currentEntryCategoryID];
             [currentCategoryArray addObject:currentWeblogEntry];
         } else {

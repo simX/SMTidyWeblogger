@@ -25,7 +25,7 @@
 <div class="side"><a href="{[ARCHIVEPAGEURL]}">Browse by date</a><br /><br />
 Browse by category
 <div style="text-indent: 2em;">
-<script language="JavaScript1.2" src="http://homepage.mac.com/simx/supernova/english/categoryStats.js" type="text/javascript"></script>
+<script language="JavaScript1.2" src="{[RELATIVEBASEWEBLOGURL]}/categoryStats.js" type="text/javascript"></script>
 <script language="JavaScript1.2" type="text/javascript"><!--
 writeCategoryStats();
 --></script>

@@ -45,4 +45,6 @@
 - (void)writeListOfEntriesToDisk;
 //- (void)refreshEntriesArray;
 
+- (void)migrateEntriesDict;
+
 @end

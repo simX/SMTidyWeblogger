@@ -65,11 +65,6 @@
     NSString *baseWeblogURLString = [listOfEntriesFile objectForKey:@"baseWeblogURL"];
     if (! baseWeblogURLString) baseWeblogURLString = [weblogPrototype objectForKey:@"baseWeblogURL"];
     NSURL *baseWeblogURL = [NSURL URLWithString:baseWeblogURLString];
-    
-    NSString *basePublishPathURLString = [listOfEntriesFile objectForKey:@"basePublishPathURL"];
-    if (! basePublishPathURLString) basePublishPathURLString = [weblogPrototype objectForKey:@"basePublishPathURL"];
-    if (! basePublishPathURLString) basePublishPathURLString = baseWeblogURLString;
-    NSURL *basePublishPathURL = [NSURL URLWithString:basePublishPathURLString];
 
 	// load the entries dictionary
 
@@ -154,7 +149,6 @@
 	[importedWeblog setPathToEntriesDictionary:pathEntriesDictURL];
 	[importedWeblog setTemplateFilesLocation:[NSURL fileURLWithPath:[templateFilesLocation stringByExpandingTildeInPath]]];
 	[importedWeblog setWeblogTitle:titleOfWeblogToImport];
-    [importedWeblog setBasePublishPathURL:basePublishPathURL];
     
     if (baseWeblogURL) {
         [importedWeblog setBaseWeblogURL:baseWeblogURL];
@@ -170,6 +164,17 @@
             [importedWeblog setBaseWeblogURL:[NSURL URLWithString:@"http://127.0.0.1/"]];
         }
     }
+    
+    NSString *basePublishPathURLString = [listOfEntriesFile objectForKey:@"basePublishPathURL"];
+    if (! basePublishPathURLString) basePublishPathURLString = [weblogPrototype objectForKey:@"basePublishPathURL"];
+    NSURL *basePublishPathURL = nil;
+    if (! basePublishPathURLString) {
+        basePublishPathURL = [importedWeblog baseFileDirectoryPath];
+    } else {
+        basePublishPathURL = [NSURL URLWithString:basePublishPathURLString];
+    }
+    
+    [importedWeblog setBasePublishPathURL:basePublishPathURL];
     
 
     
@@ -194,6 +199,8 @@
 	// is for eventual writing to disk
 	[importedWeblog setEntriesDict:entriesOfWeblogToImport];
 	[importedWeblog setCategoryDictionary:[listOfEntriesFile objectForKey:@"categoryDictionary"]];
+    
+    [importedWeblog migrateEntriesDict];
 		
 	//listOfEntriesActiveSet = [[entries allValues] sortedArrayUsingFunction:dateCompareDescending context:NULL];
 	//[listOfEntriesActiveSet retain];
@@ -848,11 +855,13 @@
 	NSArray *entryPrototypesArray = [realEntriesController arrangedObjects];
 	
 	for (NSObject *currentEntryPrototype in entryPrototypesArray) {
-		NSString *currentEntryPath = [[currentEntryPrototype value] objectForKey:@"entryPlistFilePath"];
+        NSString *relativePath = [[currentEntryPrototype value] objectForKey:@"entryPlistFilePath"];
+        NSString *relativeToPath = [[selectedWeblog baseFileDirectoryPath] path];
+        NSString *absolutePlistFilePath = [relativeToPath stringByAppendingPathComponent:relativePath];
 		
-		[self updateStatusWithString:[NSString stringWithFormat:@"Publishing entry page for path: %@",currentEntryPath]];
+		[self updateStatusWithString:[NSString stringWithFormat:@"Publishing entry page for path: %@",absolutePlistFilePath]];
 		
-		EPWeblogEntry *existingEntry = [self weblogEntryForPlistFilePath:currentEntryPath
+		EPWeblogEntry *existingEntry = [self weblogEntryForPlistFilePath:absolutePlistFilePath
 															   forWeblog:selectedWeblog];
 		
 		// we don't want to publish here because if there are entries being held as drafts,
@@ -908,6 +917,18 @@
 
 - (void)publishAllEntriesForWeblog:(EPWeblog *)targetWeblog;
 {
+    // first, create the publish folder
+    NSURL *basePublishPathURL = [targetWeblog basePublishPathURL];
+    NSFileManager *defaultManager = [NSFileManager defaultManager];
+    NSError *dirCreateError = nil;
+    BOOL succeeded = [defaultManager createDirectoryAtURL:basePublishPathURL
+                              withIntermediateDirectories:YES
+                                               attributes:nil
+                                                    error:&dirCreateError];
+    if (! succeeded) {
+        NSLog(@"Error creating publish folder: %@",dirCreateError);
+    }
+    
 	// we can't depend on the target weblog being the selected weblog, so we have to allocate an entirely
 	// new dictionary controller if we want NSDictionaryControllerKeyValuePair objects
 	
@@ -946,10 +967,13 @@
                 [categoryEntriesDictionary setObject:[NSMutableArray array] forKey:currentEntryCategoryID];
             }
             
-            [[categoryEntriesDictionary objectForKey:currentEntryCategoryID]
-             addObject:[self weblogEntryForPlistFilePath:[currentWeblogEntryPrototype objectForKey:@"entryPlistFilePath"]
-                                               forWeblog:targetWeblog]
-             ];
+            NSString *relativePath = [currentWeblogEntryPrototype objectForKey:@"entryPlistFilePath"];
+            NSString *relativeToPath = [[targetWeblog baseFileDirectoryPath] path];
+            NSString *absolutePlistFilePath = [relativeToPath stringByAppendingPathComponent:relativePath];
+            EPWeblogEntry *currentWeblogEntry = [self weblogEntryForPlistFilePath:absolutePlistFilePath
+                                                                        forWeblog:targetWeblog];
+            NSMutableArray *currentCategoryArray = [categoryEntriesDictionary objectForKey:currentEntryCategoryID];
+            [currentCategoryArray addObject:currentWeblogEntry];
         } else {
             NSLog(@"not published: %@",[currentWeblogEntryPrototype objectForKey:@"entryTitle"]);
         }
@@ -971,9 +995,13 @@
 	int i = 0;
 	for (i = 0; i < 10; i++) {
 		NSDictionary *entryPrototypeKeyValuePair = [sortedEntriesArray objectAtIndex:i];
-		[recentWeblogEntries addObject:[self weblogEntryForPlistFilePath:[[entryPrototypeKeyValuePair value] objectForKey:@"entryPlistFilePath"]
-															   forWeblog:targetWeblog]
-		 ];
+        NSDictionary *entryPrototype = [entryPrototypeKeyValuePair value];
+        NSString *relativePath = [entryPrototype objectForKey:@"entryPlistFilePath"];
+        NSString *relativeToPath = [[targetWeblog baseFileDirectoryPath] path];
+        NSString *absolutePlistFilePath = [relativeToPath stringByAppendingPathComponent:relativePath];
+        EPWeblogEntry *currentWeblogEntry = [self weblogEntryForPlistFilePath:absolutePlistFilePath
+                                                                    forWeblog:targetWeblog];
+		[recentWeblogEntries addObject:currentWeblogEntry];
 	}
 	
 	
@@ -1011,6 +1039,7 @@
 	currentCategoryID = nil;
 	for (currentCategoryID in [categoryEntriesDictionary allKeys]) {
 		[self updateStatusWithString:[NSString stringWithFormat:@"Publishing %@ category page...",currentCategoryID]];
+        
 		[HTMLGeneratorInstance createCategoryPageForArrayOfWeblogEntryObjects:[categoryEntriesDictionary objectForKey:currentCategoryID]
 																   categoryID:currentCategoryID
 																	forWeblog:targetWeblog];
@@ -1033,7 +1062,10 @@
 	[entryEditorControllerInstance setWeblog:selectedWeblog];
 	
 	// here we need to open the plist file and re-create the EPWeblogEntry object so that it can be displayed
-	EPWeblogEntry *existingEntry = [self weblogEntryForPlistFilePath:[[theExistingEntryPrototype value] objectForKey:@"entryPlistFilePath"]
+    NSString *relativePath = [[theExistingEntryPrototype value] objectForKey:@"entryPlistFilePath"];
+    NSString *relativeToPath = [[selectedWeblog baseFileDirectoryPath] path];
+    NSString *absolutePlistFilePath = [relativeToPath stringByAppendingPathComponent:relativePath];
+	EPWeblogEntry *existingEntry = [self weblogEntryForPlistFilePath:absolutePlistFilePath
 														   forWeblog:selectedWeblog];
 	[entryEditorControllerInstance setWeblogEntry:existingEntry];
 	

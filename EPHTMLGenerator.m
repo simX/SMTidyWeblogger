@@ -27,7 +27,7 @@
 	
 	if (isDirectory && fileExists) {
 		// this is good
-		NSLog(@"folder exists");
+		//NSLog(@"folder exists");
 	} else if (! fileExists) {
         NSError *directoryCreationError = nil;
         NSString *pathForDirectoryToCreate = [NSString stringWithFormat:@"%@/%@",[targetWeblog baseFileDirectoryPath],URLizedCategory];
@@ -144,6 +144,17 @@
     NSURL *categoryFolderURL = [[targetWeblog basePublishPathURL] URLByAppendingPathComponent:truncatedCategory];
     NSURL *noExtensionURL = [categoryFolderURL URLByAppendingPathComponent:truncatedTitle];
     NSURL *publishURL = [noExtensionURL URLByAppendingPathExtension:@"html"];
+    
+    NSError *dirCreateError = nil;
+    NSFileManager *defaultManager = [NSFileManager defaultManager];
+    BOOL succeeded = [defaultManager createDirectoryAtURL:categoryFolderURL
+                         withIntermediateDirectories:YES
+                                          attributes:nil
+                                               error:&dirCreateError];
+    if (! succeeded) {
+        NSLog(@"Error creating category folder: %@",dirCreateError);
+    }
+    
 	if (shouldPublish) {
 		BOOL firstPublish = YES;
 		if (entryPublishedDate != nil) {
@@ -203,11 +214,12 @@
 	// the new URL
 	
 	if ([theWeblogEntry entryDeprecatedURL]) {
-		NSString *dummyiDiskFileURL = [commentsManagerInstance convertURLToiDiskFileURL:[[theWeblogEntry entryDeprecatedURL] absoluteString]
+#warning convert deprecated URLs to an array of deprecated relative URLs to the base publish folder
+		/*NSString *dummyiDiskFileURL = [commentsManagerInstance convertURLToiDiskFileURL:[[theWeblogEntry entryDeprecatedURL] absoluteString]
 																   preservingRootFolder:YES];
 		[commentsManagerInstance createDummyFile:dummyiDiskFileURL
 									entryPageURL:[[theWeblogEntry entryURL] absoluteString]
-								   iDiskUsername:[dotMacUsernameTextField stringValue]];
+								   iDiskUsername:[dotMacUsernameTextField stringValue]];*/
 	}
 	
 	
@@ -324,9 +336,9 @@
 				previousYear = currentYear;
 			}
 			
-			NSString *entryURLString = [[currentWeblogEntry entryURL] absoluteString];
+			NSString *entryRelativeURLString = [[currentWeblogEntry entryURL] absoluteString];
 			NSString *entryDeprecatedURLString = [[currentWeblogEntry entryDeprecatedURL] absoluteString];
-			NSString *entryRelativeURLString = [[entryURLString componentsSeparatedByString:[[targetWeblog baseWeblogURL] path]] objectAtIndex:1];
+			NSString *entryURLString = [[[targetWeblog baseWeblogURL] URLByAppendingPathComponent:entryRelativeURLString] absoluteString];
 			NSString *entryRelativeDeprecatedURLString = [[entryDeprecatedURLString componentsSeparatedByString:[[targetWeblog baseWeblogURL] path]] objectAtIndex:1];
 			
 			NSString *entryPageFileName = [[entryURLString componentsSeparatedByString:@"/"] lastObject];
@@ -509,7 +521,13 @@
 		outputXMLString = mainPageTemplateString;
 	}
 	
-	BOOL writeSuccess = [outputXMLString writeToFile:fileWritePath atomically:YES encoding:NSUTF8StringEncoding error:nil];
+    NSError *writeError = nil;
+	BOOL writeSuccess = [outputXMLString writeToFile:fileWritePath atomically:YES encoding:NSUTF8StringEncoding error:&writeError];
+    
+    if (! writeSuccess) {
+        NSLog(@"Error writing file at path %@: %@",fileWritePath,writeError);
+    }
+    
 	return writeSuccess;
 }
 
@@ -533,7 +551,8 @@
 											[[categoryStats objectForKey:@"Total Count"] intValue]]
 	 ];
 	
-	BOOL writeSuccess = [categoryStatsString writeToFile:[[[targetWeblog baseFileDirectoryPath] path] stringByAppendingPathComponent:@"categoryStats.js"]
+    NSURL *publishURL = [[targetWeblog basePublishPathURL] URLByAppendingPathComponent:@"categoryStats.js"];
+	BOOL writeSuccess = [categoryStatsString writeToFile:[publishURL path]
 											  atomically:YES
 												encoding:NSUTF8StringEncoding error:nil];
 	return writeSuccess;
@@ -542,33 +561,36 @@
 - (void)createRecentEntriesPagesUsingArrayOfWeblogEntryObjects:(NSArray *)arrayOfEntryObjects
 														   forWeblog:(EPWeblog *)targetWeblog;
 {
+    NSURL *indexPublishURL = [[targetWeblog basePublishPathURL] URLByAppendingPathComponent:@"index.html"];
 	[self writeFileForArrayOfWeblogEntryObjects:arrayOfEntryObjects
 									  forWeblog:targetWeblog
 								currentCategory:nil
 							  usingPageTemplate:[NSString stringWithFormat:@"%@/Main Page Template.txt",[[targetWeblog templateFilesLocation] path]]
 					  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/Main Page For Each Entry.txt",[[targetWeblog templateFilesLocation] path]]
 						   usingSidebarTemplate:[NSString stringWithFormat:@"%@/Sidebar Template.txt",[[targetWeblog templateFilesLocation] path]]
-										 toPath:[[NSString stringWithFormat:@"%@/index.html",[targetWeblog baseFileDirectoryPath]] stringByExpandingTildeInPath]
+										 toPath:[indexPublishURL path]
 								  validatingXML:YES
 								   firstPublish:NO];
 	
+    NSURL *RSSPublishURL = [[targetWeblog basePublishPathURL] URLByAppendingPathComponent:@"rss.xml"];
 	[self writeFileForArrayOfWeblogEntryObjects:arrayOfEntryObjects
 									  forWeblog:targetWeblog
 								currentCategory:nil
 							  usingPageTemplate:[NSString stringWithFormat:@"%@/RSS Page Template.txt",[[targetWeblog templateFilesLocation] path]]
 					  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/RSS Page For Each Entry.txt",[[targetWeblog templateFilesLocation] path]]
 						   usingSidebarTemplate:[NSString stringWithFormat:@"%@/Sidebar Template.txt",[[targetWeblog templateFilesLocation] path]]
-										 toPath:[[NSString stringWithFormat:@"%@/rss.xml",[targetWeblog baseFileDirectoryPath]] stringByExpandingTildeInPath]
+										 toPath:[RSSPublishURL path]
 								  validatingXML:NO
 								   firstPublish:NO];
 	
+    NSURL *recentEntriesPublishURL = [[targetWeblog basePublishPathURL] URLByAppendingPathComponent:@"RecentEntries.js"];
 	[self writeFileForArrayOfWeblogEntryObjects:arrayOfEntryObjects
 									  forWeblog:targetWeblog
 								currentCategory:nil
 							  usingPageTemplate:[NSString stringWithFormat:@"%@/RecentEntries JS Template.txt",[[targetWeblog templateFilesLocation] path]]
 					  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/RecentEntries JS For Each Entry.txt",[[targetWeblog templateFilesLocation] path]]
 						   usingSidebarTemplate:nil
-										 toPath:[[NSString stringWithFormat:@"%@/RecentEntries.js",[targetWeblog baseFileDirectoryPath]] stringByExpandingTildeInPath]
+										 toPath:[recentEntriesPublishURL path]
 								  validatingXML:NO
 								   firstPublish:NO];
 }
@@ -577,13 +599,15 @@
 											categoryID:(NSString *)categoryID
 											 forWeblog:(EPWeblog *)targetWeblog;
 {
+    NSURL *categoryFolderURL = [[targetWeblog basePublishPathURL] URLByAppendingPathComponent:categoryID isDirectory:YES];
+    NSURL *publishURL = [categoryFolderURL URLByAppendingPathComponent:@"index.html"];
 	[self writeFileForArrayOfWeblogEntryObjects:arrayOfEntryObjects
 									  forWeblog:targetWeblog
 								currentCategory:categoryID
 							  usingPageTemplate:[NSString stringWithFormat:@"%@/Category Page Template.txt",[[targetWeblog templateFilesLocation] path]]
 					  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/Category Page For Each Entry.txt",[[targetWeblog templateFilesLocation] path]]
 						   usingSidebarTemplate:[NSString stringWithFormat:@"%@/Sidebar Template.txt",[[targetWeblog templateFilesLocation] path]]
-										 toPath:[[NSString stringWithFormat:@"%@/%@/index.html",[targetWeblog baseFileDirectoryPath],categoryID] stringByExpandingTildeInPath]
+										 toPath:[publishURL path]
 								  validatingXML:YES
 								   firstPublish:NO];
 }
@@ -591,13 +615,14 @@
 - (void)createArchivePageForArrayOfWeblogEntryObjects:(NSArray *)arrayOfEntryObjects
 											forWeblog:(EPWeblog *)targetWeblog;
 {
+    NSURL *publishURL = [[targetWeblog basePublishPathURL] URLByAppendingPathComponent:@"archive.html"];
 	[self writeFileForArrayOfWeblogEntryObjects:arrayOfEntryObjects
 									  forWeblog:targetWeblog
 								currentCategory:nil
 							  usingPageTemplate:[NSString stringWithFormat:@"%@/Archive Page Template.txt",[[targetWeblog templateFilesLocation] path]]
 					  usingForEachEntryTemplate:[NSString stringWithFormat:@"%@/Archive Page For Each Entry.txt",[[targetWeblog templateFilesLocation] path]]
 						   usingSidebarTemplate:[NSString stringWithFormat:@"%@/Sidebar Template.txt",[[targetWeblog templateFilesLocation] path]]
-										 toPath:[[NSString stringWithFormat:@"%@/archive.html",[targetWeblog baseFileDirectoryPath]] stringByExpandingTildeInPath]
+										 toPath:[publishURL path]
 								  validatingXML:YES
 								   firstPublish:NO];
 }

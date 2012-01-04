@@ -17,6 +17,7 @@ Twitter: <a href="http://twitter.com/simX">small, random thoughts</a>
 
 <div class="side">
 
+<a href="http://simx.me/supernova/personal/control_and_loss.html">Control and Loss</a><br />
 <a href="http://simx.me/supernova/personal/smoking_bans.html">Smoking Bans</a><br />
 <a href="http://simx.me/supernova/personal/on_civil_rights_vs_gay_rights.html">On Civil Rights vs. Gay Rights</a><br />
 <a href="http://simx.me/supernova/personal/dear_california.html">Dear California</a><br />

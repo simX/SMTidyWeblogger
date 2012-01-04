@@ -6,7 +6,6 @@
 </div>
  <br />
 
-<a href="{[URLIZEDCATEGORY]}/index.html">{[ENTRYCATEGORY]}</a> &nbsp; <a href="{[RELATIVEENTRYURL]}">Permalink</a> &nbsp;<script language="JavaScript" type="text/javascript">var entryURLs = {    '{[ENTRYDEPRECATEDPAGEFILENAME]}' : {}};
-OMGWTFBBQITISTOOLATETOWRITEJAVASCRIPT('{[RELATIVEENTRYDEPRECATEDURL]}');</script><script language="JavaScript" type="text/javascript">initPersonWhoHasNoNameComments('{[RELATIVEENTRYDEPRECATEDURL]}','{[RELATIVEENTRYURL]}');</script>
+<a href="{[URLIZEDCATEGORY]}/index.html">{[ENTRYCATEGORY]}</a> &nbsp; <a href="{[RELATIVEENTRYURL]}">Permalink</a> &nbsp; <a href="http://twitter.com/intent/tweet?text=@simX+Insert+your+comment+here+{[ENTRYURL]}">Post a Comment</a>
 
 </div>

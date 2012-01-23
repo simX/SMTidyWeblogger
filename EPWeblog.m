@@ -83,23 +83,26 @@
         NSArray *keysArray = [mutableEntriesDict allKeys];
         
         for (NSString *currentKey in keysArray) {
+            NSString *newKey = nil;
             if ([currentKey hasPrefix:@"http://"]) {
                 NSArray *components = [currentKey componentsSeparatedByString:[[self baseWeblogURL] absoluteString]];
                 if ([components count] > 1) {
+                    newKey = [components objectAtIndex:1];
+                    
                     id currentObject = [mutableEntriesDict objectForKey:currentKey];
                     [mutableEntriesDict removeObjectForKey:currentKey];
-                    [mutableEntriesDict setObject:currentObject forKey:[components objectAtIndex:1]];
+                    [mutableEntriesDict setObject:currentObject forKey:newKey];
                 }
             }
             
-            NSMutableDictionary *mutableEntryDict = [NSMutableDictionary dictionaryWithDictionary:[mutableEntriesDict objectForKey:currentKey]];
+            NSMutableDictionary *mutableEntryDict = [NSMutableDictionary dictionaryWithDictionary:[mutableEntriesDict objectForKey:newKey]];
             NSString *plistPathString = [mutableEntryDict objectForKey:@"entryPlistFilePath"];
             if ([plistPathString hasPrefix:@"/Volumes"]) {
-                NSString *weirdPathComponent = [currentKey stringByDeletingPathExtension];
+                NSString *weirdPathComponent = [newKey stringByDeletingPathExtension];
                 NSString *newRelativePlistPathString = [weirdPathComponent stringByAppendingPathExtension:@"plist"];
                 [mutableEntryDict setObject:newRelativePlistPathString forKey:@"entryPlistFilePath"];
                 
-                [mutableEntriesDict setObject:mutableEntryDict forKey:currentKey];
+                [mutableEntriesDict setObject:mutableEntryDict forKey:newKey];
             }
         }
         

@@ -521,10 +521,19 @@
 	[mainPageTemplateString replaceOccurrencesOfString:@"{[ARCHIVEPAGEURL]}" withString:archivePageURLString options:NSLiteralSearch range:NSMakeRange(0,[mainPageTemplateString length])];
 
 	
-	if (currentCategoryID) [mainPageTemplateString replaceOccurrencesOfString:@"{[OVERALLCATEGORY]}"
-																 withString:[categoryDictionary objectForKey:currentCategoryID]
+	if (currentCategoryID) {
+        NSString *categoryName = [categoryDictionary objectForKey:currentCategoryID];
+        NSString *replacementString = @"";
+        if (categoryName) {
+            replacementString = [categoryName URLizedStringWithLengthLimit:20];
+        } else {
+            replacementString = @"Unfiled";
+        }
+        [mainPageTemplateString replaceOccurrencesOfString:@"{[OVERALLCATEGORY]}"
+																 withString:replacementString
 																	options:NSLiteralSearch
 																	  range:NSMakeRange(0,[mainPageTemplateString length])];
+    }
 	
 	
 	// NSXMLDocument will fix as many validation errors as possible w/o extra info; this is awesome!

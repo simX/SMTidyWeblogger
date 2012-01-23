@@ -198,7 +198,11 @@
 	// the entries dict object represents the master list of entries, and 
 	// is for eventual writing to disk
 	[importedWeblog setEntriesDict:entriesOfWeblogToImport];
-	[importedWeblog setCategoryDictionary:[listOfEntriesFile objectForKey:@"categoryDictionary"]];
+    
+    NSDictionary *categoryDictionary = nil;
+    categoryDictionary = [listOfEntriesFile objectForKey:@"categoryDictionary"];
+    if (! categoryDictionary) categoryDictionary = [weblogPrototype objectForKey:@"categoryDictionary"];
+	[importedWeblog setCategoryDictionary:categoryDictionary];
     
     [importedWeblog migrateEntriesDict];
 		

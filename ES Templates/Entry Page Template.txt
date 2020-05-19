@@ -5,7 +5,7 @@
   var commentsActivated = true;
 --></script><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>{[ENTRYTITLE]}
 </title>
-<link rel="stylesheet" type="text/css" href="http://homepage.mac.com/simx/stylesheets/blue-right-nav.css" title="Blue Right Nav" /><script language="JavaScript" type="text/javascript">writeStyleSheetLinks();</script></head><body onload="onPageLoad();"><script language="JavaScript" type="text/javascript"> activateStylesheetFromCookie();</script><div id="banner"><h3> <a class="banner" href="../index.html">{[WEBLOGTITLE]}</a> &gt; <a class="banner" href="index.html">{[ENTRYCATEGORY]}</a> &gt;</h3></div>
+<link rel="stylesheet" type="text/css" href="http://simx.me/stylesheets/blue-right-nav.css" title="Blue Right Nav" /><script language="JavaScript" type="text/javascript">writeStyleSheetLinks();</script></head><body onload="onPageLoad();"><script language="JavaScript" type="text/javascript"> activateStylesheetFromCookie();</script><div id="banner"><div id="inside_banner"><h3> <a class="banner" href="../index.html">{[WEBLOGTITLE]}</a> &gt; <a class="banner" href="index.html">{[ENTRYCATEGORY]}</a> &gt;</h3></div></div>
 <script language="JavaScript" type="text/javascript">writeStyleSheetButtonLinks();</script>
 <div class="topfade"></div><!-- Navigation Content -->
 

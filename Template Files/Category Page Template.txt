@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
 <title>{[OVERALLCATEGORY]}</title>
-<link rel="stylesheet" type="text/css" href="http://homepage.mac.com/simx/stylesheets/red-right-nav.css" title="Red Right Nav" />
+<link rel="stylesheet" type="text/css" href="http://simx.me/stylesheets/red-right-nav.css" title="Red Right Nav" />
 <script language="JavaScript" type="text/javascript">writeStyleSheetLinks();</script>
 
 </head>
@@ -15,7 +15,7 @@
 <body>	
 <script language="JavaScript" type="text/javascript"> activateStylesheetFromCookie();</script>
 <div id="banner">
-<div class="banner_category_image"><img style="border: 1px solid #330000;" src="categoryImage.png" width="60" height="60" alt="" /></div><h3><a class="banner" href="../index.html"> {[WEBLOGTITLE]}</a> > {[OVERALLCATEGORY]}</h3>
+<div id="inside_banner"><div class="banner_category_image"><img style="border: 1px solid #330000;" src="categoryImage.png" width="60" height="60" alt="" /></div><h3><a class="banner" href="../index.html"> {[WEBLOGTITLE]}</a> > {[OVERALLCATEGORY]}</h3></div>
 </div>
 <script language="JavaScript" type="text/javascript">writeStyleSheetButtonLinks();</script>
 <div class="topfade"></div>

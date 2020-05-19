@@ -1,11 +1,6 @@
 <div class="blogbody">
-<div class="title" style="float: left;"><a href="../{[RELATIVEENTRYURL]}" style="font-weight: bold;">{[ENTRYTITLE]}</a></div><div class="date" style="float: right;">{[ENTRYPUBLISHEDDATE]}</div><br /><br />
+<div class="title" style="float: left;"><a href="{[RELATIVEENTRYURL]}" style="font-weight: bold;">{[ENTRYTITLE]}</a></div><div class="date" style="float: right;">{[ENTRYPUBLISHEDDATE]}</div><br /><br />
 <span class="abstract" style="padding-left: 10px;">{[ENTRYABSTRACT]}</span>
 
-<div style="float: right;">
-<script language="JavaScript" type="text/javascript">var entryURLs = {    '{[ENTRYDEPRECATEDPAGEFILENAME]}' : {}};
-OMGWTFBBQITISTOOLATETOWRITEJAVASCRIPT('../{[RELATIVEENTRYDEPRECATEDURL]}');</script>
-<script language="JavaScript" type="text/javascript">initPersonWhoHasNoNameComments('../{[RELATIVEENTRYDEPRECATEDURL]}','../{[RELATIVEENTRYURL]}');</script>
-</div>
 </div>
 

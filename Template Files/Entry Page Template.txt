@@ -5,7 +5,7 @@
   var commentsActivated = true;
 --></script><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>{[ENTRYTITLE]}
 </title>
-<link rel="stylesheet" type="text/css" href="http://homepage.mac.com/simx/stylesheets/red-right-nav.css" title="Red Right Nav" /><script language="JavaScript" type="text/javascript">writeStyleSheetLinks();</script></head><body onload="onPageLoad();"><script language="JavaScript" type="text/javascript"> activateStylesheetFromCookie();</script><div id="banner"><h3> <a class="banner" href="../index.html">{[WEBLOGTITLE]}</a> > <a class="banner" href="index.html">{[ENTRYCATEGORY]}</a> ></h3></div>
+<link rel="stylesheet" type="text/css" href="http://simx.me/stylesheets/red-right-nav.css" title="Red Right Nav" /><script language="JavaScript" type="text/javascript">writeStyleSheetLinks();</script></head><body onload="onPageLoad();"><script language="JavaScript" type="text/javascript"> activateStylesheetFromCookie();</script><div id="banner"><div id="inside_banner"><h3> <a class="banner" href="../index.html">{[WEBLOGTITLE]}</a> > <a class="banner" href="index.html">{[ENTRYCATEGORY]}</a> ></h3></div></div>
 <script language="JavaScript" type="text/javascript">writeStyleSheetButtonLinks();</script>
 <div class="topfade"></div><!-- Navigation Content -->{[SIDEBAR]}
 
@@ -14,32 +14,7 @@
 </h3></div>
 <h2 class="date">{[ENTRYPUBLISHEDDATE]}</h2></div><br /><div class="abstract"><div>{[ENTRYABSTRACT]}</div>
 </div> <br />{[ENTRYBODY]}
- <br /><a href="../index.html">{[WEBLOGTITLE]}</a> &nbsp; <a href="index.html">{[ENTRYCATEGORY]}</a> &nbsp; {[OLDERLINK]} &nbsp; {[NEWERLINK]} <a name="comments"></a>
-
-<div>
-		<div id="comment_layer">
-			<div id="comment_title">
-				<div class="graphic_textbox_style_default" id="id2">
-					<div>
-						<div class="graphic_textbox_layout_style_default">
-							<div class="paragraph Comment_Count"><div id="count_0"></div><div id="manage_comments_0" class="light"></div></div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div id="comment_list"></div>
-			<div id="comment_footer">
-				<div class="graphic_textbox_style_default" id="id3">
-					<div>
-						<div class="graphic_textbox_layout_style_default">
-							<div class="paragraph Comment_Add_A_Comment"><span id="post_link_0"></span></div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
+ <br /><a href="../index.html">{[WEBLOGTITLE]}</a> &nbsp; <a href="index.html">{[ENTRYCATEGORY]}</a> &nbsp; {[OLDERLINK]} &nbsp; {[NEWERLINK]} &nbsp; <a href="http://twitter.com/intent/tweet?text=@simX+Insert+your+comment+here+{[ENTRYURL]}">Post a Comment</a>
 
 </div>	</div></div></div><div class="footer"><br clear="all" /><hr noshade="noshade" size="1" /><center>&#169; {[AUTHORNAME]}</center></div>
 </body></html>

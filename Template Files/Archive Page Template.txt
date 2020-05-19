@@ -7,14 +7,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
 <title>Archive</title>
-<link rel="stylesheet" type="text/css" href="http://homepage.mac.com/simx/stylesheets/red-right-nav.css" title="Red Right Nav" />
+<link rel="stylesheet" type="text/css" href="http://simx.me/stylesheets/red-right-nav.css" title="Red Right Nav" />
 <script language="JavaScript" type="text/javascript">writeStyleSheetLinks();</script>
 </head>
 
 <body>	
 <script language="JavaScript" type="text/javascript"> activateStylesheetFromCookie();</script>
 <div id="banner">
-<h3><a class="banner" href="index.html">{[WEBLOGTITLE]}</a> > Archive</h3>
+<div id="inside_banner"><h3><a class="banner" href="index.html">{[WEBLOGTITLE]}</a> > Archive</h3></div>
 </div>
 <script language="JavaScript" type="text/javascript">writeStyleSheetButtonLinks();</script>
 <div class="topfade"></div>

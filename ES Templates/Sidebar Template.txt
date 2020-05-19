@@ -53,13 +53,13 @@ writeCategoryStats();
 <div class="sidetitle"></div>
 
 <div class="side-badges" style="text-align: center;">
-<a href="http://www.apple.com/macosx/"><img class="badge" alt="Mac OS X" src="http://homepage.mac.com/simx/badges/macosx.png" /></a>
-<a href="http://www.nosoftwarepatents.com/"><img class="badge" alt="No Software Patents" src="http://homepage.mac.com/simx/badges/nosoftwarepatents.png" /></a><br />
-<a href="http://validator.w3.org/check?uri=referer"><img class="badge" alt="Valid XHTML 1.0 Transitional" src="http://homepage.mac.com/simx/badges/valid_xhtml10.png" /></a>
-<a href="http://jigsaw.w3.org/css-validator/check/referer"><img class="badge" alt="Valid CSS" src="http://homepage.mac.com/simx/badges/valid_css.png" /></a><br />
-<a href="http://feedvalidator.org/check.cgi?url=http://homepage.mac.com/simx/supernova/english/rss.xml"><img class="badge" alt="Valid RSS 2.0" src="http://homepage.mac.com/simx/badges/valid_rss_blue.png" /></a>
-<a href="http://homepage.mac.com/simx/supernova/english/rss.xml"><img alt="Subscribe to RSS Feed" class="badge" src="http://homepage.mac.com/simx/badges/rss_subscribe_blue.png" /></a><br />
-<a href="http://www.ling.upenn.edu/~beatrice/humor/sarchasm.html"><img class="badge" alt="Warning: Sarchasm" src="http://homepage.mac.com/simx/badges/sarchasm_blue.png" /></a><br />
+<a href="http://www.apple.com/macosx/"><img class="badge" alt="Mac OS X" src="http://simx.me/images/badges/macosx.png" /></a>
+<a href="http://www.nosoftwarepatents.com/"><img class="badge" alt="No Software Patents" src="http://simx.me/images/badges/nosoftwarepatents.png" /></a><br />
+<a href="http://validator.w3.org/check?uri=referer"><img class="badge" alt="Valid XHTML 1.0 Transitional" src="http://simx.me/images/badges/valid_xhtml10.png" /></a>
+<a href="http://jigsaw.w3.org/css-validator/check/referer"><img class="badge" alt="Valid CSS" src="http://simx.me/images/badges/valid_css.png" /></a><br />
+<a href="http://feedvalidator.org/check.cgi?url=http://simx.me/supernova/english/rss.xml"><img class="badge" alt="Valid RSS 2.0" src="http://simx.me/images/badges/valid_rss_blue.png" /></a>
+<a href="http://simx.me/supernova/rss.xml"><img alt="Subscribe to RSS Feed" class="badge" src="http://simx.me/images/badges/rss_subscribe_blue.png" /></a><br />
+<a href="http://www.ling.upenn.edu/~beatrice/humor/sarchasm.html"><img class="badge" alt="Warning: Sarchasm" src="http://simx.me/images/badges/sarchasm_blue.png" /></a><br />
 
 <br /><br /><br />
 </div>

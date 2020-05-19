@@ -3,7 +3,7 @@
 //  .mac Comments Manager
 //  Created by Simone Manganelli on 2006-09-03.
 //
-//  Copyright © 2006 Simone Manganelli.
+//  Copyright ï¿½ 2006 Simone Manganelli.
 //
 //  Permission is hereby granted, free of charge, to any person
 //  obtaining a copy of this software and associated documentation
@@ -126,8 +126,7 @@
 		
 		// here we get the cookie from the xml-rpc response from the .mac server;
 		// if we don't get this cookie, subsequent calls will fail
-		NSScanner *cookieScanner = [[NSScanner alloc] init];
-		[cookieScanner initWithString:[headerDict objectForKey:@"Set-Cookie"]]; // get the "Set-Cookie" header
+		NSScanner *cookieScanner = [[NSScanner alloc] initWithString:[headerDict objectForKey:@"Set-Cookie"]]; // get the "Set-Cookie" header
 		[cookieScanner scanUpToString:@"wosid=" intoString:nil]; // find the "wosid" parameter
 		[cookieScanner scanString:@"wosid=" intoString:nil];
 		NSString *sessionIDString;

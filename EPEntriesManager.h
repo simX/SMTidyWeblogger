@@ -93,6 +93,9 @@
 //- (void)addWeblogEntryObject:(EPWeblogEntry *)theWeblogEntry deferFileWrite:(BOOL)shouldDeferWrite;
 //- (void)writeListOfEntriesToDisk;
 
+
+- (IBAction)scanForDeprecatedURLsInBaseFileDirectoryPath:(id)sender;
+
 NSInteger dateCompare(id object1, id object2, void *context);
 NSInteger dateCompareDescending(id object1, id object2, void *context);
 //NSInteger dateCompareAscending(id object1, id object2, void *context);

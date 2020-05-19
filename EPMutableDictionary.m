@@ -106,11 +106,6 @@
 	return newDictionary;
 }
 
-- (NSMutableDictionary *)annoyedDictionary;
-{
-	return annoyedDictionary;
-}
-
 - (NSEnumerator *)keyEnumerator;
 {
 	return [annoyedDictionary keyEnumerator];

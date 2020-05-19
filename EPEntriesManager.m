@@ -60,7 +60,7 @@
         templateFilesLocation = [[weblogPrototype objectForKey:@"templateFilesLocation"] stringByExpandingTildeInPath];
     }
     
-	NSString *titleOfWeblogToImport = [weblogPrototype objectForKey:@"weblogTitle"];
+	NSString *titleOfWeblogToImport = [listOfEntriesFile objectForKey:@"weblogTitle"];
     
     NSString *baseWeblogURLString = [listOfEntriesFile objectForKey:@"baseWeblogURL"];
     if (! baseWeblogURLString) baseWeblogURLString = [weblogPrototype objectForKey:@"baseWeblogURL"];
@@ -363,7 +363,7 @@
 																			 forWeblog:targetWeblog
 																		 shouldPublish:NO];
 					
-					NSObject *newObject = [realEntriesController newObject];
+					NSDictionaryControllerKeyValuePair *newObject = [realEntriesController newObject];
 					
 					NSMutableDictionary *importedEntryPrototype = [[NSMutableDictionary alloc] init];
 					[importedEntryPrototype setObject:[importedEntry entryTitle] forKey:@"entryTitle"];
@@ -648,7 +648,7 @@
 	return importedEntry;
 }
 
-- (EPWeblogEntry *)partialWeblogEntryFromPrototype:(NSObject *)entryControllerKeyValuePair
+- (EPWeblogEntry *)partialWeblogEntryFromPrototype:(NSDictionaryControllerKeyValuePair *)entryControllerKeyValuePair
                                          forWeblog:(EPWeblog *)targetWeblog;
 {
 	NSString *theKey = [entryControllerKeyValuePair key];
@@ -722,7 +722,18 @@
 		
 		NSString *URLString = [theExistingEntryProtoObject objectForKey:@"entryURL"];
         NSString *baseURLString = [[targetWeblog baseWeblogURL] absoluteString];
-        NSString *relativeURLString = [[URLString componentsSeparatedByString:baseURLString] objectAtIndex:1];
+        NSArray *componentsArray = [URLString componentsSeparatedByString:baseURLString];
+        
+        NSString *relativeURLString = nil;
+        if ([componentsArray count] > 1) {
+            relativeURLString = [componentsArray objectAtIndex:1];
+        } else {
+            NSString *lastPathComponent = [[plistFilePath lastPathComponent] stringByDeletingPathExtension];
+            NSString *parentDirPath = [plistFilePath stringByDeletingLastPathComponent];
+            NSString *parentDirComponent = [parentDirPath lastPathComponent];
+            
+            relativeURLString = [NSString stringWithFormat:@"%@/%@.html",parentDirComponent,lastPathComponent];
+        }
         
         NSURL *entryURL = [NSURL URLWithString:relativeURLString relativeToURL:[targetWeblog baseWeblogURL]];
 		[existingEntry setEntryURL:entryURL];
@@ -850,7 +861,7 @@
 	EPWeblog *selectedWeblog = [[weblogsController selectedObjects] objectAtIndex:0];
 	NSArray *entryPrototypesArray = [realEntriesController arrangedObjects];
 	
-	for (NSObject *currentEntryPrototype in entryPrototypesArray) {
+	for (NSDictionaryControllerKeyValuePair *currentEntryPrototype in entryPrototypesArray) {
         NSDictionary *entryPrototypeValue = (NSDictionary *)[currentEntryPrototype value];
         NSString *relativePath = [entryPrototypeValue objectForKey:@"entryPlistFilePath"];
         NSString *relativeToPath = [[selectedWeblog baseFileDirectoryPath] path];
@@ -945,7 +956,7 @@
 	[self updateStatusWithString:@"Sorting through your rambling entries..."];
 	
 	NSEnumerator *enumerator = [sortedEntriesArray objectEnumerator];
-	NSObject *currentWeblogEntryPrototypeKeyValuePair = nil;
+	NSDictionaryControllerKeyValuePair *currentWeblogEntryPrototypeKeyValuePair = nil;
 	while (currentWeblogEntryPrototypeKeyValuePair = [enumerator nextObject]) {
 		
         NSDictionary *currentWeblogEntryPrototype = (NSDictionary *)[currentWeblogEntryPrototypeKeyValuePair value];
@@ -1004,7 +1015,7 @@
 	//int i = 0;
     NSEnumerator *sortedEntriesEnumerator = [sortedEntriesArray objectEnumerator];
 	while ([recentWeblogEntries count] < 10) {
-		NSDictionary *entryPrototypeKeyValuePair = [sortedEntriesEnumerator nextObject];
+		NSDictionaryControllerKeyValuePair *entryPrototypeKeyValuePair = [sortedEntriesEnumerator nextObject];
         NSDictionary *entryPrototype = [entryPrototypeKeyValuePair value];
         
         NSString *publishedDateString = [entryPrototype objectForKey:@"entryPublishedDateString"];
@@ -1066,7 +1077,7 @@
 - (IBAction)openWeblogEntry:(id)sender;
 {
 	//int theSelectedIndex = [listOfEntriesTableView selectedRow];
-	NSMutableDictionary *theExistingEntryPrototype = [[realEntriesController selectedObjects] objectAtIndex:0];
+	NSDictionaryControllerKeyValuePair *theExistingEntryPrototype = [[realEntriesController selectedObjects] objectAtIndex:0];
 	//NSLog(@"%@",theExistingEntryPrototype);
 	EPWeblog *selectedWeblog = [[weblogsController selectedObjects] objectAtIndex:0];
 	
@@ -1142,7 +1153,7 @@
 	// if the user decides to save the entry; otherwise, we'd have to call back
 	// to the entriesManager from the editor window to get the controller and 
 	// create a new object
-	NSObject *newObject = [realEntriesController newObject];
+	NSDictionaryControllerKeyValuePair *newObject = [realEntriesController newObject];
 	//NSLog(@"%@",[newObject blahQuestion]);
 	
 	NSMutableDictionary *newEntryPrototype = [[NSMutableDictionary alloc] init];
@@ -1169,6 +1180,57 @@
 	[entryEditorControllerInstance showWindow:self];
 }
 
+- (IBAction)scanForDeprecatedURLsInBaseFileDirectoryPath:(id)sender;
+{
+    NSArray *selectedWeblogs = [weblogsController selectedObjects];
+    
+    if ([selectedWeblogs count] > 0) {
+        EPWeblog *selectedWeblog = [selectedWeblogs objectAtIndex:0];
+        NSURL *baseFileDirectoryURL = [selectedWeblog baseFileDirectoryPath];
+        NSString *baseFileDirectoryPath = [baseFileDirectoryURL path];
+        //NSString *baseFileDirectoryPath = [@"~/Sites/technonova/" stringByExpandingTildeInPath];
+        //NSURL *baseFileDirectoryURL = [NSURL fileURLWithPath:baseFileDirectoryPath];
+        NSFileManager *defaultManager = [NSFileManager defaultManager];
+        
+        NSDirectoryEnumerator *dirEnumerator = [defaultManager enumeratorAtURL:baseFileDirectoryURL
+                                                    includingPropertiesForKeys:nil
+                                                                       options:NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles
+                                                                  errorHandler:^(NSURL *theURL, NSError *enumError) {
+                                                                      NSLog(@"Error at URL %@: %@",theURL,enumError);
+                                                                      return YES;
+                                                                  }];
+        
+        for (NSURL *currentURL in dirEnumerator) {
+            NSString *currentPath = [currentURL path];
+            NSArray *relativePathArray = [currentPath componentsSeparatedByString:[NSString stringWithFormat:@"%@/",baseFileDirectoryPath]];
+            NSString *relativePath = [relativePathArray objectAtIndex:1];
+            
+            if ([[[currentPath pathExtension] lowercaseString] isEqualToString:@"html"]) {
+                NSString *HTMLString = [NSString stringWithContentsOfURL:currentURL usedEncoding:nil error:nil];
+                NSScanner *HTMLScanner = [[NSScanner alloc] initWithString:HTMLString];
+                [HTMLScanner scanUpToString:@"<meta http-equiv=\"refresh\" content=\"0;url=" intoString:nil];
+                BOOL didFindRedirect = [HTMLScanner scanString:@"<meta http-equiv=\"refresh\" content=\"0;url=" intoString:nil];
+                
+                if (didFindRedirect) {
+                    NSString *redirectURLString = nil;
+                    BOOL didFindURL = [HTMLScanner scanUpToString:@"\"" intoString:&redirectURLString];
+                    
+                    if (didFindURL) {
+                        NSURL *redirectURL = [NSURL URLWithString:redirectURLString];
+                        NSArray *componentsArray = [redirectURLString componentsSeparatedByString:[[selectedWeblog baseWeblogURL] absoluteString]];
+                        if ([componentsArray count] <= 1) componentsArray = [redirectURLString componentsSeparatedByString:@"http://homepage.mac.com/simx/supernova/english/"];
+                        
+                        if ([componentsArray count] > 1) {
+                            NSString *newEntryRelativePath = [componentsArray objectAtIndex:1];
+                            NSLog(@"relativePath: %@; redirectURL: %@; newEntryRelativePath: %@",relativePath, redirectURL, newEntryRelativePath);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 /*- (void)addWeblogEntryObject:(EPWeblogEntry *)theWeblogEntry deferFileWrite:(BOOL)shouldDeferWrite;
 {	
 	[entries setObject:[NSDictionary dictionaryWithObjectsAndKeys:[theWeblogEntry entryTitle],@"entryTitle",
@@ -1179,7 +1241,7 @@
 	if (! shouldDeferWrite)	[self writeListOfEntriesToDisk];
 }*/
 
-NSInteger dateCompare(NSObject *object1, NSObject *object2, void *context)
+NSInteger dateCompare(NSDictionaryControllerKeyValuePair *object1, NSDictionaryControllerKeyValuePair *object2, void *context)
 {
 	NSInteger returnValue = NSOrderedSame;
 	

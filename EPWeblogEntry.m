@@ -16,17 +16,17 @@
 - (id)init;
 {
 	if (self = [super init]) {
-		entryTitle = [[NSString alloc] initWithString:@"Untitled Entry"];
+		entryTitle = @"Untitled Entry";
 		entryBodyHTML = [[NSString alloc] init];
 		
 		entryUneditedWebViewHTML = nil;
 		entryMarkdownText = nil;
 		
-		entryAbstract = [[NSString alloc] initWithString:@""];
+		entryAbstract = @"";
 		entryURL = [[NSURL alloc] init];
 		entryDeprecatedURL = nil;
-		entryPlistFilePath = [[NSURL fileURLWithPath:@"/"] retain];
-		entryCategoryID = [[NSString alloc] initWithString:@"unfiled"];
+		entryPlistFilePath = [NSURL fileURLWithPath:@"/"];
+		entryCategoryID = @"unfiled";
 		entryPublishedDate = nil;
 		entryPublishedDateString = [[NSString alloc] init];
 	}

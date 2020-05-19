@@ -25,7 +25,7 @@
 	NSNumber *publishOrderIndex;
 }
 
-@property(retain) NSNumber *publishOrderIndex;
+@property(strong) NSNumber *publishOrderIndex;
 
 - (NSString *)entryTitle;
 - (void)setEntryTitle:(NSString *)newTitle;

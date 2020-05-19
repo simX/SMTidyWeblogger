@@ -142,16 +142,23 @@
 
 - (void)windowDidLoad;
 {
-	if (markdownEditor) {
+	//if (markdownEditor) {
 		[editableWebView setHidden:YES];
 		
-		NSString *entryMarkdownText = [weblogEntry entryMarkdownText];
+    NSString *entryMarkdownText = nil;
+    if (markdownEditor) {
+        entryMarkdownText = [weblogEntry entryMarkdownText];
+    } else {
+        entryMarkdownText = [weblogEntry entryUneditedWebViewHTML];
+    }
+    
+    
 		if (entryMarkdownText == nil) {
 			[markdownBodyTextView setString:@""];
 		} else {
-			[markdownBodyTextView setString:[weblogEntry entryMarkdownText]];
+			[markdownBodyTextView setString:entryMarkdownText];
 		}
-	} else {
+	/*} else {
 		[markdownScrollView setHidden:YES];
 		
 		// set up the editable web view by loading a blank page
@@ -167,7 +174,7 @@
 			sleep(1);
 		}
 		
-		[editableWebView setEditable:YES];
+		[editableWebView setEditable:YES];*/
 		
 		
 		// the following commented-out code produces a log line of just "<html></html>" for some reason, but retrieving the stuff in the
@@ -176,7 +183,7 @@
 		/*DOMHTMLElement *theNode = (DOMHTMLElement *)[[[editableWebView mainFrame] DOMDocument] documentElement];
 		 NSMutableString *uneditedWebViewString = [[NSMutableString alloc] initWithString:[theNode outerHTML]];
 		 NSLog(@"uneditedWebViewString: %@",uneditedWebViewString);*/
-	}
+	//}
 	
 
 	//[titleTextField setStringValue:[weblogEntry entryTitle]];
@@ -281,9 +288,9 @@
 	if (markdownEditor) {
 		[weblogEntry setEntryMarkdownText:[markdownBodyTextView string]];
 	} else {
-		NSMutableString *uneditedWebViewString = [[NSMutableString alloc] initWithString:[(DOMHTMLElement *)[[[[editableWebView mainFrame] DOMDocument] documentElement] lastChild] innerHTML]];
-		NSLog(@"uneditedWebViewString: %@",uneditedWebViewString);
-		[weblogEntry setEntryUneditedWebViewHTML:uneditedWebViewString];
+		//NSMutableString *uneditedWebViewString = [[NSMutableString alloc] initWithString:[(DOMHTMLElement *)[[[[editableWebView mainFrame] DOMDocument] documentElement] lastChild] innerHTML]];
+		//NSLog(@"uneditedWebViewString: %@",uneditedWebViewString);
+		[weblogEntry setEntryUneditedWebViewHTML:[markdownBodyTextView string]];
 	}
 }
 

@@ -128,6 +128,23 @@
 	return successfulWrite;
 }
 
+- (void)createDummyFileAtFileURL:(NSURL *)URLToWrite
+                redirectingToURL:(NSURL *)URLToRedirectTo;
+{
+    NSURL *parentDirURL = [URLToWrite URLByDeletingLastPathComponent];
+    NSFileManager *defaultManager = [NSFileManager defaultManager];
+    
+    NSError *dirError = nil;
+    BOOL succeeded = [defaultManager createDirectoryAtURL:parentDirURL withIntermediateDirectories:YES attributes:nil error:&dirError];
+    
+    if (! succeeded) NSLog(@"Error creating directory at %@: %@",parentDirURL,dirError);
+    
+    NSString *dummyFileContents = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\"><head><title></title><meta http-equiv=\"refresh\" content=\"0;url=%@\" /></head><body></body></html>",[URLToRedirectTo absoluteString]];
+    
+    BOOL fileWriteSuccess = [defaultManager createFileAtPath:[URLToWrite path] contents:[dummyFileContents dataUsingEncoding:NSUTF8StringEncoding] attributes:nil];
+    if (! fileWriteSuccess) NSLog(@"Dummy file not successfully created at %@",URLToWrite);
+}
+
 - (void)createAndSaveHTMLFileUsingWeblogEntryObject:(EPWeblogEntry *)theWeblogEntry
 										  forWeblog:(EPWeblog *)targetWeblog
 									  shouldPublish:(BOOL)shouldPublish;
@@ -221,14 +238,37 @@
 	// if the entry has a deprecated URL, create a dummy file to redirect the old URL to
 	// the new URL
 	
-	if ([theWeblogEntry entryDeprecatedURL]) {
+    if (shouldPublish) {
+        NSURL *deprecatedURL = [theWeblogEntry entryDeprecatedURL];
+        NSString *deprecatedURLString = [deprecatedURL absoluteString];
+        if (deprecatedURLString) {
+            NSString *relativeDeprecatedURLString = deprecatedURLString;
+            if ([deprecatedURLString hasPrefix:@"http://homepage.mac.com/simx/supernova/english/"]) {
+                relativeDeprecatedURLString = [[deprecatedURLString componentsSeparatedByString:@"http://homepage.mac.com/simx/supernova/english/"] objectAtIndex:1];
+            } else if ([deprecatedURLString hasPrefix:@"http://homepage.mac.com/simx/technonova/"]) {
+                relativeDeprecatedURLString = [[deprecatedURLString componentsSeparatedByString:@"http://homepage.mac.com/simx/technonova/"] objectAtIndex:1];
+            } else {
+                // assume that it's already a relative URL
+            }
+            
+            NSURL *basePublishPathURL = [targetWeblog basePublishPathURL];
+            NSURL *dummyPageURL = [basePublishPathURL URLByAppendingPathComponent:relativeDeprecatedURLString isDirectory:NO];
+            
+            if (! [[entryURL relativeString] isEqualToString:relativeDeprecatedURLString]) {
+                [self createDummyFileAtFileURL:dummyPageURL
+                              redirectingToURL:entryURL];
+            } else {
+                NSLog(@"Umm... create an infinite redirecting loop?  No!  Title: %@",[theWeblogEntry entryTitle]);
+            }
+            
 #warning convert deprecated URLs to an array of deprecated relative URLs to the base publish folder
-		/*NSString *dummyiDiskFileURL = [commentsManagerInstance convertURLToiDiskFileURL:[[theWeblogEntry entryDeprecatedURL] absoluteString]
-																   preservingRootFolder:YES];
-		[commentsManagerInstance createDummyFile:dummyiDiskFileURL
-									entryPageURL:[[theWeblogEntry entryURL] absoluteString]
-								   iDiskUsername:[dotMacUsernameTextField stringValue]];*/
-	}
+            /*NSString *dummyiDiskFileURL = [commentsManagerInstance convertURLToiDiskFileURL:[[theWeblogEntry entryDeprecatedURL] absoluteString]
+             preservingRootFolder:YES];
+             [commentsManagerInstance createDummyFile:dummyiDiskFileURL
+             entryPageURL:[[theWeblogEntry entryURL] absoluteString]
+             iDiskUsername:[dotMacUsernameTextField stringValue]];*/
+        }
+    }
 	
 	
 	// entryPublishedDate will still be nil if it hasn't been published, and if
@@ -307,6 +347,7 @@
 			//NSLog(@"categoryDictionary: %@",categoryDictionary);
 			//NSLog(@"blogInfoDict: %@",blogInfoDict);
 			NSString *entryCategory = [categoryDictionary objectForKey:entryCategoryID];
+            if (! entryCategory) entryCategory = @"Unfiled";
 			
 			NSString *URLizedTitle = [entryTitle URLizedStringWithLengthLimit:40];
 			NSString *URLizedCategory = [entryCategory URLizedStringWithLengthLimit:20];
@@ -523,14 +564,10 @@
 	
 	if (currentCategoryID) {
         NSString *categoryName = [categoryDictionary objectForKey:currentCategoryID];
-        NSString *replacementString = @"";
-        if (categoryName) {
-            replacementString = [categoryName URLizedStringWithLengthLimit:20];
-        } else {
-            replacementString = @"Unfiled";
-        }
+        if (! categoryName) categoryName = @"Unfiled";
+
         [mainPageTemplateString replaceOccurrencesOfString:@"{[OVERALLCATEGORY]}"
-																 withString:replacementString
+																 withString:categoryName
 																	options:NSLiteralSearch
 																	  range:NSMakeRange(0,[mainPageTemplateString length])];
     }
@@ -551,6 +588,9 @@
 	} else {
 		outputXMLString = mainPageTemplateString;
 	}
+    
+    
+    outputXMLString = [outputXMLString stringByReplacingOccurrencesOfString:@"mailto:simX@mac.com" withString:@"&#109;&#097;&#105;&#108;&#116;&#111;&#058;&#115;&#105;&#109;&#088;&#064;&#109;&#097;&#099;&#046;&#099;&#111;&#109;"];
 	
     
     NSError *dirCreateError = nil;
@@ -583,6 +623,8 @@
 	NSMutableString *categoryStatsString = [NSMutableString stringWithString:@"var categoryStats=["];
 	for (currentStatsCategory in [categoryStats allKeys]) {
 		NSString *currentCategoryName = [[targetWeblog categoryDictionary] objectForKey:currentStatsCategory];
+        
+        if (! currentCategoryName) currentCategoryName = @"Unfiled";
 		if (! [currentStatsCategory isEqualToString:@"Total Count"]) {
 			NSString *currentCategoryURLString = [NSString stringWithFormat:@"%@%@/index.html",[targetWeblog baseWeblogURL],currentStatsCategory];
 			int currentCategoryCount = [[categoryStats objectForKey:currentStatsCategory] intValue];

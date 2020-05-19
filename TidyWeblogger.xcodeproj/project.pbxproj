@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -31,6 +31,7 @@
 		A42A713114B41E7B00D155A4 /* NSURL+SMURLAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A42A713014B41E7B00D155A4 /* NSURL+SMURLAdditions.m */; };
 		A42D95AC0D8C5DA200EFECEF /* EPEntriesManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A42D95AB0D8C5DA200EFECEF /* EPEntriesManager.m */; };
 		A42D968A0D8C7B4C00EFECEF /* EPEntryEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = A42D96890D8C7B4C00EFECEF /* EPEntryEditorController.m */; };
+		A452168614CCFCC8006F14C4 /* WorldIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = A452168514CCFCC8006F14C4 /* WorldIcon.tiff */; };
 		A4755F5C0EC66EE800F2AC2A /* EPWeblog.m in Sources */ = {isa = PBXBuildFile; fileRef = A4755F5B0EC66EE800F2AC2A /* EPWeblog.m */; };
 		A489DCE70D52910F00FAF5DB /* EPHTMLGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = A489DCE60D52910F00FAF5DB /* EPHTMLGenerator.m */; };
 		A489DD010D52985500FAF5DB /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A489DD000D52985500FAF5DB /* WebKit.framework */; };
@@ -79,6 +80,7 @@
 		A42D95AB0D8C5DA200EFECEF /* EPEntriesManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EPEntriesManager.m; sourceTree = "<group>"; };
 		A42D96880D8C7B4C00EFECEF /* EPEntryEditorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPEntryEditorController.h; sourceTree = "<group>"; };
 		A42D96890D8C7B4C00EFECEF /* EPEntryEditorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EPEntryEditorController.m; sourceTree = "<group>"; };
+		A452168514CCFCC8006F14C4 /* WorldIcon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = WorldIcon.tiff; sourceTree = "<group>"; };
 		A4559C880FA59EEE005AF878 /* Connection.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Connection.framework; path = /Library/Frameworks/Connection.framework; sourceTree = "<absolute>"; };
 		A4755F5A0EC66EE800F2AC2A /* EPWeblog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPWeblog.h; sourceTree = "<group>"; };
 		A4755F5B0EC66EE800F2AC2A /* EPWeblog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EPWeblog.m; sourceTree = "<group>"; };
@@ -188,6 +190,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A452168514CCFCC8006F14C4 /* WorldIcon.tiff */,
 				A49643000EF489F100597556 /* iWeb.icns */,
 				A4277DA00EF1360200DADB08 /* TB_Publish_Locally.tiff */,
 				A4277D9E0EF135F300DADB08 /* TB_PublishDomain.tiff */,
@@ -260,10 +263,10 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 1130;
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "TidyWeblogger" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 11.0";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
@@ -313,6 +316,7 @@
 				A4277D9F0EF135F300DADB08 /* TB_PublishDomain.tiff in Resources */,
 				A4277DA10EF1360200DADB08 /* TB_Publish_Locally.tiff in Resources */,
 				A49643010EF489F100597556 /* iWeb.icns in Resources */,
+				A452168614CCFCC8006F14C4 /* WorldIcon.tiff in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -372,6 +376,7 @@
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = x86_64;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
@@ -380,16 +385,15 @@
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
-				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../ConnectionKit/branches/2.0/build/Debug\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../ConnectionKit/branches/2.0/build/Debug\"";
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_OBJC_GC = supported;
+				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_BUNDLE_IDENTIFIER = com.EllipsisProductions.TidyWeblogger;
 				PRODUCT_NAME = TidyWeblogger;
 				SDKROOT = macosx;
 				VALID_ARCHS = x86_64;
@@ -401,6 +405,7 @@
 		C01FCF4C08A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = x86_64;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -408,8 +413,6 @@
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
-				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../ConnectionKit/branches/2.0/build/Debug\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../ConnectionKit/branches/2.0/build/Debug\"";
 				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G5;
@@ -417,6 +420,7 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_BUNDLE_IDENTIFIER = com.EllipsisProductions.TidyWeblogger;
 				PRODUCT_NAME = TidyWeblogger;
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "/Library/Frameworks/Connection.framework/Headers//**";

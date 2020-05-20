@@ -14,7 +14,6 @@
 #import "EPNewWeblogSheetHandler.h"
 #import "EPStringCategory.h"
 #import "EPWeblogEntryPrototype.h"
-//#import <Connection/Connection.h>
 
 
 @implementation EPEntriesManager
@@ -54,74 +53,23 @@
     NSString *masterEntriesPlistFileLocation = [[weblogPrototype objectForKey:@"masterEntriesPlistFileLocation"] stringByExpandingTildeInPath];
     NSDictionary *listOfEntriesFile = [NSDictionary dictionaryWithContentsOfFile:masterEntriesPlistFileLocation];
     
-	
     NSString *templateFilesLocation = [[listOfEntriesFile objectForKey:@"templateFilesLocation"] stringByExpandingTildeInPath];
-    if (! templateFilesLocation) {
-        templateFilesLocation = [[weblogPrototype objectForKey:@"templateFilesLocation"] stringByExpandingTildeInPath];
-    }
-    
 	NSString *titleOfWeblogToImport = [listOfEntriesFile objectForKey:@"weblogTitle"];
     
     NSString *baseWeblogURLString = [listOfEntriesFile objectForKey:@"baseWeblogURL"];
-    if (! baseWeblogURLString) baseWeblogURLString = [weblogPrototype objectForKey:@"baseWeblogURL"];
     NSURL *baseWeblogURL = [NSURL URLWithString:baseWeblogURLString];
 
+    
 	// load the entries dictionary
-
-	// (mounted iDisk method)
-	
-	
-	
-	//CKConnection *mobileMeConnection =
-	//	[[CKConnectionRegistry sharedConnectionRegistry] connectionWithURL:[NSURL URLWithString:@"http://idisk.mac.com"]];
-	
-	//CKWebDavConnection *mobileMeConnection = [[CKWebDavConnection alloc] initWithURL:[NSURL URLWithString:@"http://idisk.mac.com"]];
-	
-	//id <CKConnection> connection = [[CKFTPConnection alloc] initWithURL:[NSURL URLWithString:@"ftp://ftp.example.com"]];
-	
-	// (ConnectionKit 1.2 method, creating the request)
-	/*CKConnectionRequest *mobileMeConnectionRequest = [CKConnectionRequest requestWithURL:[NSURL URLWithString:@"http://idisk.mac.com/simx/"]];
-	CKConnection *mobileMeConnection = [[CKConnection alloc] initWithConnectionRequest:mobileMeConnectionRequest
-																			  delegate:self];
-	[mobileMeConnection connect];*/
-	
-	// (ConnectionKit 1.2 method, get the request from the registry
-	// NSError *connectionError = nil;
-	/*CKConnection *mobileMeConnection =
-		[[CKConnectionRegistry sharedConnectionRegistry] connectionWithName:@"WebDav"
-																	   host:@"http://idisk.mac.com/"
-																	   port:[NSNumber numberWithInt:80]];*/
-	
-	//if (connectionError) NSLog(@"%@",connectionError);
-	
-	//[mobileMeConnection setDelegate:self];
-	//[mobileMeConnection connect];
-	
-	/*NSLog(@"%@",[mobileMeConnection contentsOfDirectory:[mobileMeConnection currentDirectory]]);
-	
-	[mobileMeConnection downloadFile:@"/Sites/technonova/tidyWebloggerEntriesList.plist"
-						 toDirectory:@"/Users/simmy/Library/Application Support/TidyWeblogger/"
-						   overwrite:YES];
-	
-	sleep(5);
-	
-	
-	NSDictionary *listOfEntriesFile = [NSDictionary dictionaryWithContentsOfFile:@"/Users/simmy/Library/Application Support/TidyWeblogger/tidyWebloggerEntriesList.plist"];*/
-	
-	
 	NSMutableDictionary *entriesOfWeblogToImport = nil;
 	if (listOfEntriesFile == nil) {
 		// there are no existing entries (probably because the file doesn't exist);
 		// we need to create the directories to the file, and then create the file
-		
-		// this is just placeholder for now
-		
-		NSLog(@"Error loading the list of entries.");
+#warning add the functionality to create the entries file here
 		
 		entriesOfWeblogToImport = [[NSMutableDictionary alloc] init];
 	} else {
 		entriesOfWeblogToImport = [NSMutableDictionary dictionaryWithDictionary:[listOfEntriesFile objectForKey:@"entriesDict"]];
-		//NSLog(@"%@",listOfEntriesFile);
 	}
 	
 	

@@ -200,19 +200,6 @@
                                     basePublishPath:[[targetWeblog basePublishPathURL] path]
 									  validatingXML:YES
 									   firstPublish:firstPublish];
-		
-		if (firstPublish) {
-			/*BOOL successfulActivation = [commentsManagerInstance activateCommentsWithUsernameTextField:dotMacUsernameTextField
-																			   passwordSecureTextField:dotMacPasswordTextField
-																							webPageURL:[NSString stringWithFormat:@"%@%@/%@.html",[targetWeblog baseWeblogURL],truncatedCategory,truncatedTitle]
-										 ];
-			if (! successfulActivation) {
-				// there was an error activating the comments; reset the published date to nil
-				[theWeblogEntry setEntryPublishedDate:nil];
-				entryPublishedDate = nil;
-				NSBeep();
-			}*/
-		}
 	} else {
 		[self writeFileForArrayOfWeblogEntryObjects:[NSArray arrayWithObject:theWeblogEntry]
 										  forWeblog:targetWeblog

@@ -35,7 +35,6 @@
 		A4755F5C0EC66EE800F2AC2A /* EPWeblog.m in Sources */ = {isa = PBXBuildFile; fileRef = A4755F5B0EC66EE800F2AC2A /* EPWeblog.m */; };
 		A489DCE70D52910F00FAF5DB /* EPHTMLGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = A489DCE60D52910F00FAF5DB /* EPHTMLGenerator.m */; };
 		A489DD010D52985500FAF5DB /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A489DD000D52985500FAF5DB /* WebKit.framework */; };
-		A489DED20D530FEF00FAF5DB /* EPCommentsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A489DED00D530FEF00FAF5DB /* EPCommentsManager.m */; };
 		A49643010EF489F100597556 /* iWeb.icns in Resources */ = {isa = PBXBuildFile; fileRef = A49643000EF489F100597556 /* iWeb.icns */; };
 		A4B8371C0EE50DE5003D369D /* AddWeblogSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = A4B8371B0EE50DE5003D369D /* AddWeblogSheet.xib */; };
 		A4B8376C0EE51076003D369D /* EPNewWeblogSheetHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A4B8376B0EE51076003D369D /* EPNewWeblogSheetHandler.m */; };
@@ -87,8 +86,6 @@
 		A489DCE50D52910F00FAF5DB /* EPHTMLGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPHTMLGenerator.h; sourceTree = "<group>"; };
 		A489DCE60D52910F00FAF5DB /* EPHTMLGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EPHTMLGenerator.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		A489DD000D52985500FAF5DB /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
-		A489DED00D530FEF00FAF5DB /* EPCommentsManager.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = EPCommentsManager.m; sourceTree = "<group>"; };
-		A489DED10D530FEF00FAF5DB /* EPCommentsManager.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = EPCommentsManager.h; sourceTree = "<group>"; };
 		A49643000EF489F100597556 /* iWeb.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = iWeb.icns; sourceTree = "<group>"; };
 		A4B8371B0EE50DE5003D369D /* AddWeblogSheet.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddWeblogSheet.xib; sourceTree = "<group>"; };
 		A4B8376A0EE51076003D369D /* EPNewWeblogSheetHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPNewWeblogSheetHandler.h; sourceTree = "<group>"; };
@@ -127,8 +124,6 @@
 				A42D96890D8C7B4C00EFECEF /* EPEntryEditorController.m */,
 				A489DCE50D52910F00FAF5DB /* EPHTMLGenerator.h */,
 				A489DCE60D52910F00FAF5DB /* EPHTMLGenerator.m */,
-				A489DED10D530FEF00FAF5DB /* EPCommentsManager.h */,
-				A489DED00D530FEF00FAF5DB /* EPCommentsManager.m */,
 				A4B837A40EE51951003D369D /* EPStringCategory.h */,
 				A4B837A50EE51951003D369D /* EPStringCategory.m */,
 			);
@@ -329,7 +324,6 @@
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				A489DCE70D52910F00FAF5DB /* EPHTMLGenerator.m in Sources */,
-				A489DED20D530FEF00FAF5DB /* EPCommentsManager.m in Sources */,
 				A4FF4DE50D7FCEEB00A6B5DA /* EPWeblogEntry.m in Sources */,
 				A42D95AC0D8C5DA200EFECEF /* EPEntriesManager.m in Sources */,
 				A42D968A0D8C7B4C00EFECEF /* EPEntryEditorController.m in Sources */,

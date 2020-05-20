@@ -8,7 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 #import <WebKit/WebKit.h>
-#import "EPCommentsManager.h"
 @class EPWeblogEntry;
 @class EPWeblog;
 
@@ -16,8 +15,6 @@
 @interface EPHTMLGenerator : NSObject {
 	IBOutlet NSTextField *dotMacUsernameTextField;
 	IBOutlet NSSecureTextField *dotMacPasswordTextField;
-	
-	IBOutlet EPCommentsManager *commentsManagerInstance;
 }
 
 

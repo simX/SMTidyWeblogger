@@ -12,17 +12,34 @@
 
 - (NSString *)relativePathFromURL:(NSURL *)startURL;
 {
-    NSString *basePath = [[self path] commonPrefixWithString:[startURL path] options:NSLiteralSearch];
+    // first: determine the common path to both URLs
+    NSString *startPath = [startURL path];
+    NSString *endPath = [self path];
     
-    NSArray *startRelativeComponents = [[startURL path] componentsSeparatedByString:basePath];
-    NSString *startPathRelativeToBasePath = [startRelativeComponents objectAtIndex:1];
+    NSString *basePath = endPath;
+    while (! [startPath hasPrefix:basePath])
+    {
+        basePath = [basePath stringByDeletingLastPathComponent];
+    }
     
-    // minus two because the -path method removes the last slash even though
-    // it's a folder, leaving an extra slash at the start, so that's one extra
-    // count; also, we're counting the occurrences of slashes (indicating how
-    // many levels to go up), so there is one more component separated by
-    // slashes than there are slashes, so that's a second extra count
-    NSInteger sublevelCount = [[startPathRelativeToBasePath componentsSeparatedByString:@"/"] count] - 2;
+    
+    // second: determine how many levels to go up from the start path
+
+    // we start by deleting one component and the count at 0 because the last
+    // path component is the name of the file.  So two files in the same folder
+    // should have a sublevelCount of 0, but you will delete one component to
+    // find the base path of those two files.
+    NSInteger sublevelCount = 0;
+    NSString *intermediatePath = [startPath stringByDeletingLastPathComponent];
+    while (! [intermediatePath isEqualToString:basePath])
+    {
+        intermediatePath = [intermediatePath stringByDeletingLastPathComponent];
+        sublevelCount++;
+    }
+    
+    
+
+    // third: construct the part of the relative path that traverses up the hierarchy
     
     NSString *relativePath = @"";
     NSInteger i = 0;
@@ -30,10 +47,22 @@
         relativePath = [relativePath stringByAppendingPathComponent:@"../"];
     }
     
-    NSArray *desiredRelativeComponents = [[self path] componentsSeparatedByString:basePath];
-    NSString *desiredPathRelativeToBasePath = [desiredRelativeComponents objectAtIndex:1];
     
-    relativePath = [relativePath stringByAppendingPathComponent:desiredPathRelativeToBasePath];
+    // fourth: construct the part of the relative path that goes back down the
+    // hierarchy (this is the part of the end path that is NOT common to the start
+    // path)
+    
+    NSInteger basePathComponentsCount = [[basePath pathComponents] count];
+    NSArray *selfPathComponents = [self pathComponents];
+    for (i = basePathComponentsCount; i < [selfPathComponents count]; i++)
+    {
+        relativePath = [relativePath stringByAppendingPathComponent:[selfPathComponents objectAtIndex:i]];
+    }
+
+    
+    // fifth: special case... if we don't have anything in the relative path,
+    // just return "." to keep it in the same directory
+    
     if ([relativePath isEqualToString:@""]) relativePath = @".";
     
     return relativePath;

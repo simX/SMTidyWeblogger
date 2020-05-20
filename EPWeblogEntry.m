@@ -23,7 +23,7 @@
 		entryMarkdownText = nil;
 		
 		entryAbstract = @"";
-		entryURL = [[NSURL alloc] init];
+        entryURL = nil;
 		entryDeprecatedURL = nil;
 		entryPlistFilePath = [NSURL fileURLWithPath:@"/"];
 		entryCategoryID = @"unfiled";

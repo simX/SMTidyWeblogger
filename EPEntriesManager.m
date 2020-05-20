@@ -81,40 +81,22 @@
 		[entriesOfWeblogToImport setObject:mutableEntryObject
 									forKey:currentKey];
 	}
-	
-	/*categoryDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-						   @"Apple Bug Friday",@"apple_bug_friday",
-						   @"D2X-XL",@"d2x-xl",
-						   @"Intarweb",@"intarweb",
-						   @"Publications",@"publications",
-						   @"Rants",@"rants",
-						   @"Software Development",@"software_development",
-						   @"Tips",@"tips",
-						   @"Unfiled",@"unfiled",nil];*/
+
+    
 	
 	EPWeblog *importedWeblog = [[EPWeblog alloc] init];
-    NSURL *pathEntriesDictURL = [NSURL fileURLWithPath:[masterEntriesPlistFileLocation stringByExpandingTildeInPath]];
+    NSURL *pathEntriesDictURL = [NSURL fileURLWithPath:masterEntriesPlistFileLocation];
 	[importedWeblog setPathToEntriesDictionary:pathEntriesDictURL];
-	[importedWeblog setTemplateFilesLocation:[NSURL fileURLWithPath:[templateFilesLocation stringByExpandingTildeInPath]]];
-	[importedWeblog setWeblogTitle:titleOfWeblogToImport];
+	[importedWeblog setTemplateFilesLocation:[NSURL fileURLWithPath:templateFilesLocation]];
+    [importedWeblog setWeblogTitle:titleOfWeblogToImport];
     
     if (baseWeblogURL) {
         [importedWeblog setBaseWeblogURL:baseWeblogURL];
     } else {
-        // check if it's an iDisk weblog
-        NSArray *iDiskPathArray = [[[importedWeblog baseFileDirectoryPath] path] componentsSeparatedByString:@"/Volumes/simx/Sites/"];
-        
-        if ([iDiskPathArray count] > 1) {
-            NSString *URLString = [NSString stringWithFormat:@"http://homepage.mac.com/simx/%@/",[iDiskPathArray objectAtIndex:1]];
-            NSURL *theURL = [NSURL URLWithString:URLString];
-            [importedWeblog setBaseWeblogURL:theURL];
-        } else {
-            [importedWeblog setBaseWeblogURL:[NSURL URLWithString:@"http://127.0.0.1/"]];
-        }
+        [importedWeblog setBaseWeblogURL:[NSURL URLWithString:@"http://127.0.0.1/"]];
     }
     
     NSString *basePublishPathURLString = [listOfEntriesFile objectForKey:@"basePublishPathURL"];
-    if (! basePublishPathURLString) basePublishPathURLString = [weblogPrototype objectForKey:@"basePublishPathURL"];
     NSURL *basePublishPathURL = nil;
     if (! basePublishPathURLString) {
         basePublishPathURL = [importedWeblog baseFileDirectoryPath];
@@ -123,40 +105,14 @@
     }
     
     [importedWeblog setBasePublishPathURL:basePublishPathURL];
-    
 
-    
-	
-	// this whole block is so that we can add a pointer back to the weblog that owns
-	// each entry; unfortunately, it doesn't seem like there's any other way to do this
-	// through bindings, and pointers can't be saved into a plist file
-	/*NSArray *entriesArray = [entriesOfWeblogToImport allValues];
-	NSMutableArray *modifiableEntriesArray = [[NSMutableArray alloc] init];
-	NSDictionary *currentEntryPrototype = nil;
-	for (currentEntryPrototype in entriesArray) {
-		NSMutableDictionary *mutableCurrentEntryPrototype = [NSMutableDictionary dictionaryWithDictionary:currentEntryPrototype];
-		[mutableCurrentEntryPrototype setObject:importedWeblog forKey:@"weblog"];
-		[modifiableEntriesArray addObject:mutableCurrentEntryPrototype];
-	}
-	
-	// the entries object is for bindings
-	[importedWeblog setEntries:modifiableEntriesArray];
-	[modifiableEntriesArray release];*/
-	
 	// the entries dict object represents the master list of entries, and 
 	// is for eventual writing to disk
 	[importedWeblog setEntriesDict:entriesOfWeblogToImport];
     
     NSDictionary *categoryDictionary = nil;
     categoryDictionary = [listOfEntriesFile objectForKey:@"categoryDictionary"];
-    if (! categoryDictionary) categoryDictionary = [weblogPrototype objectForKey:@"categoryDictionary"];
 	[importedWeblog setCategoryDictionary:categoryDictionary];
-    
-    [importedWeblog migrateEntriesDict];
-		
-	//listOfEntriesActiveSet = [[entries allValues] sortedArrayUsingFunction:dateCompareDescending context:NULL];
-	//[listOfEntriesActiveSet retain];
-	//[listOfEntriesTableView reloadData];
 	
 	
 	NSMutableArray *bindingsCompliantWeblogs = [self mutableArrayValueForKey:@"weblogs"];

@@ -43,8 +43,5 @@
 - (void)addEntryToWeblog:(EPWeblogEntry *)newWeblogEntry deferFileWrite:(BOOL)shouldDeferFileWrite;
 
 - (void)writeListOfEntriesToDisk;
-//- (void)refreshEntriesArray;
-
-- (void)migrateEntriesDict;
 
 @end

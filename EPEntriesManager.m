@@ -980,20 +980,23 @@
 
 - (IBAction)openWeblogEntry:(id)sender;
 {
-	//int theSelectedIndex = [listOfEntriesTableView selectedRow];
 	NSDictionaryControllerKeyValuePair *theExistingEntryPrototype = [[realEntriesController selectedObjects] objectAtIndex:0];
-	//NSLog(@"%@",theExistingEntryPrototype);
+    [self openEditorWindowForEntry:theExistingEntryPrototype];
+}
+
+- (void)openEditorWindowForEntry:(NSDictionaryControllerKeyValuePair *)weblogEntryPrototype
+{
 	EPWeblog *selectedWeblog = [[weblogsController selectedObjects] objectAtIndex:0];
 	
 	EPEntryEditorController *entryEditorControllerInstance = [[EPEntryEditorController alloc] init];
 	//[entryEditorControllerInstance setEntryURL:[listOfEntriesKeysArray objectAtIndex:theSelectedIndex]];
 	[entryEditorControllerInstance setHTMLGeneratorObject:HTMLGeneratorInstance];
 	[entryEditorControllerInstance setEntriesManagerObject:self];
-	[entryEditorControllerInstance setWeblogEntryPrototype:theExistingEntryPrototype];
+	[entryEditorControllerInstance setWeblogEntryPrototype:weblogEntryPrototype];
 	[entryEditorControllerInstance setWeblog:selectedWeblog];
 	
 	// here we need to open the plist file and re-create the EPWeblogEntry object so that it can be displayed
-    NSString *relativePath = [[theExistingEntryPrototype value] objectForKey:@"entryPlistFilePath"];
+    NSString *relativePath = [[weblogEntryPrototype value] objectForKey:@"entryPlistFilePath"];
     NSString *relativeToPath = [[selectedWeblog baseFileDirectoryPath] path];
     NSString *absolutePlistFilePath = [relativeToPath stringByAppendingPathComponent:relativePath];
 	EPWeblogEntry *existingEntry = [self weblogEntryForPlistFilePath:absolutePlistFilePath
